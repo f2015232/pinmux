@@ -4,12 +4,12 @@ from string import digits
 
 ## dictionary of properties of signals that are supported.
 dictionary={
-	"uart_rx":"input",
-	"uart_tx":"output",
-	"spi_sclk":"output",
-	"spi_mosi":"output",
-	"spi_ss": "output",
-	"spi_miso":"input"
+	"uart_rx"	:"input",
+	"uart_tx"	:"output",
+	"spi_sclk"	:"output",
+	"spi_mosi"	:"output",
+	"spi_ss"		:"output",
+	"spi_miso"	:"input"
 }
 	
 
@@ -19,7 +19,7 @@ assign_cell='''cell{0}_out=wrmux{0}=={1}?'''
 # second argument is the mux value. 
 # Third argument is the signal from the pinmap file
 input_wire='''		
-		rule assign_input_for_{2}(wrmux{0}=={1});
+		rule assign_input_for_{2}_on_cell{0}(wrmux{0}=={1});
 			wr{2}<=cell{0}_in;
 		endrule
 '''
@@ -57,7 +57,7 @@ for lineno,line in enumerate(pinmap_file):
 			if(x==None):
 				print "Error: The signal : "+str(line1[i+1])+" in lineno: "+str(lineno)+"of pinmap.txt is not present in the current dictionary.\nSoln: Either update the dictionary or fix typo."
 				exit(1)
-			if(x=="input"):
+			if(x=="input" or x=="inout"):
 				pinmux=pinmux+input_wire.format(line1[0],i,line1[i+1])+"\n"
 		################################################################################
 ###########################################
