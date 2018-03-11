@@ -21,16 +21,16 @@ spiwires='''
 		Wire#(Bit#(1)) wrspi{0}_mosi <-mkDWire(0);
 		Wire#(Bit#(1)) wrspi{0}_ss	  <-mkDWire(0);
 		Wire#(Bit#(1)) wrspi{0}_miso <-mkDWire(0);
-		GenericIOType spi{0}_sclk = GenericIOType{{outputval:wrspi{0}_sclk, output_en:1, input_en:0,
+		GenericIOType spi{0}_sclk_io = GenericIOType{{outputval:wrspi{0}_sclk, output_en:1, input_en:0,
 															   pullup_en:0, pulldown_en:0, pushpull_en:0,
 																drivestrength:0, opendrain_en:0}};
-		GenericIOType spi{0}_mosi = GenericIOType{{outputval:wrspi{0}_mosi, output_en:1, input_en:0,
+		GenericIOType spi{0}_mosi_io = GenericIOType{{outputval:wrspi{0}_mosi, output_en:1, input_en:0,
 															   pullup_en:0, pulldown_en:0, pushpull_en:0,
 																drivestrength:0, opendrain_en:0}};
-		GenericIOType spi{0}_ss = GenericIOType{{outputval:wrspi{0}_ss, output_en:1, input_en:0,
+		GenericIOType spi{0}_ss_io = GenericIOType{{outputval:wrspi{0}_ss, output_en:1, input_en:0,
 															   pullup_en:0, pulldown_en:0, pushpull_en:0,
 																drivestrength:0, opendrain_en:0}};
-		GenericIOType spi{0}_miso = GenericIOType{{outputval:0, output_en:0, input_en:1,
+		GenericIOType spi{0}_miso_io = GenericIOType{{outputval:0, output_en:0, input_en:1,
 															   pullup_en:0, pulldown_en:0, pushpull_en:0,
 																drivestrength:0, opendrain_en:0}};
 		
