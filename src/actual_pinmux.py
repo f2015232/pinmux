@@ -30,7 +30,7 @@ for lineno,line in enumerate(pinmap_file):
 	line1=line.split()
 	if(lineno>0):
 		if(lineno>N_IO):
-			print"ERROR: Parameter N_IO("+str(N_IO)+") is less than the pin number in line: "+str(lineno)+" of pinmap.txt"
+			print("ERROR: Parameter N_IO("+str(N_IO)+") is less than the pin number in line: "+str(lineno)+" of pinmap.txt")
 			exit(1)
 		######## Mux each generic IO cell with the mapping######
 		# provided in the pinmap file
@@ -52,10 +52,11 @@ for lineno,line in enumerate(pinmap_file):
 		## since the interfaces are always standard and cannot change from user-to-user
 		## plus reduces human-error as well :)
 		for i in range(0,len(line1)-1):
-			temp=line1[i+1].translate(None,digits)
+			digits = str.maketrans(dict.fromkeys('0123456789'))
+			temp=line1[i+1].translate(digits)
 			x=dictionary.get(temp);
 			if(x==None):
-				print "Error: The signal : "+str(line1[i+1])+" in lineno: "+str(lineno)+"of pinmap.txt is not present in the current dictionary.\nSoln: Either update the dictionary or fix typo."
+				print("Error: The signal : "+str(line1[i+1])+" in lineno: "+str(lineno)+"of pinmap.txt is not present in the current dictionary.\nSoln: Either update the dictionary or fix typo.")
 				exit(1)
 			if(x=="input" or x=="inout"):
 				pinmux=pinmux+input_wire.format(line1[0],i,line1[i+1])+"\n"

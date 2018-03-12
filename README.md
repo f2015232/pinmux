@@ -12,6 +12,11 @@ Currently the code supports the following peripherals:
 3. Provide support for dedicated pins.
 4. Provide scheme to prevent short-circuit when inputs are mapped to multiple IOs.
 
+
+## REQUIREMENTS:
+	1. Python3 and above to generate BSV code.
+	2. BSV compiler to generate verilog code from BSV code.
+
 ## Quick Start
 
 Set parameters such as number of UARTs, SPIs, IO Cells, etc. in the file src/params.py . 
