@@ -31,6 +31,15 @@ spiinterface_decl='''
 		(*always_ready,always_enabled*) method Action ss_{0}   (Bit#(1) in);
 		(*always_ready,always_enabled*) method Bit#(1) miso_{0};
 '''
+
+twiinterface_decl='''
+		(*always_ready,always_enabled*) method Action sda{0}_out (Bit#(1) in);
+		(*always_ready,always_enabled*) method Action sda{0}_outen (Bit#(1) in);
+		(*always_ready,always_enabled*) method Bit#(1) sda{0}_in;
+		(*always_ready,always_enabled*) method Action scl{0}_out (Bit#(1) in);
+		(*always_ready,always_enabled*) method Action scl{0}_outen (Bit#(1) in);
+		(*always_ready,always_enabled*) method Bit#(1) scl{0}_in;
+'''
 #=======================================#
 
 

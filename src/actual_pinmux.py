@@ -9,7 +9,9 @@ dictionary={
 	"spi_sclk"	:"output",
 	"spi_mosi"	:"output",
 	"spi_ss"		:"output",
-	"spi_miso"	:"input"
+	"spi_miso"	:"input",
+	"twi_sda"	:"inout",
+	"twi_scl"	:"inout"
 }
 	
 
@@ -19,8 +21,8 @@ assign_cell='''cell{0}_out=wrmux{0}=={1}?'''
 # second argument is the mux value. 
 # Third argument is the signal from the pinmap file
 input_wire='''		
-		rule assign_input_for_{2}_on_cell{0}(wrmux{0}=={1});
-			wr{2}<=cell{0}_in;
+		rule assign_{2}_on_cell{0}(wrmux{0}=={1});
+			{2}<=cell{0}_in;
 		endrule
 '''
 #########################################
@@ -49,8 +51,8 @@ for lineno,line in enumerate(pinmap_file):
 		###### check each cell if "peripheral input/inout" then assign its wire ########
 		## Here we check the direction of each signal in the dictionary. 
 		## We choose to keep the dictionary within the code and not user-input 
-		## since the interfaces are always standard and cannot change from user-to-user
-		## plus reduces human-error as well :)
+		## since the interfaces are always standard and cannot change from user-to-user.
+		## Plus this also reduces human-error as well :)
 		for i in range(0,len(line1)-1):
 			digits = str.maketrans(dict.fromkeys('0123456789'))
 			temp=line1[i+1].translate(digits)
@@ -58,8 +60,12 @@ for lineno,line in enumerate(pinmap_file):
 			if(x==None):
 				print("Error: The signal : "+str(line1[i+1])+" in lineno: "+str(lineno)+"of pinmap.txt is not present in the current dictionary.\nSoln: Either update the dictionary or fix typo.")
 				exit(1)
-			if(x=="input" or x=="inout"):
-				pinmux=pinmux+input_wire.format(line1[0],i,line1[i+1])+"\n"
+			if(x=="input"):
+				print(line1[i+1]+" "+x)
+				pinmux=pinmux+input_wire.format(line1[0],i,"wr"+line1[i+1])+"\n"
+			elif(x=="inout"):
+				print(line1[i+1]+" "+x)
+				pinmux=pinmux+input_wire.format(line1[0],i,"wr"+line1[i+1]+"_in")+"\n"
 		################################################################################
 ###########################################
 

@@ -36,6 +36,26 @@ spiinterface_def='''
 		endmethod
 		method Bit#(1) miso_{0}=wrspi{0}_miso;
 '''
+
+twiinterface_def='''
+
+		method Action sda{0}_out (Bit#(1) in);
+			wrtwi{0}_sda_out<=in;
+		endmethod
+		method Action sda{0}_outen (Bit#(1) in);
+			wrtwi{0}_sda_outen<=in;
+		endmethod
+		method sda{0}_in=wrtwi{0}_sda_in;
+
+		method Action scl{0}_out (Bit#(1) in);
+			wrtwi{0}_scl_out<=in;
+		endmethod
+		method Action scl{0}_outen (Bit#(1) in);
+			wrtwi{0}_scl_outen<=in;
+		endmethod
+		method scl{0}_in=wrtwi{0}_scl_in;
+		
+'''
 #==============================================#
 
 

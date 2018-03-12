@@ -35,5 +35,19 @@ spiwires='''
 																drivestrength:0, opendrain_en:0}};
 		
 '''
+twiwires='''
+		Wire#(Bit#(1)) wrtwi{0}_sda_out<-mkDWire(0);
+		Wire#(Bit#(1)) wrtwi{0}_sda_outen<-mkDWire(0);
+		Wire#(Bit#(1)) wrtwi{0}_sda_in<-mkDWire(0);
+		Wire#(Bit#(1)) wrtwi{0}_scl_out<-mkDWire(0);
+		Wire#(Bit#(1)) wrtwi{0}_scl_outen<-mkDWire(0);
+		Wire#(Bit#(1)) wrtwi{0}_scl_in<-mkDWire(0);
+		GenericIOType	twi{0}_sda_io = GenericIOType{{outputval:wrtwi{0}_sda_out, output_en:wrtwi{0}_sda_outen, input_en:~wrtwi{0}_sda_outen,
+																   pullup_en:0, pulldown_en:0, pushpull_en:0,
+																	drivestrength:0, opendrain_en:0}};
+		GenericIOType	twi{0}_scl_io = GenericIOType{{outputval:wrtwi{0}_scl_out, output_en:wrtwi{0}_scl_outen, input_en:~wrtwi{0}_scl_outen,
+															   pullup_en:0, pulldown_en:0, pushpull_en:0,
+																drivestrength:0, opendrain_en:0}};
+'''
 #===================================#
 

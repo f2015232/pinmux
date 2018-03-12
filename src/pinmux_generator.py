@@ -90,6 +90,11 @@ for i in range(0,N_SPI):
 	bsv_file.write('''
 		// interface declaration between SPI-{0} and pinmux'''.format(i))
 	bsv_file.write(spiinterface_decl.format(i));
+
+for i in range(0,N_TWI):
+	bsv_file.write('''
+		// interface declaration between TWI-{0} and pinmux'''.format(i))
+	bsv_file.write(twiinterface_decl.format(i));
 ################################################################
 
 ####=== finish interface definition and start module definition===####
@@ -121,6 +126,11 @@ for i in range(0,N_SPI):
 	bsv_file.write('''\n		// following wires capture the parameters to the IO CELL if spi-{0} is 
 		// allotted to it'''.format(i))
 	bsv_file.write(spiwires.format(i))
+
+for i in range(0,N_TWI):
+	bsv_file.write('''\n		// following wires capture the parameters to the IO CELL if twi-{0} is 
+		// allotted to it'''.format(i))
+	bsv_file.write(twiwires.format(i))
 bsv_file.write("\n")
 ######################################################################
 #########################== Actual pinmuxing ==#######################
@@ -141,5 +151,7 @@ for i in range(0,N_UART):
 	bsv_file.write(uartinterface_def.format(i))
 for i in range(0,N_SPI):
 	bsv_file.write(spiinterface_def.format(i))
+for i in range(0,N_TWI):
+	bsv_file.write(twiinterface_def.format(i))
 bsv_file.write(footer)
 ########################################################################
