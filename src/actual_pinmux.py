@@ -28,9 +28,15 @@ input_wire='''
 #########################################
 pinmux=''' '''
 pinmap_file=open("./pinmap.txt","r")
+dedicated=False
 for lineno,line in enumerate(pinmap_file):
 	line1=line.split()
-	if(lineno>0):
+	if("muxed" in line):
+		dedicated=False
+	elif("dedicated" in line):
+		dedicated=True
+	############################## Logic for muxed pins ##############################
+	if(len(line1)>1 and not(dedicated)):
 		if(lineno>N_IO):
 			print("ERROR: Parameter N_IO("+str(N_IO)+") is less than the pin number in line: "+str(lineno)+" of pinmap.txt")
 			exit(1)
@@ -61,11 +67,13 @@ for lineno,line in enumerate(pinmap_file):
 				print("Error: The signal : "+str(line1[i+1])+" in lineno: "+str(lineno)+"of pinmap.txt is not present in the current dictionary.\nSoln: Either update the dictionary or fix typo.")
 				exit(1)
 			if(x=="input"):
-				print(line1[i+1]+" "+x)
 				pinmux=pinmux+input_wire.format(line1[0],i,"wr"+line1[i+1])+"\n"
 			elif(x=="inout"):
-				print(line1[i+1]+" "+x)
 				pinmux=pinmux+input_wire.format(line1[0],i,"wr"+line1[i+1]+"_in")+"\n"
 		################################################################################
+
+	############################## Logic for dedicated pins ##############################
+	elif(len(line1)>1 and dedicated):
+		pinmux=pinmux+"		cell"+str(line1[0])+"_out="+line1[1]+"_io;\n"
 ###########################################
 
