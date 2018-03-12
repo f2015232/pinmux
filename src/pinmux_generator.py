@@ -100,6 +100,7 @@ for i in range(0,N_TWI):
 ####=== finish interface definition and start module definition===####
 bsv_file.write('''
 	endinterface
+	(*synthesize*)
 	module mkpinmux(Ifc_pinmux);
 ''')					
 ######################################################################
@@ -154,4 +155,5 @@ for i in range(0,N_SPI):
 for i in range(0,N_TWI):
 	bsv_file.write(twiinterface_def.format(i))
 bsv_file.write(footer)
+print("BSV file successfully generated: bsv_src/pinmux.bsv")
 ########################################################################
