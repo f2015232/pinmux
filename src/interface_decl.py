@@ -39,4 +39,21 @@ twiinterface_decl = '''
       (*always_ready,always_enabled*) method Action scl{0}_outen (Bit#(1) in);
       (*always_ready,always_enabled*) method Bit#(1) scl{0}_in;
 '''
+
+sdinterface_decl = '''
+      (*always_ready,always_enabled*) method Action sd{0}_clk (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_cmd (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_d0_out (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_d0_outen (Bit#(1) in);
+      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d0_in;
+      (*always_ready,always_enabled*) method Action sd{0}_d1_out (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_d1_outen (Bit#(1) in);
+      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d1_in;
+      (*always_ready,always_enabled*) method Action sd{0}_d2_out (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_d2_outen (Bit#(1) in);
+      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d2_in;
+      (*always_ready,always_enabled*) method Action sd{0}_d3_out (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_d3_outen (Bit#(1) in);
+      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d3_in;
+'''
 # ======================================= #

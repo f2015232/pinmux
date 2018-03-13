@@ -5,6 +5,7 @@ N_MUX_IO = 0
 N_UART = 4
 N_SPI = 1
 N_TWI = 2
+N_SD = 2
 # ================ #
 
 
@@ -28,6 +29,7 @@ for lineno, line in enumerate(pinmapfile):
             dedicated_cells.append(line1)
         if(len(line1) > 2):
             muxed_cells.append(line1)
+pinnumbers = sorted(pinnumbers)
 # ============================================= #
 # ======= Multiple checks to see if the user has not screwed ======#
 missing_pins = missing_numbers(pinnumbers)

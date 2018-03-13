@@ -55,4 +55,41 @@ twiinterface_def = '''
       method scl{0}_in=wrtwi{0}_scl_in;
 
 '''
+
+sdinterface_def = '''
+      method Action sd{0}_clk (Bit#(1) in);
+        wrsd{0}_clk<=in;
+      endmethod
+      method Action sd{0}_cmd (Bit#(1) in);
+        wrsd{0}_cmd<=in;
+      endmethod
+      method Action sd{0}_d0_out (Bit#(1) in);
+        wrsd{0}_d0_out<=in;
+      endmethod
+      method Action sd{0}_d0_outen (Bit#(1) in);
+        wrsd{0}_d0_outen<=in;
+      endmethod
+      method sd{0}_d0_in=wrsd{0}_d0_in;
+      method Action sd{0}_d1_out (Bit#(1) in);
+        wrsd{0}_d1_out<=in;
+      endmethod
+      method Action sd{0}_d1_outen (Bit#(1) in);
+        wrsd{0}_d1_outen<=in;
+      endmethod
+      method sd{0}_d1_in=wrsd{0}_d1_in;
+      method Action sd{0}_d2_out (Bit#(1) in);
+        wrsd{0}_d2_out<=in;
+      endmethod
+      method Action sd{0}_d2_outen (Bit#(1) in);
+        wrsd{0}_d2_outen<=in;
+      endmethod
+      method sd{0}_d2_in=wrsd{0}_d2_in;
+      method Action sd{0}_d3_out (Bit#(1) in);
+        wrsd{0}_d3_out<=in;
+      endmethod
+      method Action sd{0}_d3_outen (Bit#(1) in);
+        wrsd{0}_d3_outen<=in;
+      endmethod
+      method sd{0}_d3_in=wrsd{0}_d3_in;
+'''
 # ============================================== #

@@ -50,4 +50,45 @@ twiwires = '''
                 pullup_en:0, pulldown_en:0, pushpull_en:0, drivestrength:0,
                 opendrain_en:0}};
 '''
+
+sdwires = '''
+      Wire#(Bit#(1)) wrsd{0}_clk <-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_cmd <-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d0_out<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d0_outen<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d0_in<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d1_out<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d1_outen<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d1_in<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d2_out<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d2_outen<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d2_in<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d3_out<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d3_outen<-mkDWire(0);
+      Wire#(Bit#(1)) wrsd{0}_d3_in<-mkDWire(0);
+      GenericIOType  sd{0}_clk_io = GenericIOType{{outputval:wrsd{0}_clk,
+                output_en:1, input_en:0,
+                pullup_en:0, pulldown_en:0, pushpull_en:0, drivestrength:0,
+                opendrain_en:0}};
+      GenericIOType  sd{0}_cmd_io = GenericIOType{{outputval:wrsd{0}_cmd,
+                output_en:1, input_en:0,
+                pullup_en:0, pulldown_en:0, pushpull_en:0, drivestrength:0,
+                opendrain_en:0}};
+      GenericIOType  sd{0}_d0_io = GenericIOType{{outputval:wrsd{0}_d0_out,
+                output_en:wrsd{0}_d0_outen, input_en:~wrsd{0}_d0_outen,
+                pullup_en:0, pulldown_en:0, pushpull_en:0, drivestrength:0,
+                opendrain_en:0}};
+      GenericIOType  sd{0}_d1_io = GenericIOType{{outputval:wrsd{0}_d1_out,
+                output_en:wrsd{0}_d1_outen, input_en:~wrsd{0}_d1_outen,
+                pullup_en:0, pulldown_en:0, pushpull_en:0, drivestrength:0,
+                opendrain_en:0}};
+      GenericIOType  sd{0}_d2_io = GenericIOType{{outputval:wrsd{0}_d2_out,
+                output_en:wrsd{0}_d2_outen, input_en:~wrsd{0}_d2_outen,
+                pullup_en:0, pulldown_en:0, pushpull_en:0, drivestrength:0,
+                opendrain_en:0}};
+      GenericIOType  sd{0}_d3_io = GenericIOType{{outputval:wrsd{0}_d3_out,
+                output_en:wrsd{0}_d3_outen, input_en:~wrsd{0}_d3_outen,
+                pullup_en:0, pulldown_en:0, pushpull_en:0, drivestrength:0,
+                opendrain_en:0}};
+'''
 # =================================== #

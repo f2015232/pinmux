@@ -11,7 +11,10 @@ dictionary = {
     "spi_ss"	: "output",
     "spi_miso"	: "input",
     "twi_sda"	: "inout",
-    "twi_scl"	: "inout"
+    "twi_scl"	: "inout",
+    "sd_clk": "output",
+    "sd_cmd": "output",
+    "sd_d": "inout",
 }
 
 
@@ -57,11 +60,10 @@ for cell in muxed_cells:
         x = dictionary.get(temp)
         if(x is None):
             print(
-              "Error: The signal : " +
+              "ERROR: The signal : " +
               str(cell[i + 1]) +
-              " in lineno: " +
-              str(lineno) + "of pinmap.txt isn't present in the \
-              current dictionary.\nUpdate dictionary or fix-typo.")
+              " of pinmap.txt isn't present in the current dictionary.\
+              \nUpdate dictionary or fix-typo.")
             exit(1)
         if(x == "input"):
             pinmux = pinmux + \
