@@ -1,1 +1,9 @@
 *.pyc
+
+bsv_build/
+
+bsv_src/
+
+verilog/
+
+bsv_compile\.log
