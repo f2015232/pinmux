@@ -2,7 +2,7 @@ from params import *
 
 # ========= Interface declarations ================ #
 mux_interface = '''
-      method Action cell{0}_mux(Bit#(''' + str(N_MUX) + ''') in);'''
+      method Action cell{0}_mux(Bit#({1}) in);'''
 
 io_interface = '''
       (*always_ready*)   method   Bit#(1) io_outputval_{0};

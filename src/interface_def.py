@@ -1,7 +1,7 @@
 from params import *
 # === templates for interface definitions ====== #
 mux_interface_def = '''
-      method Action cell{0}_mux (Bit#(''' + str(N_MUX) + ''') in );
+      method Action cell{0}_mux (Bit#({1}) in );
          wrmux{0}<=in;
       endmethod
 '''

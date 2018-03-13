@@ -1,7 +1,7 @@
 from params import *
 # == Intermediate wire definitions ==#
 muxwire = '''
-      Wire#(Bit#(''' + str(N_MUX) + '''))   wrmux{0} <-mkDWire(0);'''
+      Wire#(Bit#({1}))   wrmux{0} <-mkDWire(0);'''
 generic_io = '''
       GenericIOType cell{0}_out=unpack(0);
       Wire#(Bit#(1)) cell{0}_in <-mkDWire(0);
