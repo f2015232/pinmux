@@ -6,21 +6,31 @@ N_UART = 4
 N_SPI = 1
 N_TWI = 2
 # ================ #
+
+
+def missing_numbers(num_list):
+    original_list = [x for x in range(num_list[0], num_list[-1] + 1)]
+    num_list = set(num_list)
+    return (list(num_list ^ set(original_list)))
+
+
 # == capture the number of IO cells required == #
 pinmapfile = open('pinmap.txt', 'r')
 max_io = 0
 muxed_cells = []
 dedicated_cells = []
+pinnumbers = []
 for lineno, line in enumerate(pinmapfile):
     line1 = line.split()
     if(len(line1) > 1):
+        pinnumbers.append(int(line1[0]))
         if(len(line1) == 2):  # dedicated
             dedicated_cells.append(line1)
         if(len(line1) > 2):
             muxed_cells.append(line1)
 # ============================================= #
-
 # ======= Multiple checks to see if the user has not screwed ======#
+missing_pins = missing_numbers(pinnumbers)
 
 # Check-1: ensure that no pin is present in both muxed and dedicated pins
 for muxcell in muxed_cells:
@@ -29,6 +39,22 @@ for muxcell in muxed_cells:
             print("ERROR: " + str(dedcel[1]) + " present \
                                   in dedicated & muxed lists")
             exit(1)
+
+# Check-2: if pin numbering is consistent:
+if missing_pins:
+    print("ERROR: Following pins have no assignment: " +
+          str(missing_numbers(pinnumbers)))
+    exit(1)
+unique = set(pinnumbers)
+duplicate = False
+for each in unique:
+    count = pinnumbers.count(each)
+    if(count > 1):
+        print("ERROR: Multiple assignment for pin: " + str(each))
+        duplicate = True
+if(duplicate):
+    exit(1)
+
 # Check-2: confirm if N_* matches the instances in the pinmap
 # ============================================================== #
 
