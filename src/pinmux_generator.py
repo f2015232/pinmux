@@ -19,6 +19,7 @@
 import os
 import sys
 import time
+import math
 
 # project module imports
 from interface_decl import *
@@ -75,7 +76,8 @@ bsv_file.write('''
       // where each IO will have the same number of muxes.''')
 
 for cell in muxed_cells:
-    bsv_file.write(mux_interface.format(cell[0], len(cell) - 1))
+    bsv_file.write(mux_interface.format(cell[0],
+                                        int(math.log(len(cell) - 1, 2))))
 
 bsv_file.write('''
 
@@ -118,7 +120,7 @@ bsv_file.write('''
       // values for each mux assigned to a CELL
 ''')
 for cell in muxed_cells:
-    bsv_file.write(muxwire.format(cell[0], len(cell) - 1))
+    bsv_file.write(muxwire.format(cell[0], int(math.log(len(cell) - 1, 2))))
 
 
 bsv_file.write(
@@ -156,7 +158,8 @@ bsv_file.write('''
 # ====================================================================
 # ================= interface definitions for each method =============#
 for cell in muxed_cells:
-    bsv_file.write(mux_interface_def.format(cell[0], len(cell) - 1))
+    bsv_file.write(mux_interface_def.format(cell[0],
+                                            int(math.log(len(cell) - 1, 2))))
 for i in range(0, N_IO):
     bsv_file.write(io_interface_def.format(i))
 for i in range(0, N_UART):
