@@ -1,6 +1,6 @@
 muxed
-0		uart0_tx	spi0_sclk
-1		uart0_rx	spi0_mosi
+0		uart0_tx	spi0_sclk		uart2_tx	uart3_tx
+1		uart0_rx	spi0_mosi		uart2_rx	uart3_rx
 2		twi0_sda	spi0_ss
 3		twi0_scl	spi0_miso
 dedicated

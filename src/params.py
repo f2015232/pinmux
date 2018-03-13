@@ -2,7 +2,7 @@
 N_MUX = 1		# number of selection lines for the mux per io
 N_IO = 0
 N_MUX_IO = 0
-N_UART = 2
+N_UART = 4
 N_SPI = 1
 N_TWI = 2
 # ================ #
@@ -18,7 +18,13 @@ for lineno, line in enumerate(pinmapfile):
             dedicated_cells.append(line1)
         if(len(line1) > 2):
             muxed_cells.append(line1)
+# ============================================= #
 
+# check if the user has not screwed up by ensuring that no pin is
+# present in both muxed and dedicated pins
+# TODO
+
+# =========================================== #
 N_IO = len(dedicated_cells) + len(muxed_cells)
 print("Max number of IO: " + str(N_IO))
 print("Muxed IOs: " + str(len(muxed_cells)))
