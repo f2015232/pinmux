@@ -1,4 +1,3 @@
-from params import *
 # === templates for interface definitions ====== #
 mux_interface_def = '''
       method Action cell{0}_mux (Bit#({1}) in );

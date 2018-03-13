@@ -1,4 +1,3 @@
-from params import *
 # == Intermediate wire definitions ==#
 muxwire = '''
       Wire#(Bit#({1}))   wrmux{0} <-mkDWire(0);'''

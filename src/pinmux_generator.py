@@ -24,7 +24,7 @@ import math
 # project module imports
 from interface_decl import *
 from interface_def import *
-from params import *
+from parse import *
 from wire_def import *
 from actual_pinmux import *
 

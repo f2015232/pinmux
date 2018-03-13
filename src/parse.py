@@ -20,11 +20,19 @@ for lineno, line in enumerate(pinmapfile):
             muxed_cells.append(line1)
 # ============================================= #
 
-# check if the user has not screwed up by ensuring that no pin is
-# present in both muxed and dedicated pins
-# TODO
+# ======= Multiple checks to see if the user has not screwed ======#
 
-# =========================================== #
+# Check-1: ensure that no pin is present in both muxed and dedicated pins
+for muxcell in muxed_cells:
+    for dedcel in dedicated_cells:
+        if(dedcel[1] in muxcell):
+            print("ERROR: " + str(dedcel[1]) + " present \
+                                  in dedicated & muxed lists")
+            exit(1)
+# Check-2: confirm if N_* matches the instances in the pinmap
+# ============================================================== #
+
+# == user info after parsin ================= #
 N_IO = len(dedicated_cells) + len(muxed_cells)
 print("Max number of IO: " + str(N_IO))
 print("Muxed IOs: " + str(len(muxed_cells)))
