@@ -16,13 +16,17 @@ dictionary = {
 
 
 # ============== common bsv templates ============ #
-assign_cell = '''cell{0}_out=wrmux{0}=={1}?'''
 # first argument is the io-cell number being assigned.
 # second argument is the mux value.
 # Third argument is the signal from the pinmap file
-input_wire = '''
+mux_wire = '''
       rule assign_{2}_on_cell{0}(wrmux{0}=={1});
         {2}<=cell{0}_in;
+      endrule
+'''
+dedicated_wire = '''
+      rule assign_{1}_on_cell{0};
+        {1}<=cell{0}_in;
       endrule
 '''
 # ============================================================
@@ -35,6 +39,7 @@ for lineno, line in enumerate(pinmap_file):
         dedicated = False
     elif("dedicated" in line):
         dedicated = True
+    digits = str.maketrans(dict.fromkeys('0123456789'))
     # ==== Logic for muxed pins ==== #
     if(len(line1) > 1 and not(dedicated)):
         if(lineno > N_IO):
@@ -47,7 +52,7 @@ for lineno, line in enumerate(pinmap_file):
             exit(1)
         # ==== Mux each generic IO cell with the mapping ===== #
         # provided in the pinmap file
-        pinmux = pinmux + "		cell" + str(line1[0]) + "_out="
+        pinmux = pinmux + "      cell" + str(line1[0]) + "_out="
         i = 0
         while(i < len(line1) - 1):
             pinmux = pinmux + "wrmux" + \
@@ -66,7 +71,6 @@ for lineno, line in enumerate(pinmap_file):
         # since the interfaces are always standard and cannot change from
         # user-to-user. Plus this also reduces human-error as well :)
         for i in range(0, len(line1) - 1):
-            digits = str.maketrans(dict.fromkeys('0123456789'))
             temp = line1[i + 1].translate(digits)
             x = dictionary.get(temp)
             if(x is None):
@@ -79,16 +83,24 @@ for lineno, line in enumerate(pinmap_file):
                 exit(1)
             if(x == "input"):
                 pinmux = pinmux + \
-                    input_wire.format(line1[0], i, "wr" + line1[i + 1]) + "\n"
+                    mux_wire.format(line1[0], i, "wr" + line1[i + 1]) + "\n"
             elif(x == "inout"):
                 pinmux = pinmux + \
-                    input_wire.format(line1[0], i, "wr" + line1[i + 1] +
-                                      "_in") + "\n"
+                    mux_wire.format(line1[0], i, "wr" + line1[i + 1] +
+                                    "_in") + "\n"
         # ============================================================ #
 
     # ==================  Logic for dedicated pins ========= #
     elif(len(line1) > 1 and dedicated):
-        pinmux = pinmux + "		cell" + \
+        pinmux = pinmux + "      cell" + \
             str(line1[0]) + "_out=" + line1[1] + "_io;\n"
+        temp = line1[1].translate(digits)
+        x = dictionary.get(temp)
+        if(x == "input"):
+            pinmux = pinmux + \
+                dedicated_wire.format(line1[0], "wr" + line1[1]) + "\n"
+        elif(x == "inout"):
+            pinmux = pinmux + \
+                dedicated_wire.format(line1[0], "wr" + line1[1] + "_in") + "\n"
     # ======================================================= #
 # =========================================================
