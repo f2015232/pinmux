@@ -56,4 +56,12 @@ sdinterface_decl = '''
       (*always_ready,always_enabled*) method Action sd{0}_d3_outen (Bit#(1) in);
       (*always_ready,always_enabled*) method Bit#(1) sd{0}_d3_in;
 '''
+
+jtaginterface_decl = '''
+      (*always_ready,always_enabled*) method Bit#(1) jtag{0}_tdi;
+      (*always_ready,always_enabled*) method Bit#(1) jtag{0}_tms;
+      (*always_ready,always_enabled*) method Bit#(1) jtag{0}_tclk;
+      (*always_ready,always_enabled*) method Bit#(1) jtag{0}_trst;
+      (*always_ready,always_enabled*) method Action jtag{0}_tdo(Bit#(1) in);
+'''
 # ======================================= #

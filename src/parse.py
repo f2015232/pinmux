@@ -6,6 +6,7 @@ N_UART = 4
 N_SPI = 1
 N_TWI = 2
 N_SD = 2
+N_JTAG = 2
 # ================ #
 
 

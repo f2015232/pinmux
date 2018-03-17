@@ -109,6 +109,11 @@ for i in range(0, N_SD):
     bsv_file.write('''
       // interface declaration between SD-{0} and pinmux'''.format(i))
     bsv_file.write(sdinterface_decl.format(i))
+
+for i in range(0, N_JTAG):
+    bsv_file.write('''
+      // interface declaration between JTAG-{0} and pinmux'''.format(i))
+    bsv_file.write(jtaginterface_decl.format(i))
 # ==============================================================
 
 # ===== finish interface definition and start module definition=======
@@ -156,6 +161,12 @@ for i in range(0, N_SD):
         '''\n      // following wires capture signals to IO CELL if sd-{0} is
       // allotted to it'''.format(i))
     bsv_file.write(sdwires.format(i))
+
+for i in range(0, N_JTAG):
+    bsv_file.write(
+        '''\n      // following wires capture signals to IO CELL if jtag-{0} is
+      // allotted to it'''.format(i))
+    bsv_file.write(jtagwires.format(i))
 bsv_file.write("\n")
 # ====================================================================
 # ========================= Actual pinmuxing ========================#
@@ -181,6 +192,8 @@ for i in range(0, N_TWI):
     bsv_file.write(twiinterface_def.format(i))
 for i in range(0, N_SD):
     bsv_file.write(sdinterface_def.format(i))
+for i in range(0, N_JTAG):
+    bsv_file.write(jtaginterface_def.format(i))
 bsv_file.write(footer)
 print("BSV file successfully generated: bsv_src/pinmux.bsv")
 # ======================================================================

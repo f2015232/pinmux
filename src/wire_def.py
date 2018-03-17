@@ -91,4 +91,27 @@ sdwires = '''
                 pullup_en:0, pulldown_en:0, pushpull_en:0, drivestrength:0,
                 opendrain_en:0}};
 '''
+
+jtagwires = '''
+      Wire#(Bit#(1)) wrjtag{0}_tdi<-mkDWire(0);
+      Wire#(Bit#(1)) wrjtag{0}_tms<-mkDWire(0);
+      Wire#(Bit#(1)) wrjtag{0}_tclk<-mkDWire(0);
+      Wire#(Bit#(1)) wrjtag{0}_trst<-mkDWire(0);
+      Wire#(Bit#(1)) wrjtag{0}_tdo<-mkDWire(0);
+      GenericIOType jtag{0}_tdi_io=GenericIOType{{outputval:0, output_en:0,
+                input_en:1, pullup_en:0, pulldown_en:0, pushpull_en:0,
+                drivestrength:0, opendrain_en:0}};
+      GenericIOType jtag{0}_tdo_io=GenericIOType{{outputval:wrjtag{0}_tdo,
+                output_en:0, input_en:1, pullup_en:0, pulldown_en:0,
+                pushpull_en:0, drivestrength:0, opendrain_en:0}};
+      GenericIOType jtag{0}_tms_io=GenericIOType{{outputval:0, output_en:0,
+                input_en:1, pullup_en:0, pulldown_en:0, pushpull_en:0,
+                drivestrength:0, opendrain_en:0}};
+      GenericIOType jtag{0}_trst_io=GenericIOType{{outputval:0, output_en:0,
+                input_en:1, pullup_en:0, pulldown_en:0, pushpull_en:0,
+                drivestrength:0, opendrain_en:0}};
+      GenericIOType jtag{0}_tclk_io=GenericIOType{{outputval:0, output_en:0,
+                input_en:1, pullup_en:0, pulldown_en:0, pushpull_en:0,
+                drivestrength:0, opendrain_en:0}};
+'''
 # =================================== #

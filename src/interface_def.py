@@ -92,4 +92,14 @@ sdinterface_def = '''
       endmethod
       method sd{0}_d3_in=wrsd{0}_d3_in;
 '''
+
+jtaginterface_def = '''
+      method Bit#(1) jtag{0}_tdi=wrjtag{0}_tdi;
+      method Bit#(1) jtag{0}_tms=wrjtag{0}_tms;
+      method Bit#(1) jtag{0}_tclk=wrjtag{0}_tclk;
+      method Bit#(1) jtag{0}_trst=wrjtag{0}_trst;
+      method Action jtag{0}_tdo(Bit#(1) in);
+        wrjtag{0}_tdo<=in;
+      endmethod
+'''
 # ============================================== #
