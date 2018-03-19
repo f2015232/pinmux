@@ -102,4 +102,10 @@ jtaginterface_def = '''
         wrjtag{0}_tdo<=in;
       endmethod
 '''
+
+pwminterface_def = '''
+      method Action pwm{0}(Bit#(1) in);
+        wrpwm{0}<=in;
+      endmethod
+'''
 # ============================================== #

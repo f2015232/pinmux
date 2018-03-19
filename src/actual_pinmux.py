@@ -15,6 +15,7 @@ dictionary = {
     "sd_clk": "output",
     "sd_cmd": "output",
     "sd_d": "inout",
+    "pwm": "output"
 }
 
 

@@ -8,6 +8,7 @@ N_SPI = 1
 N_TWI = 2
 N_SD = 2
 N_JTAG = 2
+N_PWM = 1
 Addressing = 'WORD'
 ADDR_WIDTH = 32
 DATA_WIDTH = 32

@@ -102,7 +102,7 @@ jtagwires = '''
                 input_en:1, pullup_en:0, pulldown_en:0, pushpull_en:0,
                 drivestrength:0, opendrain_en:0}};
       GenericIOType jtag{0}_tdo_io=GenericIOType{{outputval:wrjtag{0}_tdo,
-                output_en:0, input_en:1, pullup_en:0, pulldown_en:0,
+                output_en:1, input_en:0, pullup_en:0, pulldown_en:0,
                 pushpull_en:0, drivestrength:0, opendrain_en:0}};
       GenericIOType jtag{0}_tms_io=GenericIOType{{outputval:0, output_en:0,
                 input_en:1, pullup_en:0, pulldown_en:0, pushpull_en:0,
@@ -113,5 +113,12 @@ jtagwires = '''
       GenericIOType jtag{0}_tclk_io=GenericIOType{{outputval:0, output_en:0,
                 input_en:1, pullup_en:0, pulldown_en:0, pushpull_en:0,
                 drivestrength:0, opendrain_en:0}};
+'''
+
+pwmwires = '''
+      Wire#(Bit#(1)) wrpwm{0} <-mkDWire(0);
+      GenericIOType pwm{0}_io=GenericIOType{{outputval:wrpwm{0},
+                output_en:1, input_en:0, pullup_en:0, pulldown_en:0,
+                pushpull_en:0, drivestrength:0, opendrain_en:0}};
 '''
 # =================================== #

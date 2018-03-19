@@ -64,4 +64,8 @@ jtaginterface_decl = '''
       (*always_ready,always_enabled*) method Bit#(1) jtag{0}_trst;
       (*always_ready,always_enabled*) method Action jtag{0}_tdo(Bit#(1) in);
 '''
+
+pwminterface_decl = '''
+      (*always_ready,always_enabled*) method Action pwm{0}(Bit#(1) in);
+'''
 # ======================================= #

@@ -8,7 +8,7 @@ muxed
 10  sd0_d0    sd1_d0
 11  sd0_d1    sd1_d1
 12  sd0_d2    sd1_d2
-13  sd0_d3    sd1_d3
+13  sd0_d3    sd1_d3    pwm0
 dedicated
 4		uart1_tx
 5		uart1_rx
