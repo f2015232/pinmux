@@ -55,9 +55,10 @@ package pinmux;
       Bit#(1) opendrain_en;   // opendrain enable form core to io_cell  bit0
    } GenericIOType deriving(Eq,Bits,FShow);
 
-   interface Ifc_pinmux;
+   interface MuxSelectionLines;
 '''
 footer = '''
+     endinterface;
    endmodule
 endpackage
 '''
@@ -80,7 +81,9 @@ for cell in muxed_cells:
                                         int(math.log(len(cell) - 1, 2))))
 
 bsv_file.write('''
+      endinterface
 
+      interface PeripheralSide;
       // declare the interface to the IO cells.
       // Each IO cell will have 8 input field (output from pin mux
       // and on output field (input to pinmux)''')
@@ -118,6 +121,11 @@ for i in range(0, N_JTAG):
 
 # ===== finish interface definition and start module definition=======
 bsv_file.write('''
+   endinterface
+
+   interface Ifc_pinmux;
+      interface MuxSelectionLines mux_lines;
+      interface PeripheralSide peripheral_side;
    endinterface
    (*synthesize*)
    module mkpinmux(Ifc_pinmux);
@@ -179,9 +187,16 @@ bsv_file.write('''
 ''')
 # ====================================================================
 # ================= interface definitions for each method =============#
+bsv_file.write('''
+    interface mux_lines = interface MuxSelectionLines
+''')
 for cell in muxed_cells:
     bsv_file.write(mux_interface_def.format(cell[0],
                                             int(math.log(len(cell) - 1, 2))))
+bsv_file.write('''
+    endinterface;
+    interface peripheral_side = interface PeripheralSide
+''')
 for i in range(0, N_IO):
     bsv_file.write(io_interface_def.format(i))
 for i in range(0, N_UART):
@@ -198,3 +213,19 @@ bsv_file.write(footer)
 print("BSV file successfully generated: bsv_src/pinmux.bsv")
 # ======================================================================
 bsv_file.close()
+
+bsv_file = open('bsv_src/PinTop.bsv','w')
+bsv_file.write('''
+package PinTop;
+    import pinmux::*;
+    interface Ifc_PintTop;
+        interface PeripheralSide peripheral_side;
+    endinterface
+
+    module mkPinTop(Ifc_PintTop);
+        Ifc_pinmux pinmux <-mkpinmux;
+        interface peripheral_side=pinmux.peripheral_side;
+    endmodule
+endpackage
+''')
+bsv_file.close
