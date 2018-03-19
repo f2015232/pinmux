@@ -1,3 +1,4 @@
+import math
 # == Parameters == #
 N_MUX = 1		# number of selection lines for the mux per io
 N_IO = 0
@@ -7,7 +8,24 @@ N_SPI = 1
 N_TWI = 2
 N_SD = 2
 N_JTAG = 2
+Addressing = 'WORD'
+ADDR_WIDTH = 32
+DATA_WIDTH = 32
 # ================ #
+
+# Generating the number of bits for memory map #
+lower_offset = 0
+if(Addressing == 'BYTE'):
+    lower_offset = 0
+elif(Addressing == 'HWORD'):
+    lower_offset = 1
+elif(Addressing == 'WORD'):
+    lower_offset = 2
+elif(Addressing == 'DWORD'):
+    lower_offset = 3
+else:
+    print('ERROR: Addressing should be one of: BYTE, HWORD, WORD, DWORD')
+    exit(1)
 
 
 def missing_numbers(num_list):
@@ -31,6 +49,8 @@ for lineno, line in enumerate(pinmapfile):
         if(len(line1) > 2):
             muxed_cells.append(line1)
 pinnumbers = sorted(pinnumbers)
+
+upper_offset = lower_offset + int(math.log(len(muxed_cells), 2))
 # ============================================= #
 # ======= Multiple checks to see if the user has not screwed ======#
 missing_pins = missing_numbers(pinnumbers)
