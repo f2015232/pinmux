@@ -153,6 +153,11 @@ if __name__ == '__main__':
     def pinmunge(p):
         """ munges the text so it's easier to compare.
         """
+        # first join lines by semicolons, strip out returns
+        p = p.split(";")
+        p = map(lambda x: x.replace('\n', ''), p)
+        p = '\n'.join(p)
+        # now split first by brackets, then spaces (deduping on spaces)
         p = _pinmunge(p, "(", " ( ", False)
         p = _pinmunge(p, ")", " ) ", False)
         p = _pinmunge(p, " ", " ")
@@ -206,3 +211,16 @@ if __name__ == '__main__':
     print
     assert pinmunge(str(uart)) == pinmunge(uartinterface_decl)
 
+    io = Interface([{'name': 'io_outputval_{0}', 'enabled': False},
+                      {'name': 'io_output_en_{0}', 'enabled': False},
+                      {'name': 'io_input_en_{0}', 'enabled': False},
+                      {'name': 'io_pullup_en_{0}', 'enabled': False},
+                      {'name': 'io_pulldown_en_{0}', 'enabled': False},
+                      {'name': 'io_drivestrength_{0}', 'enabled': False},
+                      {'name': 'io_pushpull_en_{0}', 'enabled': False},
+                      {'name': 'io_opendrain_en_{0}', 'enabled': False},
+                      {'name': 'io_inputval_{0}', 'action': True, 'io': True},
+                    ])
+    print io
+    print
+    assert pinmunge(str(io)) == pinmunge(io_interface)
