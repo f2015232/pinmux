@@ -70,6 +70,7 @@ pwminterface_decl = '''
 '''
 # ======================================= #
 
+
 class Pin(object):
     """ pin interface declaration.
         * name is the name of the pin
