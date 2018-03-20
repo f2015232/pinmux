@@ -1,11 +1,11 @@
 ### Makefile for the cclass project
 
-TOP_MODULE:=mkPinTop
-TOP_FILE:=PinTop.bsv
+TOP_MODULE:=mkbus
+TOP_FILE:=bus.bsv
 TOP_DIR:=./bsv_src/
 WORKING_DIR := $(shell pwd)
 
-BSVINCDIR:= .:%/Prelude:%/Libraries:%/Libraries/BlueNoC:./bsv_src
+BSVINCDIR:= .:%/Prelude:%/Libraries:%/Libraries/BlueNoC:./bsv_src:./src/bsv_lib/
 default: gen_pinmux gen_verilog
 
 check-blue:

@@ -27,6 +27,7 @@ from interface_def import *
 from parse import *
 from wire_def import *
 from actual_pinmux import *
+from bus_transactors import *
 
 if not os.path.exists("bsv_src"):
     os.makedirs("bsv_src")
@@ -301,3 +302,8 @@ bsv_file.write('''
 endpackage
 ''')
 bsv_file.close
+# ######## Generate bus transactors ################
+bsv_file = open('bsv_src/bus.bsv', 'w')
+bsv_file.write(axi4_lite.format(ADDR_WIDTH, DATA_WIDTH))
+bsv_file.close
+# ##################################################
