@@ -1,5 +1,9 @@
 from parse import *
 from string import digits
+try:
+    from string import maketrans
+except ImportError:
+    maketrans = str.maketrans
 
 
 # dictionary of properties of signals that are supported.
@@ -35,7 +39,7 @@ dedicated_wire = '''
 '''
 # ============================================================
 pinmux = ''' '''
-digits = str.maketrans(dict.fromkeys('0123456789'))
+digits = maketrans('0123456789', ' '*10) # delete space later
 
 for cell in muxed_cells:
     pinmux = pinmux + "      cell" + str(cell[0]) + "_out="
@@ -58,6 +62,7 @@ for cell in muxed_cells:
     # user-to-user. Plus this also reduces human-error as well :)
     for i in range(0, len(cell) - 1):
         temp = cell[i + 1].translate(digits)
+        temp = temp.replace(' ', '')
         x = dictionary.get(temp)
         if(x is None):
             print(

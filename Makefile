@@ -42,3 +42,5 @@ gen_verilog: check-restore check-blue
 clean:
 	rm -rf $(BSVBUILDDIR) *.log $(BSVOUTDIR) ./bbl* verilog obj_dir bsv_src src/*.pyc
 
+pep8:
+	autopep8 -r -i src

@@ -14,7 +14,7 @@ Currently the code supports the following peripherals:
 
 
 ## REQUIREMENTS:
-	1. Python3 and above to generate BSV code.
+	1. Python2 to generate BSV code.
 	2. BSV compiler to generate verilog code from BSV code.
 
 ## Quick Start
