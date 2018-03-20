@@ -64,6 +64,8 @@ class Interface(object):
     def __str__(self):
         return '\n'.join(map(str, self.pins))
 
+    def format(self, i):
+        return str(self).format(i)
 
 # basic test
 if __name__ == '__main__':
