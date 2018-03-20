@@ -190,3 +190,12 @@ if __name__ == '__main__':
     print
     assert pinmunge(str(twi)) == pinmunge(twiinterface_decl)
 
+    spi = Interface([{'name': 'sclk_{0}', 'action': True},
+                      {'name': 'mosi_{0}', 'action': True},
+                      {'name': 'ss_{0}', 'action': True},
+                      {'name': 'miso_{0}'},
+                    ])
+    print spi
+    print
+    assert pinmunge(str(spi)) == pinmunge(spiinterface_decl)
+
