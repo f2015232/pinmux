@@ -199,3 +199,10 @@ if __name__ == '__main__':
     print
     assert pinmunge(str(spi)) == pinmunge(spiinterface_decl)
 
+    uart = Interface([{'name': 'tx_{0}', 'action': True},
+                      {'name': 'rx_{0}'},
+                    ])
+    print uart
+    print
+    assert pinmunge(str(uart)) == pinmunge(uartinterface_decl)
+
