@@ -90,39 +90,39 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
       // and on output field (input to pinmux)''')
     for i in range(0, N_IO):
         bsv_file.write('''\n      // interface for IO CEll-{0}''')
-        bsv_file.write(io_interface.format(i))
+        bsv_file.write(io_interface.ifacefmt(i))
     # ==============================================================
 
     # == create method definitions for all peripheral interfaces ==#
     for i in range(0, N_UART):
         bsv_file.write('''
           // interface declaration between UART-{0} and pinmux'''.format(i))
-        bsv_file.write(uartinterface_decl.format(i))
+        bsv_file.write(uartinterface_decl.ifacefmt(i))
 
     for i in range(0, N_SPI):
         bsv_file.write('''
           // interface declaration between SPI-{0} and pinmux'''.format(i))
-        bsv_file.write(spiinterface_decl.format(i))
+        bsv_file.write(spiinterface_decl.ifacefmt(i))
 
     for i in range(0, N_TWI):
         bsv_file.write('''
           // interface declaration between TWI-{0} and pinmux'''.format(i))
-        bsv_file.write(twiinterface_decl.format(i))
+        bsv_file.write(twiinterface_decl.ifacefmt(i))
 
     for i in range(0, N_SD):
         bsv_file.write('''
           // interface declaration between SD-{0} and pinmux'''.format(i))
-        bsv_file.write(sdinterface_decl.format(i))
+        bsv_file.write(sdinterface_decl.ifacefmt(i))
 
     for i in range(0, N_JTAG):
         bsv_file.write('''
           // interface declaration between JTAG-{0} and pinmux'''.format(i))
-        bsv_file.write(jtaginterface_decl.format(i))
+        bsv_file.write(jtaginterface_decl.ifacefmt(i))
 
     for i in range(0, N_PWM):
         bsv_file.write('''
           // interface declaration between PWM-{0} and pinmux'''.format(i))
-        bsv_file.write(pwminterface_decl.format(i))
+        bsv_file.write(pwminterface_decl.ifacefmt(i))
     # ==============================================================
 
     # ===== finish interface definition and start module definition=======

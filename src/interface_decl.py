@@ -66,7 +66,7 @@ class Interface(object):
     def __str__(self):
         return '\n'+'\n'.join(map(str, self.pins))
 
-    def format(self, i):
+    def ifacefmt(self, i):
         return str(self).format(i)
 
 # basic test
