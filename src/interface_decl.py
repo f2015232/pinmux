@@ -182,3 +182,11 @@ if __name__ == '__main__':
     print sd
     print
     assert pinmunge(str(sd)) == pinmunge(sdinterface_decl)
+
+    twi = Interface([{'name': 'sda{0}', 'outen': True},
+                     {'name': 'scl{0}', 'outen': True},
+                     ])
+    print twi
+    print
+    assert pinmunge(str(twi)) == pinmunge(twiinterface_decl)
+
