@@ -17,7 +17,7 @@ class Pin(object):
         self.io = io
         self.action = action
 
-    def __str__(self):
+    def ifacefmt(self):
         res = '    '
         status = []
         if self.ready:
@@ -63,11 +63,8 @@ class Interface(object):
             else:
                 self.pins.append(Pin(**p))
 
-    def __str__(self):
-        return '\n'+'\n'.join(map(str, self.pins))
-
     def ifacefmt(self, i):
-        return str(self).format(i)
+        return '\n'+'\n'.join(map(lambda x:x.ifacefmt(), self.pins)).format(i)
 
 # basic test
 if __name__ == '__main__':
