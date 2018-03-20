@@ -227,8 +227,8 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     print("BSV file successfully generated: bsv_src/pinmux.bsv")
     # ======================================================================
 
-bsv_file = open('bsv_src/PinTop.bsv', 'w')
-bsv_file.write(copyright+'''
+with open('bsv_src/PinTop.bsv', 'w') as bsv_file:
+    bsv_file.write(copyright+'''
 package PinTop;
     import pinmux::*;
     interface Ifc_PintTop;
@@ -244,53 +244,53 @@ package PinTop;
         // declare the registers which will be used to mux the IOs
 '''.format(ADDR_WIDTH, DATA_WIDTH))
 
-for cell in muxed_cells:
-    bsv_file.write('''
-        Reg#(Bit#({0})) rg_muxio_{1} <-mkReg(0);'''.format(
-        int(math.log(len(cell) - 1, 2)), cell[0]))
+    for cell in muxed_cells:
+        bsv_file.write('''
+            Reg#(Bit#({0})) rg_muxio_{1} <-mkReg(0);'''.format(
+            int(math.log(len(cell) - 1, 2)), cell[0]))
 
-bsv_file.write('''
+    bsv_file.write('''
         // rule to connect the registers to the selection lines of the
         // pin-mux module
         rule connect_selection_registers;''')
 
-for cell in muxed_cells:
-    bsv_file.write('''
+    for cell in muxed_cells:
+        bsv_file.write('''
           pinmux.mux_lines.cell{0}_mux(rg_muxio_{0});'''.format(cell[0]))
 
-bsv_file.write('''
+    bsv_file.write('''
         endrule
         // method definitions for the write user interface
         method ActionValue#(Bool) write(Bit#({2}) addr, Bit#({3}) data);
           Bool err=False;
           case (addr[{0}:{1}])'''.format(upper_offset, lower_offset,
                                          ADDR_WIDTH, DATA_WIDTH))
-index = 0
-for cell in muxed_cells:
-    bsv_file.write('''
+    index = 0
+    for cell in muxed_cells:
+        bsv_file.write('''
             {0}: rg_muxio_{1}<=truncate(data);'''.format(index, cell[0]))
-    index = index + 1
+        index = index + 1
 
-bsv_file.write('''
+    bsv_file.write('''
             default: err=True;
           endcase
           return err;
         endmethod''')
 
-bsv_file.write('''
+    bsv_file.write('''
         // method definitions for the read user interface
         method Tuple2#(Bool,Bit#({3})) read(Bit#({2}) addr);
           Bool err=False;
           Bit#(32) data=0;
           case (addr[{0}:{1}])'''.format(upper_offset, lower_offset,
                                          ADDR_WIDTH, DATA_WIDTH))
-index = 0
-for cell in muxed_cells:
-    bsv_file.write('''
+    index = 0
+    for cell in muxed_cells:
+        bsv_file.write('''
             {0}: data=zeroExtend(rg_muxio_{1});'''.format(index, cell[0]))
-    index = index + 1
+        index = index + 1
 
-bsv_file.write('''
+    bsv_file.write('''
             default:err=True;
           endcase
           return tuple2(err,data);
@@ -299,9 +299,9 @@ bsv_file.write('''
     endmodule
 endpackage
 ''')
-bsv_file.close
+
 # ######## Generate bus transactors ################
-bsv_file = open('bsv_src/bus.bsv', 'w')
-bsv_file.write(axi4_lite.format(ADDR_WIDTH, DATA_WIDTH))
-bsv_file.close
+with open('bsv_src/bus.bsv', 'w') as bsv_file:
+    bsv_file.write(axi4_lite.format(ADDR_WIDTH, DATA_WIDTH))
 # ##################################################
+
