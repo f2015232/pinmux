@@ -109,11 +109,22 @@ class Pin(object):
 
 
 class Interface(object):
-
+    """ create an interface from a list of pinspecs.
+        each pinspec is a dictionary, see Pin class arguments
+    """
     def __init__(self, pinspecs):
         self.pins = []
         for p in pinspecs:
-            self.pins.append(Pin(**p))
+            if p.get('outen') is True: # special case, generate 3 pins
+                _p = {}
+                _p.update(p)
+                del _p['outen']
+                for psuffix in ['out', 'outen', 'in']:
+                    _p['name'] = "%s_%s" % (p['name'], psuffix)
+                    _p['action'] = psuffix != 'in'
+                    self.pins.append(Pin(**_p))
+            else:
+                self.pins.append(Pin(**p))
 
     def __str__(self):
         return '\n'.join(map(str, self.pins))
@@ -154,3 +165,30 @@ if __name__ == '__main__':
     print
     assert pinmunge(str(jtag)) == pinmunge(jtaginterface_decl)
 
+    sd = Interface([{'name': 'sd{0}_clk', 'action': True},
+                    {'name': 'sd{0}_cmd', 'action': True},
+                    {'name': 'sd{0}_d0', 'outen': True},
+                    {'name': 'sd{0}_d1', 'outen': True},
+                    {'name': 'sd{0}_d2', 'outen': True},
+                    {'name': 'sd{0}_d3', 'outen': True}
+                   ])
+    print sd
+    print
+    assert pinmunge(str(sd)) == pinmunge(sdinterface_decl)
+
+sdinterface_decl = '''
+      (*always_ready,always_enabled*) method Action sd{0}_clk (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_cmd (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_d0_out (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_d0_outen (Bit#(1) in);
+      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d0_in;
+      (*always_ready,always_enabled*) method Action sd{0}_d1_out (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_d1_outen (Bit#(1) in);
+      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d1_in;
+      (*always_ready,always_enabled*) method Action sd{0}_d2_out (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_d2_outen (Bit#(1) in);
+      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d2_in;
+      (*always_ready,always_enabled*) method Action sd{0}_d3_out (Bit#(1) in);
+      (*always_ready,always_enabled*) method Action sd{0}_d3_outen (Bit#(1) in);
+      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d3_in;
+'''
