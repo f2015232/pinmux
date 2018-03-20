@@ -91,8 +91,34 @@ class Pin(object):
         if self.action:
             res += " Action "
         res += self.name
-        if inout:
+        if self.inout:
             res += ' (Bit#(1) in)'
         res += ";"
         return res
 
+
+# basic test
+if __name__ == '__main__':
+
+    def _pinmunge(p, sep, repl, dedupe=True):
+        """ munges the text so it's easier to compare.
+            splits by separator, strips out blanks, re-joins.
+        """
+        p = p.strip()
+        p = p.split(sep)
+        if dedupe:
+            p = filter(lambda x: x, p) # filter out blanks
+        return repl.join(p)
+
+    def pinmunge(p):
+        """ munges the text so it's easier to compare.
+        """
+        p = _pinmunge(p, "(", " ( ", False)
+        p = _pinmunge(p, ")", " ) ", False)
+        p = _pinmunge(p, " ", " ")
+        return p
+
+    pwm = Pin("pwm{0}", True, True, True, True)
+    print pinmunge(str(pwm))
+    print pinmunge(pwminterface_decl)
+    assert pinmunge(str(pwm)) == pinmunge(pwminterface_decl)
