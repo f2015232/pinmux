@@ -76,17 +76,15 @@ class Pin(object):
                        ready=True,
                        enabled=True,
                        io=False,
-                       action=False,
-                       inout=True):
+                       action=False):
         self.name = name
         self.ready = ready
         self.enabled = enabled
         self.io = io
         self.action = action
-        self.inout = inout
 
     def __str__(self):
-        res = '    (*'
+        res = '    '
         status = []
         if self.ready:
             status.append('always_ready')
@@ -94,13 +92,18 @@ class Pin(object):
             status.append('always_enabled')
         if self.io:
             status.append('result="io"')
-        res += ','.join(status)
-        res += "*) method "
+        if status:
+            res += '(*'
+            res += ','.join(status)
+            res += '*)'
+        res += " method "
         if self.action:
             res += " Action "
-        res += self.name
-        if self.inout:
+            res += self.name
             res += ' (Bit#(1) in)'
+        else:
+            res += " Bit#(1) "
+            res += self.name
         res += ";"
         return res
 
@@ -139,5 +142,15 @@ if __name__ == '__main__':
 
     pwm = Interface([{'name': "pwm{0}", 'action': True}])
     print pwm
+    print
     assert pinmunge(str(pwm)) == pinmunge(pwminterface_decl)
+
+    jtag = Interface([{'name': 'jtag{0}_tdi'},
+                      {'name': 'jtag{0}_tms'},
+                      {'name': 'jtag{0}_tclk'},
+                      {'name': 'jtag{0}_trst'},
+                      {'name': 'jtag{0}_tdo', 'action': True}])
+    print jtag
+    print
+    assert pinmunge(str(jtag)) == pinmunge(jtaginterface_decl)
 
