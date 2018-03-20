@@ -71,7 +71,11 @@ pwminterface_decl = '''
 # ======================================= #
 
 class Pin(object):
-
+    """ pin interface declaration.
+        * name is the name of the pin
+        * ready, enabled and io all create a (* .... *) prefix
+        * action changes it to an "in" if true
+    """
     def __init__(self, name,
                        ready=True,
                        enabled=True,
@@ -176,19 +180,3 @@ if __name__ == '__main__':
     print
     assert pinmunge(str(sd)) == pinmunge(sdinterface_decl)
 
-sdinterface_decl = '''
-      (*always_ready,always_enabled*) method Action sd{0}_clk (Bit#(1) in);
-      (*always_ready,always_enabled*) method Action sd{0}_cmd (Bit#(1) in);
-      (*always_ready,always_enabled*) method Action sd{0}_d0_out (Bit#(1) in);
-      (*always_ready,always_enabled*) method Action sd{0}_d0_outen (Bit#(1) in);
-      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d0_in;
-      (*always_ready,always_enabled*) method Action sd{0}_d1_out (Bit#(1) in);
-      (*always_ready,always_enabled*) method Action sd{0}_d1_outen (Bit#(1) in);
-      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d1_in;
-      (*always_ready,always_enabled*) method Action sd{0}_d2_out (Bit#(1) in);
-      (*always_ready,always_enabled*) method Action sd{0}_d2_outen (Bit#(1) in);
-      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d2_in;
-      (*always_ready,always_enabled*) method Action sd{0}_d3_out (Bit#(1) in);
-      (*always_ready,always_enabled*) method Action sd{0}_d3_outen (Bit#(1) in);
-      (*always_ready,always_enabled*) method Bit#(1) sd{0}_d3_in;
-'''
