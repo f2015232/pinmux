@@ -43,6 +43,20 @@ class Pin(object):
         res += ";"
         return res
 
+    def ifacedef(self, fmtoutfn=None, fmtinfn=None):
+        res = '      method '
+        if self.action:
+            fmtname = fmtinfn(self.name) if fmtinfn else self.name
+            res += "Action  "
+            res += self.name
+            res += '(Bit#(1) in);\n'
+            res += '         %s<=in;\n' % fmtname
+            res += '      endmethod'
+        else:
+            fmtname = fmtoutfn(self.name) if fmtoutfn else self.name
+            res += "%s=%s;" % (self.name, fmtname)
+        return res
+
 
 class Interface(object):
     """ create an interface from a list of pinspecs.
@@ -66,38 +80,35 @@ class Interface(object):
     def ifacefmt(self, i):
         return '\n'+'\n'.join(map(lambda x:x.ifacefmt(), self.pins)).format(i)
 
-# basic test
-if __name__ == '__main__':
+    def ifacefmtoutfn(self, name):
+        return name
 
-    def _pinmunge(p, sep, repl, dedupe=True):
-        """ munges the text so it's easier to compare.
-            splits by separator, strips out blanks, re-joins.
-        """
-        p = p.strip()
-        p = p.split(sep)
-        if dedupe:
-            p = filter(lambda x: x, p)  # filter out blanks
-        return repl.join(p)
+    def ifacefmtinfn(self, name):
+        return "wr%s" % name
 
-    def pinmunge(p):
-        """ munges the text so it's easier to compare.
-        """
-        # first join lines by semicolons, strip out returns
-        p = p.split(";")
-        p = map(lambda x: x.replace('\n', ''), p)
-        p = '\n'.join(p)
-        # now split first by brackets, then spaces (deduping on spaces)
-        p = _pinmunge(p, "(", " ( ", False)
-        p = _pinmunge(p, ")", " ) ", False)
-        p = _pinmunge(p, " ", " ")
-        return p
+    def ifacefmtpin(self, pin):
+        return pin.ifacedef(self.ifacefmtoutfn, self.ifacefmtinfn)
+
+    def ifacedef(self, i):
+        res = '\n'.join(map(self.ifacefmtpin, self.pins)).format(i)
+        return '\n' + res + '\n'
+
+
+class IOInterface(Interface):
+
+    def ifacefmtoutfn(self, name):
+        return "cell{0}_out.%s" % (name[3:-4])
+
+    def ifacefmtinfn(self, name):
+        return "cell{0}_in"
+
 
 # ========= Interface declarations ================ #
 
 mux_interface = '''
       method Action cell{0}_mux(Bit#({1}) in);'''
 
-io_interface = Interface([{'name': 'io_outputval_{0}', 'enabled': False},
+io_interface = IOInterface([{'name': 'io_outputval_{0}', 'enabled': False},
                           {'name': 'io_output_en_{0}', 'enabled': False},
                           {'name': 'io_input_en_{0}', 'enabled': False},
                           {'name': 'io_pullup_en_{0}', 'enabled': False},
@@ -144,3 +155,33 @@ jtaginterface_decl = Interface([{'name': 'jtag{0}_tdi'},
 pwminterface_decl = Interface([{'name': "pwm{0}", 'action': True}])
 
 # ======================================= #
+
+# basic test
+if __name__ == '__main__':
+
+    def _pinmunge(p, sep, repl, dedupe=True):
+        """ munges the text so it's easier to compare.
+            splits by separator, strips out blanks, re-joins.
+        """
+        p = p.strip()
+        p = p.split(sep)
+        if dedupe:
+            p = filter(lambda x: x, p)  # filter out blanks
+        return repl.join(p)
+
+    def pinmunge(p):
+        """ munges the text so it's easier to compare.
+        """
+        # first join lines by semicolons, strip out returns
+        p = p.split(";")
+        p = map(lambda x: x.replace('\n', ''), p)
+        p = '\n'.join(p)
+        # now split first by brackets, then spaces (deduping on spaces)
+        p = _pinmunge(p, "(", " ( ", False)
+        p = _pinmunge(p, ")", " ) ", False)
+        p = _pinmunge(p, " ", " ")
+        return p
+
+    from interface_def import io_interface_def
+    print io_interface_def.format(0)
+    print io_interface.ifacedef(0)

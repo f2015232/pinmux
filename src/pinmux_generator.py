@@ -210,7 +210,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     interface peripheral_side = interface PeripheralSide
 ''')
     for i in range(0, N_IO):
-        bsv_file.write(io_interface_def.format(i))
+        bsv_file.write(io_interface.ifacedef(i))
     for i in range(0, N_UART):
         bsv_file.write(uartinterface_def.format(i))
     for i in range(0, N_SPI):
