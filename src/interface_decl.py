@@ -77,11 +77,12 @@ class Pin(object):
         * ready, enabled and io all create a (* .... *) prefix
         * action changes it to an "in" if true
     """
+
     def __init__(self, name,
-                       ready=True,
-                       enabled=True,
-                       io=False,
-                       action=False):
+                 ready=True,
+                 enabled=True,
+                 io=False,
+                 action=False):
         self.name = name
         self.ready = ready
         self.enabled = enabled
@@ -117,10 +118,11 @@ class Interface(object):
     """ create an interface from a list of pinspecs.
         each pinspec is a dictionary, see Pin class arguments
     """
+
     def __init__(self, pinspecs):
         self.pins = []
         for p in pinspecs:
-            if p.get('outen') is True: # special case, generate 3 pins
+            if p.get('outen') is True:  # special case, generate 3 pins
                 _p = {}
                 _p.update(p)
                 del _p['outen']
@@ -145,7 +147,7 @@ if __name__ == '__main__':
         p = p.strip()
         p = p.split(sep)
         if dedupe:
-            p = filter(lambda x: x, p) # filter out blanks
+            p = filter(lambda x: x, p)  # filter out blanks
         return repl.join(p)
 
     def pinmunge(p):
@@ -176,8 +178,7 @@ if __name__ == '__main__':
                     {'name': 'sd{0}_d1', 'outen': True},
                     {'name': 'sd{0}_d2', 'outen': True},
                     {'name': 'sd{0}_d3', 'outen': True}
-                   ])
+                    ])
     print sd
     print
     assert pinmunge(str(sd)) == pinmunge(sdinterface_decl)
-
