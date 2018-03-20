@@ -104,6 +104,18 @@ class Pin(object):
         res += ";"
         return res
 
+
+class Interface(object):
+
+    def __init__(self, pinspecs):
+        self.pins = []
+        for p in pinspecs:
+            self.pins.append(Pin(**p))
+
+    def __str__(self):
+        return '\n'.join(map(str, self.pins))
+
+
 # basic test
 if __name__ == '__main__':
 
@@ -125,7 +137,7 @@ if __name__ == '__main__':
         p = _pinmunge(p, " ", " ")
         return p
 
-    pwm = Pin("pwm{0}", True, True, True, True)
-    print pinmunge(str(pwm))
-    print pinmunge(pwminterface_decl)
+    pwm = Interface([{'name': "pwm{0}", 'action': True}])
+    print pwm
     assert pinmunge(str(pwm)) == pinmunge(pwminterface_decl)
+
