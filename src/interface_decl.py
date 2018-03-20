@@ -69,3 +69,30 @@ pwminterface_decl = '''
       (*always_ready,always_enabled*) method Action pwm{0}(Bit#(1) in);
 '''
 # ======================================= #
+
+class Pin(object):
+
+    def __init__(self, name, ready, enabled, action, inout):
+        self.name = name
+        self.ready = ready
+        self.enabled = enabled
+        self.action = action
+        self.inout = inout
+
+    def __str__(self):
+        res = '    (*'
+        status = []
+        if self.ready:
+            status.append('always_ready')
+        if self.enabled:
+            status.append('always_enabled')
+        res += ','.join(status)
+        res += "*) method "
+        if self.action:
+            res += " Action "
+        res += self.name
+        if inout:
+            res += ' (Bit#(1) in)'
+        res += ";"
+        return res
+
