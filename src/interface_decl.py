@@ -72,10 +72,16 @@ pwminterface_decl = '''
 
 class Pin(object):
 
-    def __init__(self, name, ready, enabled, action, inout):
+    def __init__(self, name,
+                       ready=True,
+                       enabled=True,
+                       io=False,
+                       action=False,
+                       inout=True):
         self.name = name
         self.ready = ready
         self.enabled = enabled
+        self.io = io
         self.action = action
         self.inout = inout
 
@@ -86,6 +92,8 @@ class Pin(object):
             status.append('always_ready')
         if self.enabled:
             status.append('always_enabled')
+        if self.io:
+            status.append('result="io"')
         res += ','.join(status)
         res += "*) method "
         if self.action:
@@ -95,7 +103,6 @@ class Pin(object):
             res += ' (Bit#(1) in)'
         res += ";"
         return res
-
 
 # basic test
 if __name__ == '__main__':
