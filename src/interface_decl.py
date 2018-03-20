@@ -31,6 +31,8 @@ class Pin(object):
             res += ','.join(status)
             res += '*)'
         res += " method "
+        if self.io:
+            res += "\n                      "
         if self.action:
             res += " Action "
             res += self.name
@@ -62,7 +64,7 @@ class Interface(object):
                 self.pins.append(Pin(**p))
 
     def __str__(self):
-        return '\n'.join(map(str, self.pins))
+        return '\n'+'\n'.join(map(str, self.pins))
 
     def format(self, i):
         return str(self).format(i)
