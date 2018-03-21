@@ -168,7 +168,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
         bsv_file.write(
         '''\n      // following wires capture signals to IO CELL if twi-{0} is
       // allotted to it'''.format(i))
-    bsv_file.write(twiwires.format(i))
+        bsv_file.write(twiwires.format(i))
 
     for i in range(0, N_SD):
         bsv_file.write(
