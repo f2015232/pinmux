@@ -222,7 +222,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     for i in range(0, N_JTAG):
         bsv_file.write(jtaginterface_def.format(i))
     for i in range(0, N_PWM):
-        bsv_file.write(pwminterface_def.format(i))
+        bsv_file.write(pwminterface_decl.ifacedef(i))
     bsv_file.write(footer)
     print("BSV file successfully generated: bsv_src/pinmux.bsv")
     # ======================================================================

@@ -91,7 +91,7 @@ class Interface(object):
         return name
 
     def ifacefmtoutfn(self, name):
-        return name
+        return "wr%s" % name
 
     def ifacefmtinfn(self, name):
         return "wr%s" % name
