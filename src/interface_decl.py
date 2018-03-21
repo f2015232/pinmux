@@ -10,14 +10,16 @@ class Pin(object):
                  ready=True,
                  enabled=True,
                  io=False,
-                 action=False):
+                 action=False,
+                 bitspec=None):
         self.name = name
         self.ready = ready
         self.enabled = enabled
         self.io = io
         self.action = action
+        self.bitspec = bitspec if bitspec else '1'
 
-    def ifacefmt(self):
+    def ifacefmt(self, fmtfn=None):
         res = '    '
         status = []
         if self.ready:
@@ -33,27 +35,28 @@ class Pin(object):
         res += " method "
         if self.io:
             res += "\n                      "
+        name = fmtfn(self.name)
         if self.action:
             res += " Action "
-            res += self.name
-            res += ' (Bit#(1) in)'
+            res += name
+            res += ' (Bit#(%s) in)' % self.bitspec
         else:
-            res += " Bit#(1) "
-            res += self.name
+            res += " Bit#(%s) " % self.bitspec
+            res += name
         res += ";"
         return res
 
-    def ifacedef(self, fmtoutfn=None, fmtinfn=None):
+    def ifacedef(self, fmtoutfn=None, fmtinfn=None, fmtdecfn=None):
         res = '      method '
         if self.action:
-            fmtname = fmtinfn(self.name) if fmtinfn else self.name
+            fmtname = fmtinfn(self.name)
             res += "Action  "
-            res += self.name
-            res += '(Bit#(1) in);\n'
+            res += fmtdecfn(self.name)
+            res += '(Bit#(%s) in);\n' % self.bitspec
             res += '         %s<=in;\n' % fmtname
             res += '      endmethod'
         else:
-            fmtname = fmtoutfn(self.name) if fmtoutfn else self.name
+            fmtname = fmtoutfn(self.name)
             res += "%s=%s;" % (self.name, fmtname)
         return res
 
@@ -77,8 +80,15 @@ class Interface(object):
             else:
                 self.pins.append(Pin(**p))
 
-    def ifacefmt(self, i):
-        return '\n'+'\n'.join(map(lambda x:x.ifacefmt(), self.pins)).format(i)
+    def ifacefmt(self, *args):
+        res = '\n'.join(map(self.ifacefmtdecpin, self.pins)).format(*args)
+        return '\n' + res
+
+    def ifacefmtdecfn(self, name):
+        return name
+
+    def ifacefmtdecfn2(self, name):
+        return name
 
     def ifacefmtoutfn(self, name):
         return name
@@ -86,15 +96,33 @@ class Interface(object):
     def ifacefmtinfn(self, name):
         return "wr%s" % name
 
-    def ifacefmtpin(self, pin):
-        return pin.ifacedef(self.ifacefmtoutfn, self.ifacefmtinfn)
+    def ifacefmtdecpin(self, pin):
+        return pin.ifacefmt(self.ifacefmtdecfn)
 
-    def ifacedef(self, i):
-        res = '\n'.join(map(self.ifacefmtpin, self.pins)).format(i)
+    def ifacefmtpin(self, pin):
+        return pin.ifacedef(self.ifacefmtoutfn, self.ifacefmtinfn,
+                            self.ifacefmtdecfn2)
+
+    def ifacedef(self, *args):
+        res = '\n'.join(map(self.ifacefmtpin, self.pins)).format(*args)
         return '\n' + res + '\n'
 
 
+class MuxInterface(Interface):
+
+    def ifacefmtdecfn2(self, name):
+        return "cell{0}_mux"
+
+    def ifacefmtdecfn(self, name):
+        return "cell{0}_mux"
+
+    def ifacefmtinfn(self, name):
+        return "wrmux{0}"
+
 class IOInterface(Interface):
+
+    #def ifacefmtdecfn(self, name):
+    #    return "cell{0}_mux"
 
     def ifacefmtoutfn(self, name):
         return "cell{0}_out.%s" % (name[3:-4])
@@ -105,8 +133,9 @@ class IOInterface(Interface):
 
 # ========= Interface declarations ================ #
 
-mux_interface = '''
-      method Action cell{0}_mux(Bit#({1}) in);'''
+mux_interface = MuxInterface([{'name': 'cell{0}', 'ready':False,
+                      'enabled':False,
+                     'bitspec': '{1}', 'action': True}])
 
 io_interface = IOInterface([{'name': 'io_outputval_{0}', 'enabled': False},
                           {'name': 'io_output_en_{0}', 'enabled': False},
@@ -185,3 +214,14 @@ if __name__ == '__main__':
     from interface_def import io_interface_def
     print io_interface_def.format(0)
     print io_interface.ifacedef(0)
+    assert io_interface_def.format(0) == io_interface.ifacedef(0)
+
+    mux_interfacetest = '''
+          method Action cell{0}_mux(Bit#({1}) in);'''
+    print pinmunge(mux_interfacetest.format(0,1))
+    print pinmunge(mux_interface.ifacefmt(0, 1))
+    from interface_def import mux_interface_def
+    print repr(mux_interface_def.format(0, 1))
+    print repr(mux_interface.ifacedef(0, 1))
+    assert mux_interface_def.format(0,1) == mux_interface.ifacedef(0,1)
+

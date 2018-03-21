@@ -78,7 +78,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
       // where each IO will have the same number of muxes.''')
 
     for cell in muxed_cells:
-        bsv_file.write(mux_interface.format(cell[0],
+        bsv_file.write(mux_interface.ifacefmt(cell[0],
                                         int(math.log(len(cell) - 1, 2))))
 
     bsv_file.write('''
@@ -203,7 +203,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     interface mux_lines = interface MuxSelectionLines
 ''')
     for cell in muxed_cells:
-        bsv_file.write(mux_interface_def.format(cell[0],
+        bsv_file.write(mux_interface.ifacedef(cell[0],
                                             int(math.log(len(cell) - 1, 2))))
     bsv_file.write('''
     endinterface;
