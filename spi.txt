@@ -1,4 +1,4 @@
 sclk	out
 mosi	out
-nss	out
+ss	out
 miso	in
