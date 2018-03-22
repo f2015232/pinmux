@@ -173,7 +173,7 @@ class Interfaces(UserDict):
 
     def __init__(self):
         self.ifacecount = []
-        ifaces = {}
+        UserDict.__init__(self, {})
         with open('interfaces.txt', 'r') as ifile:
             for l in ifile.readlines():
                 l = l.strip()
@@ -181,10 +181,12 @@ class Interfaces(UserDict):
                 print l
                 name = l[0]
                 count = int(l[1])
-                self.ifacecount.append((name, count))
                 spec = self.read_spec(name)
-                ifaces[name] = Interface(name, spec)
-        UserDict.__init__(self, ifaces)
+                self.ifaceadd(name, count, Interface(name, spec))
+                
+    def ifaceadd(self, name, count, iface):
+        self.ifacecount.append((name, count))
+        self[name] = iface
 
     def read_spec(self, name):
         spec = []
@@ -200,6 +202,30 @@ class Interfaces(UserDict):
                     d['outen'] = True
                 spec.append(d)
         return spec
+
+    def ifacedef(self, f, *args):
+        for (name, count) in self.ifacecount:
+            for i in range(count):
+                f.write(self.data[name].ifacedef(i))
+
+    def ifacefmt(self, f, *args):
+        comment = '''
+          // interface declaration between %s-{0} and pinmux'''
+        for (name, count) in self.ifacecount:
+            for i in range(count):
+                c = comment % name.upper()
+                f.write(c.format(i))
+                f.write(self.data[name].ifacefmt(i))
+
+    def wirefmt(self, f, *args):
+        comment = '\n      // following wires capture signals ' \
+                  'to IO CELL if %s-{0} is\n' \
+                  '      // allotted to it'
+        for (name, count) in self.ifacecount:
+            for i in range(count):
+                c = comment % name
+                f.write(c.format(i))
+                f.write(self.data[name].wirefmt(i))
 
 
 # ========= Interface declarations ================ #
@@ -225,50 +251,50 @@ io_interface = IOInterface('io',
 # Outputs from the peripherals will be inputs to the pinmux
 # module. Hence the change in direction for most pins
 
-uartinterface_decl = Interface('uart',
-                            [{'name': 'rx'},
-                             {'name': 'tx', 'action': True},
-                            ])
-
-spiinterface_decl = Interface('spi',
-                            [{'name': 'sclk', 'action': True},
-                             {'name': 'mosi', 'action': True},
-                             {'name': 'nss', 'action': True},
-                             {'name': 'miso'},
-                            ])
-
-twiinterface_decl = Interface('twi',
-                            [{'name': 'sda', 'outen': True},
-                             {'name': 'scl', 'outen': True},
-                            ])
-
-sdinterface_decl = Interface('sd',
-                            [{'name': 'clk', 'action': True},
-                             {'name': 'cmd', 'action': True},
-                             {'name': 'd0', 'outen': True},
-                             {'name': 'd1', 'outen': True},
-                             {'name': 'd2', 'outen': True},
-                             {'name': 'd3', 'outen': True}
-                            ])
-
-jtaginterface_decl = Interface('jtag',
-                            [{'name': 'tdi'},
-                             {'name': 'tms'},
-                             {'name': 'tclk'},
-                             {'name': 'trst'},
-                             {'name': 'tdo', 'action': True}
-                            ])
-
-pwminterface_decl = Interface('pwm',
-                            [{'name': "pwm", 'action': True}
-                            ])
-
 ifaces = Interfaces()
 
 # ======================================= #
 
 # basic test
 if __name__ == '__main__':
+
+    uartinterface_decl = Interface('uart',
+                                [{'name': 'rx'},
+                                 {'name': 'tx', 'action': True},
+                                ])
+
+    spiinterface_decl = Interface('spi',
+                                [{'name': 'sclk', 'action': True},
+                                 {'name': 'mosi', 'action': True},
+                                 {'name': 'nss', 'action': True},
+                                 {'name': 'miso'},
+                                ])
+
+    twiinterface_decl = Interface('twi',
+                                [{'name': 'sda', 'outen': True},
+                                 {'name': 'scl', 'outen': True},
+                                ])
+
+    sdinterface_decl = Interface('sd',
+                                [{'name': 'clk', 'action': True},
+                                 {'name': 'cmd', 'action': True},
+                                 {'name': 'd0', 'outen': True},
+                                 {'name': 'd1', 'outen': True},
+                                 {'name': 'd2', 'outen': True},
+                                 {'name': 'd3', 'outen': True}
+                                ])
+
+    jtaginterface_decl = Interface('jtag',
+                                [{'name': 'tdi'},
+                                 {'name': 'tms'},
+                                 {'name': 'tclk'},
+                                 {'name': 'trst'},
+                                 {'name': 'tdo', 'action': True}
+                                ])
+
+    pwminterface_decl = Interface('pwm',
+                                [{'name': "pwm", 'action': True}
+                                ])
 
     def _pinmunge(p, sep, repl, dedupe=True):
         """ munges the text so it's easier to compare.

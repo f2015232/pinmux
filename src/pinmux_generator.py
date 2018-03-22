@@ -94,35 +94,8 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     # ==============================================================
 
     # == create method definitions for all peripheral interfaces ==#
-    for i in range(0, N_UART):
-        bsv_file.write('''
-          // interface declaration between UART-{0} and pinmux'''.format(i))
-        bsv_file.write(uartinterface_decl.ifacefmt(i))
+    ifaces.ifacefmt(bsv_file)
 
-    for i in range(0, N_SPI):
-        bsv_file.write('''
-          // interface declaration between SPI-{0} and pinmux'''.format(i))
-        bsv_file.write(spiinterface_decl.ifacefmt(i))
-
-    for i in range(0, N_TWI):
-        bsv_file.write('''
-          // interface declaration between TWI-{0} and pinmux'''.format(i))
-        bsv_file.write(twiinterface_decl.ifacefmt(i))
-
-    for i in range(0, N_SD):
-        bsv_file.write('''
-          // interface declaration between SD-{0} and pinmux'''.format(i))
-        bsv_file.write(sdinterface_decl.ifacefmt(i))
-
-    for i in range(0, N_JTAG):
-        bsv_file.write('''
-          // interface declaration between JTAG-{0} and pinmux'''.format(i))
-        bsv_file.write(jtaginterface_decl.ifacefmt(i))
-
-    for i in range(0, N_PWM):
-        bsv_file.write('''
-          // interface declaration between PWM-{0} and pinmux'''.format(i))
-        bsv_file.write(pwminterface_decl.ifacefmt(i))
     # ==============================================================
 
     # ===== finish interface definition and start module definition=======
@@ -152,41 +125,8 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     for i in range(0, N_IO):
         bsv_file.write(generic_io.format(i))
 
-    for i in range(0, N_UART):
-        bsv_file.write(
-        '''\n      // following wires capture signals to IO CELL if uart-{0} is
-      // allotted to it'''.format(i))
-        bsv_file.write(uartinterface_decl.wirefmt(i))
+    ifaces.wirefmt(bsv_file)
 
-    for i in range(0, N_SPI):
-        bsv_file.write(
-        '''\n      // following wires capture signals to IO CELL if spi-{0} is
-      // allotted to it'''.format(i))
-        bsv_file.write(spiinterface_decl.wirefmt(i))
-
-    for i in range(0, N_TWI):
-        bsv_file.write(
-        '''\n      // following wires capture signals to IO CELL if twi-{0} is
-      // allotted to it'''.format(i))
-        bsv_file.write(twiinterface_decl.wirefmt(i))
-
-    for i in range(0, N_SD):
-        bsv_file.write(
-        '''\n      // following wires capture signals to IO CELL if sd-{0} is
-      // allotted to it'''.format(i))
-        bsv_file.write(sdinterface_decl.wirefmt(i))
-
-    for i in range(0, N_JTAG):
-        bsv_file.write(
-        '''\n      // following wires capture signals to IO CELL if jtag-{0} is
-      // allotted to it'''.format(i))
-        bsv_file.write(jtaginterface_decl.wirefmt(i))
-
-    for i in range(0, N_PWM):
-        bsv_file.write(
-        '''\n      // following wires capture signals to IO CELL if pwm-{0} is
-      // allotted to it'''.format(i))
-        bsv_file.write(pwminterface_decl.wirefmt(i))
     bsv_file.write("\n")
     # ====================================================================
     # ========================= Actual pinmuxing ========================#
@@ -211,18 +151,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
 ''')
     for i in range(0, N_IO):
         bsv_file.write(io_interface.ifacedef(i))
-    for i in range(0, N_UART):
-        bsv_file.write(uartinterface_decl.ifacedef(i))
-    for i in range(0, N_SPI):
-        bsv_file.write(spiinterface_decl.ifacedef(i))
-    for i in range(0, N_TWI):
-        bsv_file.write(twiinterface_decl.ifacedef(i))
-    for i in range(0, N_SD):
-        bsv_file.write(sdinterface_decl.ifacedef(i))
-    for i in range(0, N_JTAG):
-        bsv_file.write(jtaginterface_decl.ifacedef(i))
-    for i in range(0, N_PWM):
-        bsv_file.write(pwminterface_decl.ifacedef(i))
+    ifaces.ifacedef(bsv_file)
     bsv_file.write(footer)
     print("BSV file successfully generated: bsv_src/pinmux.bsv")
     # ======================================================================
