@@ -74,26 +74,31 @@ class Interface(object):
         each pinspec is a dictionary, see Pin class arguments
     """
 
-    def __init__(self, pinspecs):
+    def __init__(self, ifacename, pinspecs):
+        self.ifacename = ifacename
         self.pins = []
         self.pinspecs = pinspecs
         for p in pinspecs:
+            _p = {}
+            _p.update(p)
             if p.get('outen') is True:  # special case, generate 3 pins
-                _p = {}
-                _p.update(p)
                 del _p['outen']
                 for psuffix in ['out', 'outen', 'in']:
-                    _p['name'] = "%s_%s" % (p['name'], psuffix)
+                    _p['name'] = "%s_%s" % (self.pname(p['name']), psuffix)
                     _p['action'] = psuffix != 'in'
                     self.pins.append(Pin(**_p))
             else:
-                self.pins.append(Pin(**p))
+                _p['name'] = self.pname(p['name'])
+                self.pins.append(Pin(**_p))
+
+    def pname(self, name):
+        return '%s{0}_%s' % (self.ifacename, name)
 
     def wirefmt(self, *args):
         res = '\n'.join(map(self.wirefmtpin, self.pins)).format(*args)
         res += '\n'
         for p in self.pinspecs:
-            name = p['name'].format(*args)
+            name = self.pname(p['name']).format(*args)
             res += "      GenericIOType %s_io = GenericIOType{\n" % name
             params = []
             if p.get('outen') is True:
@@ -163,19 +168,20 @@ class IOInterface(Interface):
 
 # ========= Interface declarations ================ #
 
-mux_interface = Interface([{'name': 'cell{0}_mux', 'ready':False,
-                      'enabled':False,
-                     'bitspec': '{1}', 'action': True}])
+mux_interface = Interface('cell', [{'name': 'mux', 'ready':False,
+                                    'enabled':False,
+                                    'bitspec': '{1}', 'action': True}])
 
-io_interface = IOInterface([{'name': 'io{0}_outputval', 'enabled': False},
-                          {'name': 'io{0}_output_en', 'enabled': False},
-                          {'name': 'io{0}_input_en', 'enabled': False},
-                          {'name': 'io{0}_pullup_en', 'enabled': False},
-                          {'name': 'io{0}_pulldown_en', 'enabled': False},
-                          {'name': 'io{0}_drivestrength', 'enabled': False},
-                          {'name': 'io{0}_pushpull_en', 'enabled': False},
-                          {'name': 'io{0}_opendrain_en', 'enabled': False},
-                          {'name': 'io{0}_inputval', 'action': True, 'io': True},
+io_interface = IOInterface('io',
+                    [{'name': 'outputval', 'enabled': False},
+                     {'name': 'output_en', 'enabled': False},
+                     {'name': 'input_en', 'enabled': False},
+                     {'name': 'pullup_en', 'enabled': False},
+                     {'name': 'pulldown_en', 'enabled': False},
+                     {'name': 'drivestrength', 'enabled': False},
+                     {'name': 'pushpull_en', 'enabled': False},
+                     {'name': 'opendrain_en', 'enabled': False},
+                     {'name': 'inputval', 'action': True, 'io': True},
                           ])
 
 # == Peripheral Interface definitions == #
@@ -183,35 +189,43 @@ io_interface = IOInterface([{'name': 'io{0}_outputval', 'enabled': False},
 # Outputs from the peripherals will be inputs to the pinmux
 # module. Hence the change in direction for most pins
 
-uartinterface_decl = Interface([{'name': 'uart{0}_rx'},
-                                {'name': 'uart{0}_tx', 'action': True},
-                                ])
+uartinterface_decl = Interface('uart',
+                            [{'name': 'rx'},
+                             {'name': 'tx', 'action': True},
+                            ])
 
-spiinterface_decl = Interface([{'name': 'spi{0}_sclk', 'action': True},
-                               {'name': 'spi{0}_mosi', 'action': True},
-                               {'name': 'spi{0}_nss', 'action': True},
-                               {'name': 'spi{0}_miso'},
-                               ])
+spiinterface_decl = Interface('spi',
+                            [{'name': 'sclk', 'action': True},
+                             {'name': 'mosi', 'action': True},
+                             {'name': 'nss', 'action': True},
+                             {'name': 'miso'},
+                            ])
 
-twiinterface_decl = Interface([{'name': 'twi{0}_sda', 'outen': True},
-                               {'name': 'twi{0}_scl', 'outen': True},
-                               ])
+twiinterface_decl = Interface('twi',
+                            [{'name': 'sda', 'outen': True},
+                             {'name': 'scl', 'outen': True},
+                            ])
 
-sdinterface_decl = Interface([{'name': 'sd{0}_clk', 'action': True},
-                              {'name': 'sd{0}_cmd', 'action': True},
-                              {'name': 'sd{0}_d0', 'outen': True},
-                              {'name': 'sd{0}_d1', 'outen': True},
-                              {'name': 'sd{0}_d2', 'outen': True},
-                              {'name': 'sd{0}_d3', 'outen': True}
-                              ])
+sdinterface_decl = Interface('sd',
+                            [{'name': 'clk', 'action': True},
+                             {'name': 'cmd', 'action': True},
+                             {'name': 'd0', 'outen': True},
+                             {'name': 'd1', 'outen': True},
+                             {'name': 'd2', 'outen': True},
+                             {'name': 'd3', 'outen': True}
+                            ])
 
-jtaginterface_decl = Interface([{'name': 'jtag{0}_tdi'},
-                                {'name': 'jtag{0}_tms'},
-                                {'name': 'jtag{0}_tclk'},
-                                {'name': 'jtag{0}_trst'},
-                                {'name': 'jtag{0}_tdo', 'action': True}])
+jtaginterface_decl = Interface('jtag',
+                            [{'name': 'tdi'},
+                             {'name': 'tms'},
+                             {'name': 'tclk'},
+                             {'name': 'trst'},
+                             {'name': 'tdo', 'action': True}
+                            ])
 
-pwminterface_decl = Interface([{'name': "pwm{0}_pwm", 'action': True}])
+pwminterface_decl = Interface('pwm',
+                            [{'name': "pwm", 'action': True}
+                            ])
 
 # ======================================= #
 
