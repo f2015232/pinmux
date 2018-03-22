@@ -104,14 +104,17 @@ class Interface(object):
                             self.ifacefmtdecfn2)
 
     def ifacedef(self, *args):
-        res = '\n'.join(map(self.ifacefmtpin, self.pins)).format(*args)
+        res = '\n'.join(map(self.ifacefmtpin, self.pins))
+        print res
+        res = res.format(*args)
         return '\n' + res + '\n'
 
 
 class IOInterface(Interface):
 
     def ifacefmtoutfn(self, name):
-        return "cell{0}_mux_out.%s" % (name[3:-4])
+        """ for now strip off io{0}_ part """
+        return "cell{0}_mux_out.%s" % name[6:]
 
     def ifacefmtinfn(self, name):
         return "cell{0}_mux_in"
@@ -123,15 +126,15 @@ mux_interface = Interface([{'name': 'cell{0}_mux', 'ready':False,
                       'enabled':False,
                      'bitspec': '{1}', 'action': True}])
 
-io_interface = IOInterface([{'name': 'io_outputval_{0}', 'enabled': False},
-                          {'name': 'io_output_en_{0}', 'enabled': False},
-                          {'name': 'io_input_en_{0}', 'enabled': False},
-                          {'name': 'io_pullup_en_{0}', 'enabled': False},
-                          {'name': 'io_pulldown_en_{0}', 'enabled': False},
-                          {'name': 'io_drivestrength_{0}', 'enabled': False},
-                          {'name': 'io_pushpull_en_{0}', 'enabled': False},
-                          {'name': 'io_opendrain_en_{0}', 'enabled': False},
-                          {'name': 'io_inputval_{0}', 'action': True, 'io': True},
+io_interface = IOInterface([{'name': 'io{0}_outputval', 'enabled': False},
+                          {'name': 'io{0}_output_en', 'enabled': False},
+                          {'name': 'io{0}_input_en', 'enabled': False},
+                          {'name': 'io{0}_pullup_en', 'enabled': False},
+                          {'name': 'io{0}_pulldown_en', 'enabled': False},
+                          {'name': 'io{0}_drivestrength', 'enabled': False},
+                          {'name': 'io{0}_pushpull_en', 'enabled': False},
+                          {'name': 'io{0}_opendrain_en', 'enabled': False},
+                          {'name': 'io{0}_inputval', 'action': True, 'io': True},
                           ])
 
 # == Peripheral Interface definitions == #

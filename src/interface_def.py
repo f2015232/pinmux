@@ -5,15 +5,15 @@ mux_interface_def = '''
       endmethod
 '''
 io_interface_def = '''
-      method io_outputval_{0}=cell{0}_mux_out.outputval;
-      method io_output_en_{0}=cell{0}_mux_out.output_en;
-      method io_input_en_{0}=cell{0}_mux_out.input_en;
-      method io_pullup_en_{0}=cell{0}_mux_out.pullup_en;
-      method io_pulldown_en_{0}=cell{0}_mux_out.pulldown_en;
-      method io_drivestrength_{0}=cell{0}_mux_out.drivestrength;
-      method io_pushpull_en_{0}=cell{0}_mux_out.pushpull_en;
-      method io_opendrain_en_{0}=cell{0}_mux_out.opendrain_en;
-      method Action  io_inputval_{0}(Bit#(1) in);
+      method io{0}_outputval=cell{0}_mux_out.outputval;
+      method io{0}_output_en=cell{0}_mux_out.output_en;
+      method io{0}_input_en=cell{0}_mux_out.input_en;
+      method io{0}_pullup_en=cell{0}_mux_out.pullup_en;
+      method io{0}_pulldown_en=cell{0}_mux_out.pulldown_en;
+      method io{0}_drivestrength=cell{0}_mux_out.drivestrength;
+      method io{0}_pushpull_en=cell{0}_mux_out.pushpull_en;
+      method io{0}_opendrain_en=cell{0}_mux_out.opendrain_en;
+      method Action  io{0}_inputval(Bit#(1) in);
          cell{0}_mux_in<=in;
       endmethod
 '''
