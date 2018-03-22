@@ -184,7 +184,6 @@ class Interfaces(UserDict):
             for l in ifile.readlines():
                 l = l.strip()
                 l = l.split("\t")
-                print l
                 name = l[0]
                 count = int(l[1])
                 spec = self.read_spec(name)
@@ -202,7 +201,6 @@ class Interfaces(UserDict):
             for l in sfile.readlines():
                 l = l.strip()
                 l = l.split("\t")
-                print l
                 d = {'name': l[0]}
                 if l[1] == 'out':
                     d['action'] = True

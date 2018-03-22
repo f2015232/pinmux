@@ -23,7 +23,7 @@ import math
 
 # project module imports
 from interface_decl import Interfaces, mux_interface, io_interface
-from wire_def import muxwire, generic_io
+from wire_def import muxwire
 from parse import Parse
 from actual_pinmux import init
 from bus_transactors import axi4_lite
