@@ -8,7 +8,7 @@ generic_io = '''
 uartwires = '''
       Wire#(Bit#(1)) wruart{0}_rx<-mkDWire(0);
       Wire#(Bit#(1)) wruart{0}_tx<-mkDWire(0);
-      GenericIOType uart{0}_rx_io=GenericIOType{{
+      GenericIOType uart{0}_rx_io = GenericIOType{{
                  outputval:0,
                  output_en:0,
                  input_en:1,
@@ -18,7 +18,7 @@ uartwires = '''
                  drivestrength:0,
                  opendrain_en:0
       }};
-      GenericIOType uart{0}_tx_io=GenericIOType{{
+      GenericIOType uart{0}_tx_io = GenericIOType{{
                  outputval:wruart{0}_tx,
                  output_en:1,
                  input_en:0,
@@ -32,7 +32,7 @@ uartwires = '''
 spiwires = '''
       Wire#(Bit#(1)) wrspi{0}_sclk<-mkDWire(0);
       Wire#(Bit#(1)) wrspi{0}_mosi<-mkDWire(0);
-      Wire#(Bit#(1)) wrspi{0}_ss<-mkDWire(0);
+      Wire#(Bit#(1)) wrspi{0}_nss<-mkDWire(0);
       Wire#(Bit#(1)) wrspi{0}_miso<-mkDWire(0);
       GenericIOType spi{0}_sclk_io = GenericIOType{{
                  outputval:wrspi{0}_sclk,
@@ -54,8 +54,8 @@ spiwires = '''
                  drivestrength:0,
                  opendrain_en:0
       }};
-      GenericIOType spi{0}_ss_io = GenericIOType{{
-                 outputval:wrspi{0}_ss,
+      GenericIOType spi{0}_nss_io = GenericIOType{{
+                 outputval:wrspi{0}_nss,
                  output_en:1,
                  input_en:0,
                  pullup_en:0,
@@ -74,7 +74,6 @@ spiwires = '''
                  drivestrength:0,
                  opendrain_en:0
       }};
-
 '''
 twiwires = '''
       Wire#(Bit#(1)) wrtwi{0}_sda_out<-mkDWire(0);
@@ -188,7 +187,7 @@ jtagwires = '''
       Wire#(Bit#(1)) wrjtag{0}_tclk<-mkDWire(0);
       Wire#(Bit#(1)) wrjtag{0}_trst<-mkDWire(0);
       Wire#(Bit#(1)) wrjtag{0}_tdo<-mkDWire(0);
-      GenericIOType jtag{0}_tdi_io=GenericIOType{{
+      GenericIOType jtag{0}_tdi_io = GenericIOType{{
                  outputval:0,
                  output_en:0,
                  input_en:1,
@@ -198,40 +197,40 @@ jtagwires = '''
                  drivestrength:0,
                  opendrain_en:0
       }};
-      GenericIOType jtag{0}_tdo_io=GenericIOType{{
+      GenericIOType jtag{0}_tms_io = GenericIOType{{
+                 outputval:0,
+                 output_en:0,
+                 input_en:1,
+                 pullup_en:0,
+                 pulldown_en:0,
+                 pushpull_en:0,
+                 drivestrength:0,
+                 opendrain_en:0
+      }};
+      GenericIOType jtag{0}_tclk_io = GenericIOType{{
+                 outputval:0,
+                 output_en:0,
+                 input_en:1,
+                 pullup_en:0,
+                 pulldown_en:0,
+                 pushpull_en:0,
+                 drivestrength:0,
+                 opendrain_en:0
+      }};
+      GenericIOType jtag{0}_trst_io = GenericIOType{{
+                 outputval:0,
+                 output_en:0,
+                 input_en:1,
+                 pullup_en:0,
+                 pulldown_en:0,
+                 pushpull_en:0,
+                 drivestrength:0,
+                 opendrain_en:0
+      }};
+      GenericIOType jtag{0}_tdo_io = GenericIOType{{
                  outputval:wrjtag{0}_tdo,
                  output_en:1,
                  input_en:0,
-                 pullup_en:0,
-                 pulldown_en:0,
-                 pushpull_en:0,
-                 drivestrength:0,
-                 opendrain_en:0
-      }};
-      GenericIOType jtag{0}_tms_io=GenericIOType{{
-                 outputval:0,
-                 output_en:0,
-                 input_en:1,
-                 pullup_en:0,
-                 pulldown_en:0,
-                 pushpull_en:0,
-                 drivestrength:0,
-                 opendrain_en:0
-      }};
-      GenericIOType jtag{0}_trst_io=GenericIOType{{
-                 outputval:0,
-                 output_en:0,
-                 input_en:1,
-                 pullup_en:0,
-                 pulldown_en:0,
-                 pushpull_en:0,
-                 drivestrength:0,
-                 opendrain_en:0
-      }};
-      GenericIOType jtag{0}_tclk_io=GenericIOType{{
-                 outputval:0,
-                 output_en:0,
-                 input_en:1,
                  pullup_en:0,
                  pulldown_en:0,
                  pushpull_en:0,
@@ -242,7 +241,7 @@ jtagwires = '''
 
 pwmwires = '''
       Wire#(Bit#(1)) wrpwm{0}_pwm<-mkDWire(0);
-      GenericIOType pwm{0}_pwm_io=GenericIOType{{
+      GenericIOType pwm{0}_pwm_io = GenericIOType{{
                  outputval:wrpwm{0}_pwm,
                  output_en:1,
                  input_en:0,
