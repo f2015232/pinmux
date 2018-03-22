@@ -22,12 +22,12 @@ import time
 import math
 
 # project module imports
-from interface_decl import *
-from interface_def import *
-from parse import *
-from wire_def import *
-from actual_pinmux import *
-from bus_transactors import *
+from interface_decl import ifaces, mux_interface, io_interface
+from wire_def import muxwire, generic_io
+from parse import N_IO, ADDR_WIDTH, DATA_WIDTH
+from parse import upper_offset, lower_offset
+from actual_pinmux import muxed_cells, pinmux
+from bus_transactors import axi4_lite
 
 if not os.path.exists("bsv_src"):
     os.makedirs("bsv_src")
