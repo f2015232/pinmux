@@ -139,8 +139,8 @@ io_interface = IOInterface([{'name': 'io_outputval_{0}', 'enabled': False},
 # Outputs from the peripherals will be inputs to the pinmux
 # module. Hence the change in direction for most pins
 
-uartinterface_decl = Interface([{'name': 'rx_{0}'},
-                                {'name': 'tx_{0}', 'action': True},
+uartinterface_decl = Interface([{'name': 'uart{0}_rx'},
+                                {'name': 'uart{0}_tx', 'action': True},
                                 ])
 
 spiinterface_decl = Interface([{'name': 'spi{0}_sclk', 'action': True},

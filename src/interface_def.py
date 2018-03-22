@@ -18,8 +18,8 @@ io_interface_def = '''
       endmethod
 '''
 uartinterface_def = '''
-      method rx_{0}=wruart{0}_rx;
-      method Action tx_{0}(Bit#(1) in);
+      method uart{0}_rx=wruart{0}_rx;
+      method Action uart{0}_tx(Bit#(1) in);
          wruart{0}_tx<=in;
       endmethod
 '''
