@@ -1,6 +1,6 @@
 # == Intermediate wire definitions ==#
 muxwire = '''
-      Wire#(Bit#({1}))   wrcell{0}_mux<-mkDWire(0);'''
+      Wire#(Bit#({1})) wrcell{0}_mux<-mkDWire(0);'''
 generic_io = '''
       GenericIOType cell{0}_mux_out=unpack(0);
       Wire#(Bit#(1)) cell{0}_mux_in<-mkDWire(0);
@@ -83,7 +83,7 @@ twiwires = '''
       Wire#(Bit#(1)) wrtwi{0}_scl_out<-mkDWire(0);
       Wire#(Bit#(1)) wrtwi{0}_scl_outen<-mkDWire(0);
       Wire#(Bit#(1)) wrtwi{0}_scl_in<-mkDWire(0);
-      GenericIOType  twi{0}_sda_io = GenericIOType{{
+      GenericIOType twi{0}_sda_io = GenericIOType{{
                  outputval:wrtwi{0}_sda_out,
                  output_en:wrtwi{0}_sda_outen,
                  input_en:~wrtwi{0}_sda_outen,
@@ -93,7 +93,7 @@ twiwires = '''
                  drivestrength:0,
                  opendrain_en:0
       }};
-      GenericIOType  twi{0}_scl_io = GenericIOType{{
+      GenericIOType twi{0}_scl_io = GenericIOType{{
                  outputval:wrtwi{0}_scl_out,
                  output_en:wrtwi{0}_scl_outen,
                  input_en:~wrtwi{0}_scl_outen,
@@ -120,7 +120,7 @@ sdwires = '''
       Wire#(Bit#(1)) wrsd{0}_d3_out<-mkDWire(0);
       Wire#(Bit#(1)) wrsd{0}_d3_outen<-mkDWire(0);
       Wire#(Bit#(1)) wrsd{0}_d3_in<-mkDWire(0);
-      GenericIOType  sd{0}_clk_io = GenericIOType{{
+      GenericIOType sd{0}_clk_io = GenericIOType{{
                  outputval:wrsd{0}_clk,
                  output_en:1,
                  input_en:0,
@@ -130,7 +130,7 @@ sdwires = '''
                  drivestrength:0,
                  opendrain_en:0
       }};
-      GenericIOType  sd{0}_cmd_io = GenericIOType{{
+      GenericIOType sd{0}_cmd_io = GenericIOType{{
                  outputval:wrsd{0}_cmd,
                  output_en:1,
                  input_en:0,
@@ -140,7 +140,7 @@ sdwires = '''
                  drivestrength:0,
                  opendrain_en:0
       }};
-      GenericIOType  sd{0}_d0_io = GenericIOType{{
+      GenericIOType sd{0}_d0_io = GenericIOType{{
                  outputval:wrsd{0}_d0_out,
                  output_en:wrsd{0}_d0_outen,
                  input_en:~wrsd{0}_d0_outen,
@@ -150,7 +150,7 @@ sdwires = '''
                  drivestrength:0,
                  opendrain_en:0
       }};
-      GenericIOType  sd{0}_d1_io = GenericIOType{{
+      GenericIOType sd{0}_d1_io = GenericIOType{{
                  outputval:wrsd{0}_d1_out,
                  output_en:wrsd{0}_d1_outen,
                  input_en:~wrsd{0}_d1_outen,
@@ -160,7 +160,7 @@ sdwires = '''
                  drivestrength:0,
                  opendrain_en:0
       }};
-      GenericIOType  sd{0}_d2_io = GenericIOType{{
+      GenericIOType sd{0}_d2_io = GenericIOType{{
                  outputval:wrsd{0}_d2_out,
                  output_en:wrsd{0}_d2_outen,
                  input_en:~wrsd{0}_d2_outen,
@@ -170,7 +170,7 @@ sdwires = '''
                  drivestrength:0,
                  opendrain_en:0
       }};
-      GenericIOType  sd{0}_d3_io = GenericIOType{{
+      GenericIOType sd{0}_d3_io = GenericIOType{{
                  outputval:wrsd{0}_d3_out,
                  output_en:wrsd{0}_d3_outen,
                  input_en:~wrsd{0}_d3_outen,
