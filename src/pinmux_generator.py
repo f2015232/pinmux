@@ -23,7 +23,6 @@ import math
 
 # project module imports
 from interface_decl import Interfaces, mux_interface, io_interface
-from wire_def import muxwire
 from parse import Parse
 from actual_pinmux import init
 from bus_transactors import axi4_lite
@@ -59,7 +58,6 @@ package pinmux;
       Bit#(1) opendrain_en;   // opendrain enable form core to io_cell  bit0
    } GenericIOType deriving(Eq,Bits,FShow);
 
-   interface MuxSelectionLines;
 '''
 footer = '''
      endinterface;
@@ -74,7 +72,8 @@ endpackage
 with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     bsv_file.write(header)
 
-    bsv_file.write('''
+    bsv_file.write('''\
+   interface MuxSelectionLines;
 
       // declare the method which will capture the user pin-mux
       // selection values.The width of the input is dependent on the number
@@ -118,7 +117,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
       // values for each mux assigned to a CELL
 ''')
     for cell in p.muxed_cells:
-        bsv_file.write(muxwire.format(
+        bsv_file.write(mux_interface.wirefmt(
             cell[0], int(math.log(len(cell) - 1, 2))))
 
     ifaces.wirefmt(bsv_file)
