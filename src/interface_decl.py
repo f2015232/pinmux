@@ -149,8 +149,8 @@ spiinterface_decl = Interface([{'name': 'spi{0}_sclk', 'action': True},
                                {'name': 'spi{0}_miso'},
                                ])
 
-twiinterface_decl = Interface([{'name': 'sda{0}', 'outen': True},
-                               {'name': 'scl{0}', 'outen': True},
+twiinterface_decl = Interface([{'name': 'twi{0}_sda', 'outen': True},
+                               {'name': 'twi{0}_scl', 'outen': True},
                                ])
 
 sdinterface_decl = Interface([{'name': 'sd{0}_clk', 'action': True},

@@ -38,21 +38,21 @@ spiinterface_def = '''
 
 twiinterface_def = '''
 
-      method Action sda{0}_out (Bit#(1) in);
+      method Action twi{0}_sda_out (Bit#(1) in);
          wrtwi{0}_sda_out<=in;
       endmethod
-      method Action sda{0}_outen (Bit#(1) in);
+      method Action twi{0}_sda_outen (Bit#(1) in);
          wrtwi{0}_sda_outen<=in;
       endmethod
-      method sda{0}_in=wrtwi{0}_sda_in;
+      method twi{0}_sda_in=wrtwi{0}_sda_in;
 
-      method Action scl{0}_out (Bit#(1) in);
+      method Action twi{0}_scl_out (Bit#(1) in);
          wrtwi{0}_scl_out<=in;
       endmethod
-      method Action scl{0}_outen (Bit#(1) in);
+      method Action twi{0}_scl_outen (Bit#(1) in);
          wrtwi{0}_scl_outen<=in;
       endmethod
-      method scl{0}_in=wrtwi{0}_scl_in;
+      method twi{0}_scl_in=wrtwi{0}_scl_in;
 
 '''
 
