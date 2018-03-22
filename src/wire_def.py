@@ -1,9 +1,9 @@
 # == Intermediate wire definitions ==#
 muxwire = '''
-      Wire#(Bit#({1}))   wrmux{0} <-mkDWire(0);'''
+      Wire#(Bit#({1}))   wrcell{0}_mux <-mkDWire(0);'''
 generic_io = '''
-      GenericIOType cell{0}_out=unpack(0);
-      Wire#(Bit#(1)) cell{0}_in <-mkDWire(0);
+      GenericIOType cell{0}_mux_out=unpack(0);
+      Wire#(Bit#(1)) cell{0}_mux_in <-mkDWire(0);
 '''
 uartwires = '''
       Wire#(Bit#(1)) wruart{0}_rx <-mkDWire(0);
