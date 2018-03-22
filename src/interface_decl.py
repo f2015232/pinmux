@@ -105,7 +105,6 @@ class Interface(object):
 
     def ifacedef(self, *args):
         res = '\n'.join(map(self.ifacefmtpin, self.pins))
-        print res
         res = res.format(*args)
         return '\n' + res + '\n'
 

@@ -212,13 +212,13 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     for i in range(0, N_IO):
         bsv_file.write(io_interface.ifacedef(i))
     for i in range(0, N_UART):
-        bsv_file.write(uartinterface_def.format(i))
+        bsv_file.write(uartinterface_decl.ifacedef(i))
     for i in range(0, N_SPI):
         bsv_file.write(spiinterface_def.format(i))
     for i in range(0, N_TWI):
-        bsv_file.write(twiinterface_def.format(i))
+        bsv_file.write(twiinterface_decl.ifacedef(i))
     for i in range(0, N_SD):
-        bsv_file.write(sdinterface_def.format(i))
+        bsv_file.write(sdinterface_decl.ifacedef(i))
     for i in range(0, N_JTAG):
         bsv_file.write(jtaginterface_def.format(i))
     for i in range(0, N_PWM):
