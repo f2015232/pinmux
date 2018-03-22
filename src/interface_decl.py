@@ -1,3 +1,4 @@
+from UserDict import UserDict
 
 class Pin(object):
     """ pin interface declaration.
@@ -166,6 +167,39 @@ class IOInterface(Interface):
         return "cell{0}_mux_in"
 
 
+class Interfaces(UserDict):
+    """ contains a list of interface definitions
+    """
+
+    def __init__(self):
+        self.ifacecount = []
+        ifaces = {}
+        with open('interfaces.txt', 'r') as ifile:
+            for l in ifile.readlines():
+                l = l.strip()
+                l = l.split("\t")
+                print l
+                name = l[0]
+                count = int(l[1])
+                self.ifacecount.append((name, count))
+                spec = self.read_spec(name)
+                ifaces[name] = Interface(name, spec)
+        UserDict.__init__(self, ifaces)
+
+    def read_spec(self, name):
+        spec = []
+        with open('%s.txt' % name, 'r') as sfile:
+            for l in sfile.readlines():
+                l = l.split("\t")
+                d = {'name': l[0]}
+                if l[1] == 'out':
+                    d['action'] = True
+                elif l[1] == 'inout':
+                    d['outen'] = True
+                spec.append(d)
+        return spec
+
+
 # ========= Interface declarations ================ #
 
 mux_interface = Interface('cell', [{'name': 'mux', 'ready':False,
@@ -226,6 +260,8 @@ jtaginterface_decl = Interface('jtag',
 pwminterface_decl = Interface('pwm',
                             [{'name': "pwm", 'action': True}
                             ])
+
+ifaces = Interfaces()
 
 # ======================================= #
 

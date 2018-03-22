@@ -1,0 +1,6 @@
+clk	out
+cmd	out
+d0	outen
+d1	outen
+d2	outen
+d3	outen
