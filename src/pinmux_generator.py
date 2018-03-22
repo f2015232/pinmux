@@ -22,7 +22,7 @@ import time
 import math
 
 # project module imports
-from interface_decl import ifaces, mux_interface, io_interface
+from interface_decl import Interfaces, mux_interface, io_interface
 from wire_def import muxwire, generic_io
 from parse import Parse
 from actual_pinmux import init
@@ -30,6 +30,8 @@ from bus_transactors import axi4_lite
 
 p = Parse()
 init(p)
+ifaces = Interfaces()
+#ifaces.ifaceadd('io', p.N_IO, io_interface)
 
 if not os.path.exists("bsv_src"):
     os.makedirs("bsv_src")
@@ -91,7 +93,8 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
       // Each IO cell will have 8 input field (output from pin mux
       // and on output field (input to pinmux)''')
     for i in range(0, p.N_IO):
-        bsv_file.write('''\n      // interface for IO CEll-{0}''')
+        bsv_file.write('''\n      // interface declaration between IO-{0} and pinmux'''.format(i))
+
         bsv_file.write(io_interface.ifacefmt(i))
     # ==============================================================
 

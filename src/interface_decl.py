@@ -253,8 +253,6 @@ io_interface = IOInterface('io',
 # Outputs from the peripherals will be inputs to the pinmux
 # module. Hence the change in direction for most pins
 
-ifaces = Interfaces()
-
 # ======================================= #
 
 # basic test
@@ -301,6 +299,8 @@ if __name__ == '__main__':
             print repr(p2)
             print
             assert p1 == p2
+
+    ifaces = Interfaces()
 
     ifaceuart = ifaces['uart']
     print ifaceuart.ifacedef(0)
