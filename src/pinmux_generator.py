@@ -24,10 +24,12 @@ import math
 # project module imports
 from interface_decl import ifaces, mux_interface, io_interface
 from wire_def import muxwire, generic_io
-from parse import N_IO, ADDR_WIDTH, DATA_WIDTH
-from parse import upper_offset, lower_offset
-from actual_pinmux import muxed_cells, pinmux
+from parse import Parse
+from actual_pinmux import init
 from bus_transactors import axi4_lite
+
+p = Parse()
+init(p)
 
 if not os.path.exists("bsv_src"):
     os.makedirs("bsv_src")
@@ -77,7 +79,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
       // of muxes happening per IO. For now we have a generalized width
       // where each IO will have the same number of muxes.''')
 
-    for cell in muxed_cells:
+    for cell in p.muxed_cells:
         bsv_file.write(mux_interface.ifacefmt(cell[0],
                                               int(math.log(len(cell) - 1, 2))))
 
@@ -88,7 +90,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
       // declare the interface to the IO cells.
       // Each IO cell will have 8 input field (output from pin mux
       // and on output field (input to pinmux)''')
-    for i in range(0, N_IO):
+    for i in range(0, p.N_IO):
         bsv_file.write('''\n      // interface for IO CEll-{0}''')
         bsv_file.write(io_interface.ifacefmt(i))
     # ==============================================================
@@ -116,13 +118,13 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
       // the followins wires capture the pin-mux selection
       // values for each mux assigned to a CELL
 ''')
-    for cell in muxed_cells:
+    for cell in p.muxed_cells:
         bsv_file.write(muxwire.format(
             cell[0], int(math.log(len(cell) - 1, 2))))
 
     bsv_file.write(
         '''\n      // following wires capture the values sent to the IO Cell''')
-    for i in range(0, N_IO):
+    for i in range(0, p.N_IO):
         bsv_file.write(generic_io.format(i))
 
     ifaces.wirefmt(bsv_file)
@@ -133,7 +135,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     bsv_file.write('''
       /*====== This where the muxing starts for each io-cell======*/
 ''')
-    bsv_file.write(pinmux)
+    bsv_file.write(p.pinmux)
     bsv_file.write('''
       /*============================================================*/
 ''')
@@ -142,14 +144,14 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     bsv_file.write('''
     interface mux_lines = interface MuxSelectionLines
 ''')
-    for cell in muxed_cells:
+    for cell in p.muxed_cells:
         bsv_file.write(mux_interface.ifacedef(cell[0],
                                               int(math.log(len(cell) - 1, 2))))
     bsv_file.write('''
     endinterface;
     interface peripheral_side = interface PeripheralSide
 ''')
-    for i in range(0, N_IO):
+    for i in range(0, p.N_IO):
         bsv_file.write(io_interface.ifacedef(i))
     ifaces.ifacedef(bsv_file)
     bsv_file.write(footer)
@@ -171,9 +173,9 @@ package PinTop;
         Ifc_pinmux pinmux <-mkpinmux;
 
         // declare the registers which will be used to mux the IOs
-'''.format(ADDR_WIDTH, DATA_WIDTH))
+'''.format(p.ADDR_WIDTH, p.DATA_WIDTH))
 
-    for cell in muxed_cells:
+    for cell in p.muxed_cells:
         bsv_file.write('''
             Reg#(Bit#({0})) rg_muxio_{1} <-mkReg(0);'''.format(
             int(math.log(len(cell) - 1, 2)), cell[0]))
@@ -183,7 +185,7 @@ package PinTop;
         // pin-mux module
         rule connect_selection_registers;''')
 
-    for cell in muxed_cells:
+    for cell in p.muxed_cells:
         bsv_file.write('''
           pinmux.mux_lines.cell{0}_mux(rg_muxio_{0});'''.format(cell[0]))
 
@@ -192,10 +194,10 @@ package PinTop;
         // method definitions for the write user interface
         method ActionValue#(Bool) write(Bit#({2}) addr, Bit#({3}) data);
           Bool err=False;
-          case (addr[{0}:{1}])'''.format(upper_offset, lower_offset,
-                                         ADDR_WIDTH, DATA_WIDTH))
+          case (addr[{0}:{1}])'''.format(p.upper_offset, p.lower_offset,
+                                         p.ADDR_WIDTH, p.DATA_WIDTH))
     index = 0
-    for cell in muxed_cells:
+    for cell in p.muxed_cells:
         bsv_file.write('''
             {0}: rg_muxio_{1}<=truncate(data);'''.format(index, cell[0]))
         index = index + 1
@@ -211,10 +213,10 @@ package PinTop;
         method Tuple2#(Bool,Bit#({3})) read(Bit#({2}) addr);
           Bool err=False;
           Bit#(32) data=0;
-          case (addr[{0}:{1}])'''.format(upper_offset, lower_offset,
-                                         ADDR_WIDTH, DATA_WIDTH))
+          case (addr[{0}:{1}])'''.format(p.upper_offset, p.lower_offset,
+                                         p.ADDR_WIDTH, p.DATA_WIDTH))
     index = 0
-    for cell in muxed_cells:
+    for cell in p.muxed_cells:
         bsv_file.write('''
             {0}: data=zeroExtend(rg_muxio_{1});'''.format(index, cell[0]))
         index = index + 1
@@ -231,5 +233,5 @@ endpackage
 
 # ######## Generate bus transactors ################
 with open('bsv_src/bus.bsv', 'w') as bsv_file:
-    bsv_file.write(axi4_lite.format(ADDR_WIDTH, DATA_WIDTH))
+    bsv_file.write(axi4_lite.format(p.ADDR_WIDTH, p.DATA_WIDTH))
 # ##################################################

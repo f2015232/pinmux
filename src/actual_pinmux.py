@@ -1,4 +1,3 @@
-from parse import *
 from string import digits
 try:
     from string import maketrans
@@ -38,63 +37,63 @@ dedicated_wire = '''
       endrule
 '''
 # ============================================================
-pinmux = ''' '''
 digits = maketrans('0123456789', ' '*10)  # delete space later
-
 
 def cn(idx):
     return "cell%s_mux" % str(idx)
 
+def init(p):
+    p.pinmux = ' '
+    global dedicated_wire
+    for cell in p.muxed_cells:
+        p.pinmux += "      %s_out=" % cn(cell[0])
+        i = 0
+        while(i < len(cell) - 1):
+            p.pinmux += "wr%s" % cn(cell[0]) + \
+                "==" + str(i) + "?" + cell[i + 1] + "_io:\n\t\t\t"
+            if(i + 2 == len(cell) - 1):
+                p.pinmux += cell[i + 2] + "_io"
+                i = i + 2
+            else:
+                i = i + 1
+        p.pinmux += ";\n"
+        # ======================================================== #
 
-for cell in muxed_cells:
-    pinmux = pinmux + "      %s_out=" % cn(cell[0])
-    i = 0
-    while(i < len(cell) - 1):
-        pinmux = pinmux + "wr%s" % cn(cell[0]) + \
-            "==" + str(i) + "?" + cell[i + 1] + "_io:\n\t\t\t"
-        if(i + 2 == len(cell) - 1):
-            pinmux = pinmux + cell[i + 2] + "_io"
-            i = i + 2
-        else:
-            i = i + 1
-    pinmux = pinmux + ";\n"
-    # ======================================================== #
+        # check each cell if "peripheral input/inout" then assign its wire
+        # Here we check the direction of each signal in the dictionary.
+        # We choose to keep the dictionary within the code and not user-input
+        # since the interfaces are always standard and cannot change from
+        # user-to-user. Plus this also reduces human-error as well :)
+        for i in range(0, len(cell) - 1):
+            temp = cell[i + 1].translate(digits)
+            temp = temp.replace(' ', '')
+            x = dictionary.get(temp)
+            if(x is None):
+                print(
+                    "ERROR: The signal : " +
+                    str(cell[i + 1]) +
+                    " of pinmap.txt isn't present in the current dictionary.\
+                  \nUpdate dictionary or fix-typo.")
+                exit(1)
+            if(x == "input"):
+                p.pinmux += \
+                    mux_wire.format(cell[0], i, "wr" + cell[i + 1]) + "\n"
+            elif(x == "inout"):
+                p.pinmux += \
+                    mux_wire.format(cell[0], i, "wr" + cell[i + 1] +
+                                                "_in") + "\n"
+    # ============================================================ #
 
-    # check each cell if "peripheral input/inout" then assign its wire
-    # Here we check the direction of each signal in the dictionary.
-    # We choose to keep the dictionary within the code and not user-input
-    # since the interfaces are always standard and cannot change from
-    # user-to-user. Plus this also reduces human-error as well :)
-    for i in range(0, len(cell) - 1):
-        temp = cell[i + 1].translate(digits)
-        temp = temp.replace(' ', '')
+    # ==================  Logic for dedicated pins ========= #
+    for cell in p.dedicated_cells:
+        p.pinmux += "      %s" % cn(cell[0]) + \
+            "_out=" + cell[1] + "_io;\n"
+        temp = cell[1].translate(digits)
         x = dictionary.get(temp)
-        if(x is None):
-            print(
-                "ERROR: The signal : " +
-                str(cell[i + 1]) +
-                " of pinmap.txt isn't present in the current dictionary.\
-              \nUpdate dictionary or fix-typo.")
-            exit(1)
         if(x == "input"):
             pinmux = pinmux + \
-                mux_wire.format(cell[0], i, "wr" + cell[i + 1]) + "\n"
+                dedicated_wire.format(cell[0], "wr" + cell[1]) + "\n"
         elif(x == "inout"):
             pinmux = pinmux + \
-                mux_wire.format(cell[0], i, "wr" + cell[i + 1] +
-                                            "_in") + "\n"
-# ============================================================ #
-
-# ==================  Logic for dedicated pins ========= #
-for cell in dedicated_cells:
-    pinmux = pinmux + "      %s" % cn(cell[0]) + \
-        "_out=" + cell[1] + "_io;\n"
-    temp = cell[1].translate(digits)
-    x = dictionary.get(temp)
-    if(x == "input"):
-        pinmux = pinmux + \
-            dedicated_wire.format(cell[0], "wr" + cell[1]) + "\n"
-    elif(x == "inout"):
-        pinmux = pinmux + \
-            dedicated_wire.format(cell[0], "wr" + cell[1] + "_in") + "\n"
-# =======================================================#
+                dedicated_wire.format(cell[0], "wr" + cell[1] + "_in") + "\n"
+    # =======================================================#
