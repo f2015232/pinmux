@@ -60,6 +60,14 @@ class Pin(object):
             res += "%s=%s;" % (self.name, fmtname)
         return res
 
+    def wirefmt(self, fmtoutfn=None, fmtinfn=None, fmtdecfn=None):
+        res = '      Wire#(Bit#(%s)) ' % self.bitspec
+        if self.action:
+            res += '%s' % fmtinfn(self.name)
+        else:
+            res += '%s' % fmtoutfn(self.name)
+        res += "<-mkDWire(0);"
+        return res
 
 class Interface(object):
     """ create an interface from a list of pinspecs.
@@ -68,6 +76,7 @@ class Interface(object):
 
     def __init__(self, pinspecs):
         self.pins = []
+        self.pinspecs = pinspecs
         for p in pinspecs:
             if p.get('outen') is True:  # special case, generate 3 pins
                 _p = {}
@@ -79,6 +88,35 @@ class Interface(object):
                     self.pins.append(Pin(**_p))
             else:
                 self.pins.append(Pin(**p))
+
+    def wirefmt(self, *args):
+        res = '\n'.join(map(self.wirefmtpin, self.pins)).format(*args)
+        res += '\n'
+        for p in self.pinspecs:
+            name = p['name'].format(*args)
+            res += "      GenericIOType %s_io = GenericIOType{\n" % name
+            params = []
+            if p.get('outen') is True:
+                outname = self.ifacefmtoutfn(name)
+                params.append('outputval:%s_out,' % outname)
+                params.append('output_en:%s_outen,' % outname)
+                params.append('input_en:~%s_outen,' % outname)
+            elif p.get('action'):
+                outname = self.ifacefmtoutfn(name)
+                params.append('outputval:%s,' % outname)
+                params.append('output_en:1,')
+                params.append('input_en:0,')
+            else:
+                params.append('outputval:0,')
+                params.append('output_en:0,')
+                params.append('input_en:1,')
+            params += ['pullup_en:0,', 'pulldown_en:0,',
+                       'pushpull_en:0,', 'drivestrength:0,',
+                       'opendrain_en:0']
+            for param in params:
+                res += '                 %s\n' % param
+            res += '      };\n'
+        return '\n' + res
 
     def ifacefmt(self, *args):
         res = '\n'.join(map(self.ifacefmtdecpin, self.pins)).format(*args)
@@ -95,6 +133,10 @@ class Interface(object):
 
     def ifacefmtinfn(self, name):
         return "wr%s" % name
+
+    def wirefmtpin(self, pin):
+        return pin.wirefmt(self.ifacefmtoutfn, self.ifacefmtinfn,
+                            self.ifacefmtdecfn2)
 
     def ifacefmtdecpin(self, pin):
         return pin.ifacefmt(self.ifacefmtdecfn)
@@ -199,6 +241,15 @@ if __name__ == '__main__':
         p = _pinmunge(p, " ", " ")
         return p
 
+    def zipcmp(l1, l2):
+        l1 = l1.split("\n")
+        l2 = l2.split("\n")
+        for p1, p2 in zip(l1, l2):
+            print repr(p1)
+            print repr(p2)
+            print
+            assert p1 == p2
+
     from interface_def import io_interface_def
     print io_interface_def.format(0)
     print io_interface.ifacedef(0)
@@ -212,4 +263,40 @@ if __name__ == '__main__':
     print repr(mux_interface_def.format(0, 1))
     print repr(mux_interface.ifacedef(0, 1))
     assert mux_interface_def.format(0,1) == mux_interface.ifacedef(0,1)
+
+    from wire_def import uartwires
+    print uartwires.format(0)
+    print uartinterface_decl.wirefmt(0)
+    assert uartwires.format(0) == uartinterface_decl.wirefmt(0), \
+            zipcmp(uartwires.format(0), uartinterface_decl.wirefmt(0))
+
+    from wire_def import spiwires
+    print spiwires.format(0)
+    print spiinterface_decl.wirefmt(0)
+    assert spiwires.format(0) == spiinterface_decl.wirefmt(0), \
+            zipcmp(spiwires.format(0), spiinterface_decl.wirefmt(0))
+
+    from wire_def import jtagwires
+    print jtagwires.format(0)
+    print jtaginterface_decl.wirefmt(0)
+    assert jtagwires.format(0) == jtaginterface_decl.wirefmt(0), \
+            zipcmp(jtagwires.format(0), jtaginterface_decl.wirefmt(0))
+
+    from wire_def import sdwires
+    print sdwires.format(0)
+    print sdinterface_decl.wirefmt(0)
+    assert sdwires.format(0) == sdinterface_decl.wirefmt(0), \
+            zipcmp(sdwires.format(0), sdinterface_decl.wirefmt(0))
+
+    from wire_def import pwmwires
+    print pwmwires.format(0)
+    print pwminterface_decl.wirefmt(0)
+    assert pwmwires.format(0) == pwminterface_decl.wirefmt(0), \
+            zipcmp(pwmwires.format(0), pwminterface_decl.wirefmt(0))
+
+    from wire_def import twiwires
+    print twiwires.format(0)
+    print twiinterface_decl.wirefmt(0)
+    assert twiwires.format(0) == twiinterface_decl.wirefmt(0), \
+            zipcmp(twiwires.format(0), twiinterface_decl.wirefmt(0))
 
