@@ -3,12 +3,6 @@ import math
 N_MUX = 1		# number of selection lines for the mux per io
 N_IO = 0
 N_MUX_IO = 0
-N_UART = 4
-N_SPI = 1
-N_TWI = 2
-N_SD = 2
-N_JTAG = 2
-N_PWM = 1
 Addressing = 'WORD'
 ADDR_WIDTH = 32
 DATA_WIDTH = 32
