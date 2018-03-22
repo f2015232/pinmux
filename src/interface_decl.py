@@ -263,37 +263,9 @@ if __name__ == '__main__':
                                  {'name': 'tx', 'action': True},
                                 ])
 
-    spiinterface_decl = Interface('spi',
-                                [{'name': 'sclk', 'action': True},
-                                 {'name': 'mosi', 'action': True},
-                                 {'name': 'nss', 'action': True},
-                                 {'name': 'miso'},
-                                ])
-
     twiinterface_decl = Interface('twi',
                                 [{'name': 'sda', 'outen': True},
                                  {'name': 'scl', 'outen': True},
-                                ])
-
-    sdinterface_decl = Interface('sd',
-                                [{'name': 'clk', 'action': True},
-                                 {'name': 'cmd', 'action': True},
-                                 {'name': 'd0', 'outen': True},
-                                 {'name': 'd1', 'outen': True},
-                                 {'name': 'd2', 'outen': True},
-                                 {'name': 'd3', 'outen': True}
-                                ])
-
-    jtaginterface_decl = Interface('jtag',
-                                [{'name': 'tdi'},
-                                 {'name': 'tms'},
-                                 {'name': 'tclk'},
-                                 {'name': 'trst'},
-                                 {'name': 'tdo', 'action': True}
-                                ])
-
-    pwminterface_decl = Interface('pwm',
-                                [{'name': "pwm", 'action': True}
                                 ])
 
     def _pinmunge(p, sep, repl, dedupe=True):
@@ -328,56 +300,6 @@ if __name__ == '__main__':
             print
             assert p1 == p2
 
-    from interface_def import io_interface_def
-    print io_interface_def.format(0)
-    print io_interface.ifacedef(0)
-    assert io_interface_def.format(0) == io_interface.ifacedef(0)
-
-    mux_interfacetest = '''
-          method Action cell{0}_mux(Bit#({1}) in);'''
-    print pinmunge(mux_interfacetest.format(0,1))
-    print pinmunge(mux_interface.ifacefmt(0, 1))
-    from interface_def import mux_interface_def
-    print repr(mux_interface_def.format(0, 1))
-    print repr(mux_interface.ifacedef(0, 1))
-    assert mux_interface_def.format(0,1) == mux_interface.ifacedef(0,1)
-
-    from wire_def import uartwires
-    print uartwires.format(0)
-    print uartinterface_decl.wirefmt(0)
-    assert uartwires.format(0) == uartinterface_decl.wirefmt(0), \
-            zipcmp(uartwires.format(0), uartinterface_decl.wirefmt(0))
-
-    from wire_def import spiwires
-    print spiwires.format(0)
-    print spiinterface_decl.wirefmt(0)
-    assert spiwires.format(0) == spiinterface_decl.wirefmt(0), \
-            zipcmp(spiwires.format(0), spiinterface_decl.wirefmt(0))
-
-    from wire_def import jtagwires
-    print jtagwires.format(0)
-    print jtaginterface_decl.wirefmt(0)
-    assert jtagwires.format(0) == jtaginterface_decl.wirefmt(0), \
-            zipcmp(jtagwires.format(0), jtaginterface_decl.wirefmt(0))
-
-    from wire_def import sdwires
-    print sdwires.format(0)
-    print sdinterface_decl.wirefmt(0)
-    assert sdwires.format(0) == sdinterface_decl.wirefmt(0), \
-            zipcmp(sdwires.format(0), sdinterface_decl.wirefmt(0))
-
-    from wire_def import pwmwires
-    print pwmwires.format(0)
-    print pwminterface_decl.wirefmt(0)
-    assert pwmwires.format(0) == pwminterface_decl.wirefmt(0), \
-            zipcmp(pwmwires.format(0), pwminterface_decl.wirefmt(0))
-
-    from wire_def import twiwires
-    print twiwires.format(0)
-    print twiinterface_decl.wirefmt(0)
-    assert twiwires.format(0) == twiinterface_decl.wirefmt(0), \
-            zipcmp(twiwires.format(0), twiinterface_decl.wirefmt(0))
-
     ifaceuart = ifaces['uart']
     print ifaceuart.ifacedef(0)
     print uartinterface_decl.ifacedef(0)
@@ -387,24 +309,3 @@ if __name__ == '__main__':
     print ifacetwi.ifacedef(0)
     print twiinterface_decl.ifacedef(0)
     assert ifacetwi.ifacedef(0) == twiinterface_decl.ifacedef(0)
-
-    ifacepwm = ifaces['pwm']
-    print ifacepwm.ifacedef(0)
-    print pwminterface_decl.ifacedef(0)
-    assert ifacepwm.ifacedef(0) == pwminterface_decl.ifacedef(0)
-
-    ifacesd = ifaces['sd']
-    print ifacesd.ifacedef(0)
-    print sdinterface_decl.ifacedef(0)
-    assert ifacesd.ifacedef(0) == sdinterface_decl.ifacedef(0)
-
-    ifacespi = ifaces['spi']
-    print ifacespi.ifacedef(0)
-    print spiinterface_decl.ifacedef(0)
-    assert ifacespi.ifacedef(0) == spiinterface_decl.ifacedef(0)
-
-    ifacejtag = ifaces['jtag']
-    print ifacejtag.ifacedef(0)
-    print jtaginterface_decl.ifacedef(0)
-    assert ifacejtag.ifacedef(0) == jtaginterface_decl.ifacedef(0)
-
