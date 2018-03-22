@@ -1,9 +1,11 @@
 import math
 
+
 def missing_numbers(num_list):
     original_list = [x for x in range(num_list[0], num_list[-1] + 1)]
     num_list = set(num_list)
     return (list(num_list ^ set(original_list)))
+
 
 class Parse(object):
     # == Parameters == #
@@ -82,6 +84,7 @@ class Parse(object):
     print("Muxed IOs: " + str(len(muxed_cells)))
     print("Dedicated IOs: " + str(len(dedicated_cells)))
     # ============================================ #
+
 
 if __name__ == '__main__':
     p = Parse()

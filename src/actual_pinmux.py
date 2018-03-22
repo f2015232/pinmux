@@ -39,8 +39,10 @@ dedicated_wire = '''
 # ============================================================
 digits = maketrans('0123456789', ' '*10)  # delete space later
 
+
 def cn(idx):
     return "cell%s_mux" % str(idx)
+
 
 def init(p):
     p.pinmux = ' '

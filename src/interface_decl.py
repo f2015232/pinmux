@@ -1,7 +1,8 @@
 from UserDict import UserDict
 
-from wire_def import generic_io # special case
-from wire_def import muxwire # special case
+from wire_def import generic_io  # special case
+from wire_def import muxwire  # special case
+
 
 class Pin(object):
     """ pin interface declaration.
@@ -160,10 +161,12 @@ class Interface(object):
         res = res.format(*args)
         return '\n' + res + '\n'
 
+
 class MuxInterface(Interface):
 
     def wirefmt(self, *args):
         return muxwire.format(*args)
+
 
 class IOInterface(Interface):
 
@@ -242,8 +245,8 @@ class Interfaces(UserDict):
 # ========= Interface declarations ================ #
 
 mux_interface = MuxInterface('cell', [{'name': 'mux', 'ready': False,
-                                    'enabled': False,
-                                    'bitspec': '{1}', 'action': True}])
+                                       'enabled': False,
+                                       'bitspec': '{1}', 'action': True}])
 
 io_interface = IOInterface('io',
                            [{'name': 'outputval', 'enabled': False},
