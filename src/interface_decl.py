@@ -190,7 +190,9 @@ class Interfaces(UserDict):
         spec = []
         with open('%s.txt' % name, 'r') as sfile:
             for l in sfile.readlines():
+                l = l.strip()
                 l = l.split("\t")
+                print l
                 d = {'name': l[0]}
                 if l[1] == 'out':
                     d['action'] = True
@@ -349,4 +351,34 @@ if __name__ == '__main__':
     print twiinterface_decl.wirefmt(0)
     assert twiwires.format(0) == twiinterface_decl.wirefmt(0), \
             zipcmp(twiwires.format(0), twiinterface_decl.wirefmt(0))
+
+    ifaceuart = ifaces['uart']
+    print ifaceuart.ifacedef(0)
+    print uartinterface_decl.ifacedef(0)
+    assert ifaceuart.ifacedef(0) == uartinterface_decl.ifacedef(0)
+
+    ifacetwi = ifaces['twi']
+    print ifacetwi.ifacedef(0)
+    print twiinterface_decl.ifacedef(0)
+    assert ifacetwi.ifacedef(0) == twiinterface_decl.ifacedef(0)
+
+    ifacepwm = ifaces['pwm']
+    print ifacepwm.ifacedef(0)
+    print pwminterface_decl.ifacedef(0)
+    assert ifacepwm.ifacedef(0) == pwminterface_decl.ifacedef(0)
+
+    ifacesd = ifaces['sd']
+    print ifacesd.ifacedef(0)
+    print sdinterface_decl.ifacedef(0)
+    assert ifacesd.ifacedef(0) == sdinterface_decl.ifacedef(0)
+
+    ifacespi = ifaces['spi']
+    print ifacespi.ifacedef(0)
+    print spiinterface_decl.ifacedef(0)
+    assert ifacespi.ifacedef(0) == spiinterface_decl.ifacedef(0)
+
+    ifacejtag = ifaces['jtag']
+    print ifacejtag.ifacedef(0)
+    print jtaginterface_decl.ifacedef(0)
+    assert ifacejtag.ifacedef(0) == jtaginterface_decl.ifacedef(0)
 

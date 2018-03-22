@@ -1,2 +1,2 @@
-sda	outen
-scl	outen
+sda	inout
+scl	inout
