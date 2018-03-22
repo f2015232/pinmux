@@ -157,10 +157,10 @@ uartinterface_decl = Interface([{'name': 'rx_{0}'},
                                 {'name': 'tx_{0}', 'action': True},
                                 ])
 
-spiinterface_decl = Interface([{'name': 'sclk_{0}', 'action': True},
-                               {'name': 'mosi_{0}', 'action': True},
-                               {'name': 'ss_{0}', 'action': True},
-                               {'name': 'miso_{0}'},
+spiinterface_decl = Interface([{'name': 'spi{0}_sclk', 'action': True},
+                               {'name': 'spi{0}_mosi', 'action': True},
+                               {'name': 'spi{0}_nss', 'action': True},
+                               {'name': 'spi{0}_miso'},
                                ])
 
 twiinterface_decl = Interface([{'name': 'sda{0}', 'outen': True},

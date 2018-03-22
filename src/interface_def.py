@@ -24,16 +24,16 @@ uartinterface_def = '''
       endmethod
 '''
 spiinterface_def = '''
-      method Action sclk_{0} (Bit#(1) in);
+      method Action spi{0}_sclk (Bit#(1) in);
          wrspi{0}_sclk<=in;
       endmethod
-      method Action mosi_{0} (Bit#(1) in);
+      method Action spi{0}_mosi (Bit#(1) in);
          wrspi{0}_mosi<=in;
       endmethod
-      method Action ss_{0}   (Bit#(1) in);
-         wrspi{0}_ss<=in;
+      method Action spi{0}_nss   (Bit#(1) in);
+         wrspi{0}_nss<=in;
       endmethod
-      method Bit#(1) miso_{0}=wrspi{0}_miso;
+      method Bit#(1) spi{0}_miso=wrspi{0}_miso;
 '''
 
 twiinterface_def = '''
