@@ -37,7 +37,7 @@ dedicated_wire = '''
       endrule
 '''
 # ============================================================
-digits = maketrans('0123456789', ' '*10)  # delete space later
+digits = maketrans('0123456789', ' ' * 10)  # delete space later
 
 
 def cn(idx):

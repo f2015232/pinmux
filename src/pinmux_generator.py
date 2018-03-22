@@ -44,7 +44,7 @@ copyright = '''
    Date of generation: ''' + time.strftime("%c") + '''
 */
 '''
-header = copyright+'''
+header = copyright + '''
 package pinmux;
 
    typedef struct{
@@ -150,7 +150,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     # ======================================================================
 
 with open('bsv_src/PinTop.bsv', 'w') as bsv_file:
-    bsv_file.write(copyright+'''
+    bsv_file.write(copyright + '''
 package PinTop;
     import pinmux::*;
     interface Ifc_PintTop;
