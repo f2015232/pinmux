@@ -1,20 +1,20 @@
 # === templates for interface definitions ====== #
 mux_interface_def = '''
       method Action  cell{0}_mux(Bit#({1}) in);
-         wrmux{0}<=in;
+         wrcell{0}_mux<=in;
       endmethod
 '''
 io_interface_def = '''
-      method io_outputval_{0}=cell{0}_out.outputval;
-      method io_output_en_{0}=cell{0}_out.output_en;
-      method io_input_en_{0}=cell{0}_out.input_en;
-      method io_pullup_en_{0}=cell{0}_out.pullup_en;
-      method io_pulldown_en_{0}=cell{0}_out.pulldown_en;
-      method io_drivestrength_{0}=cell{0}_out.drivestrength;
-      method io_pushpull_en_{0}=cell{0}_out.pushpull_en;
-      method io_opendrain_en_{0}=cell{0}_out.opendrain_en;
+      method io_outputval_{0}=cell{0}_mux_out.outputval;
+      method io_output_en_{0}=cell{0}_mux_out.output_en;
+      method io_input_en_{0}=cell{0}_mux_out.input_en;
+      method io_pullup_en_{0}=cell{0}_mux_out.pullup_en;
+      method io_pulldown_en_{0}=cell{0}_mux_out.pulldown_en;
+      method io_drivestrength_{0}=cell{0}_mux_out.drivestrength;
+      method io_pushpull_en_{0}=cell{0}_mux_out.pushpull_en;
+      method io_opendrain_en_{0}=cell{0}_mux_out.opendrain_en;
       method Action  io_inputval_{0}(Bit#(1) in);
-         cell{0}_in<=in;
+         cell{0}_mux_in<=in;
       endmethod
 '''
 uartinterface_def = '''

@@ -117,7 +117,7 @@ class MuxInterface(Interface):
         return "cell{0}_mux"
 
     def ifacefmtinfn(self, name):
-        return "wrmux{0}"
+        return "wrcell{0}_mux"
 
 class IOInterface(Interface):
 
@@ -125,15 +125,15 @@ class IOInterface(Interface):
     #    return "cell{0}_mux"
 
     def ifacefmtoutfn(self, name):
-        return "cell{0}_out.%s" % (name[3:-4])
+        return "cell{0}_mux_out.%s" % (name[3:-4])
 
     def ifacefmtinfn(self, name):
-        return "cell{0}_in"
+        return "cell{0}_mux_in"
 
 
 # ========= Interface declarations ================ #
 
-mux_interface = MuxInterface([{'name': 'cell{0}', 'ready':False,
+mux_interface = MuxInterface([{'name': 'cell{0}_mux', 'ready':False,
                       'enabled':False,
                      'bitspec': '{1}', 'action': True}])
 

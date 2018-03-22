@@ -28,25 +28,28 @@ dictionary = {
 # second argument is the mux value.
 # Third argument is the signal from the pinmap file
 mux_wire = '''
-      rule assign_{2}_on_cell{0}(wrmux{0}=={1});
-        {2}<=cell{0}_in;
+      rule assign_{2}_on_cell{0}(wrcell{0}_mux=={1});
+        {2}<=cell{0}_mux_in;
       endrule
 '''
 dedicated_wire = '''
       rule assign_{1}_on_cell{0};
-        {1}<=cell{0}_in;
+        {1}<=cell{0}_mux_in;
       endrule
 '''
 # ============================================================
 pinmux = ''' '''
 digits = maketrans('0123456789', ' '*10) # delete space later
 
+def cn(idx):
+    return "cell%s_mux" % str(idx)
+
 for cell in muxed_cells:
-    pinmux = pinmux + "      cell" + str(cell[0]) + "_out="
+    pinmux = pinmux + "      %s_out=" % cn(cell[0])
     i = 0
     while(i < len(cell) - 1):
-        pinmux = pinmux + "wrmux" + \
-            str(cell[0]) + "==" + str(i) + "?" + cell[i + 1] + "_io:"
+        pinmux = pinmux + "wr%s" % cn(cell[0]) + \
+             "==" + str(i) + "?" + cell[i + 1] + "_io:\n\t\t\t"
         if(i + 2 == len(cell) - 1):
             pinmux = pinmux + cell[i + 2] + "_io"
             i = i + 2
@@ -82,8 +85,8 @@ for cell in muxed_cells:
 
 # ==================  Logic for dedicated pins ========= #
 for cell in dedicated_cells:
-    pinmux = pinmux + "      cell" + \
-        str(cell[0]) + "_out=" + cell[1] + "_io;\n"
+    pinmux = pinmux + "      %s" % cn(cell[0]) + \
+        "_out=" + cell[1] + "_io;\n"
     temp = cell[1].translate(digits)
     x = dictionary.get(temp)
     if(x == "input"):
