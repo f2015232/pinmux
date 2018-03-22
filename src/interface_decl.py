@@ -108,21 +108,7 @@ class Interface(object):
         return '\n' + res + '\n'
 
 
-class MuxInterface(Interface):
-
-    def ifacefmtdecfn2(self, name):
-        return "cell{0}_mux"
-
-    def ifacefmtdecfn(self, name):
-        return "cell{0}_mux"
-
-    def ifacefmtinfn(self, name):
-        return "wrcell{0}_mux"
-
 class IOInterface(Interface):
-
-    #def ifacefmtdecfn(self, name):
-    #    return "cell{0}_mux"
 
     def ifacefmtoutfn(self, name):
         return "cell{0}_mux_out.%s" % (name[3:-4])
@@ -133,7 +119,7 @@ class IOInterface(Interface):
 
 # ========= Interface declarations ================ #
 
-mux_interface = MuxInterface([{'name': 'cell{0}_mux', 'ready':False,
+mux_interface = Interface([{'name': 'cell{0}_mux', 'ready':False,
                       'enabled':False,
                      'bitspec': '{1}', 'action': True}])
 
