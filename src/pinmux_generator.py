@@ -156,37 +156,37 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
         bsv_file.write(
         '''\n      // following wires capture signals to IO CELL if uart-{0} is
       // allotted to it'''.format(i))
-        bsv_file.write(uartwires.format(i))
+        bsv_file.write(uartinterface_decl.wirefmt(i))
 
     for i in range(0, N_SPI):
         bsv_file.write(
         '''\n      // following wires capture signals to IO CELL if spi-{0} is
       // allotted to it'''.format(i))
-        bsv_file.write(spiwires.format(i))
+        bsv_file.write(spiinterface_decl.wirefmt(i))
 
     for i in range(0, N_TWI):
         bsv_file.write(
         '''\n      // following wires capture signals to IO CELL if twi-{0} is
       // allotted to it'''.format(i))
-        bsv_file.write(twiwires.format(i))
+        bsv_file.write(twiinterface_decl.wirefmt(i))
 
     for i in range(0, N_SD):
         bsv_file.write(
         '''\n      // following wires capture signals to IO CELL if sd-{0} is
       // allotted to it'''.format(i))
-        bsv_file.write(sdwires.format(i))
+        bsv_file.write(sdinterface_decl.wirefmt(i))
 
     for i in range(0, N_JTAG):
         bsv_file.write(
         '''\n      // following wires capture signals to IO CELL if jtag-{0} is
       // allotted to it'''.format(i))
-        bsv_file.write(jtagwires.format(i))
+        bsv_file.write(jtaginterface_decl.wirefmt(i))
 
     for i in range(0, N_PWM):
         bsv_file.write(
         '''\n      // following wires capture signals to IO CELL if pwm-{0} is
       // allotted to it'''.format(i))
-        bsv_file.write(pwmwires.format(i))
+        bsv_file.write(pwminterface_decl.wirefmt(i))
     bsv_file.write("\n")
     # ====================================================================
     # ========================= Actual pinmuxing ========================#
