@@ -1,4 +1,4 @@
-# == Intermediate wire definitions ==#
+# == Intermediate wire definitions, special cases ==#
 muxwire = '''
       Wire#(Bit#({1})) wrcell{0}_mux<-mkDWire(0);'''
 generic_io = '''

@@ -1,5 +1,6 @@
 from UserDict import UserDict
 
+from wire_def import generic_io # special case
 
 class Pin(object):
     """ pin interface declaration.
@@ -168,6 +169,9 @@ class IOInterface(Interface):
     def ifacefmtinfn(self, name):
         return "cell{0}_mux_in"
 
+    def wirefmt(self, *args):
+        return generic_io.format(*args)
+
 
 class Interfaces(UserDict):
     """ contains a list of interface definitions
@@ -186,8 +190,10 @@ class Interfaces(UserDict):
                 spec = self.read_spec(name)
                 self.ifaceadd(name, count, Interface(name, spec))
 
-    def ifaceadd(self, name, count, iface):
-        self.ifacecount.append((name, count))
+    def ifaceadd(self, name, count, iface, at=None):
+        if at is None:
+            at = len(self.ifacecount)
+        self.ifacecount.insert(at, (name, count))
         self[name] = iface
 
     def read_spec(self, name):

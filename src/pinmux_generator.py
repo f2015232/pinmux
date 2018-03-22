@@ -31,7 +31,7 @@ from bus_transactors import axi4_lite
 p = Parse()
 init(p)
 ifaces = Interfaces()
-#ifaces.ifaceadd('io', p.N_IO, io_interface)
+ifaces.ifaceadd('io', p.N_IO, io_interface, 0)
 
 if not os.path.exists("bsv_src"):
     os.makedirs("bsv_src")
@@ -92,10 +92,6 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
       // declare the interface to the IO cells.
       // Each IO cell will have 8 input field (output from pin mux
       // and on output field (input to pinmux)''')
-    for i in range(0, p.N_IO):
-        bsv_file.write('''\n      // interface declaration between IO-{0} and pinmux'''.format(i))
-
-        bsv_file.write(io_interface.ifacefmt(i))
     # ==============================================================
 
     # == create method definitions for all peripheral interfaces ==#
@@ -125,11 +121,6 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
         bsv_file.write(muxwire.format(
             cell[0], int(math.log(len(cell) - 1, 2))))
 
-    bsv_file.write(
-        '''\n      // following wires capture the values sent to the IO Cell''')
-    for i in range(0, p.N_IO):
-        bsv_file.write(generic_io.format(i))
-
     ifaces.wirefmt(bsv_file)
 
     bsv_file.write("\n")
@@ -154,8 +145,6 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
     endinterface;
     interface peripheral_side = interface PeripheralSide
 ''')
-    for i in range(0, p.N_IO):
-        bsv_file.write(io_interface.ifacedef(i))
     ifaces.ifacedef(bsv_file)
     bsv_file.write(footer)
     print("BSV file successfully generated: bsv_src/pinmux.bsv")
