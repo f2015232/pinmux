@@ -1,5 +1,6 @@
 from UserDict import UserDict
 
+
 class Pin(object):
     """ pin interface declaration.
         * name is the name of the pin
@@ -69,6 +70,7 @@ class Pin(object):
             res += '%s' % fmtoutfn(self.name)
         res += "<-mkDWire(0);"
         return res
+
 
 class Interface(object):
     """ create an interface from a list of pinspecs.
@@ -142,7 +144,7 @@ class Interface(object):
 
     def wirefmtpin(self, pin):
         return pin.wirefmt(self.ifacefmtoutfn, self.ifacefmtinfn,
-                            self.ifacefmtdecfn2)
+                           self.ifacefmtdecfn2)
 
     def ifacefmtdecpin(self, pin):
         return pin.ifacefmt(self.ifacefmtdecfn)
@@ -183,7 +185,7 @@ class Interfaces(UserDict):
                 count = int(l[1])
                 spec = self.read_spec(name)
                 self.ifaceadd(name, count, Interface(name, spec))
-                
+
     def ifaceadd(self, name, count, iface):
         self.ifacecount.append((name, count))
         self[name] = iface
@@ -230,21 +232,21 @@ class Interfaces(UserDict):
 
 # ========= Interface declarations ================ #
 
-mux_interface = Interface('cell', [{'name': 'mux', 'ready':False,
-                                    'enabled':False,
+mux_interface = Interface('cell', [{'name': 'mux', 'ready': False,
+                                    'enabled': False,
                                     'bitspec': '{1}', 'action': True}])
 
 io_interface = IOInterface('io',
-                    [{'name': 'outputval', 'enabled': False},
-                     {'name': 'output_en', 'enabled': False},
-                     {'name': 'input_en', 'enabled': False},
-                     {'name': 'pullup_en', 'enabled': False},
-                     {'name': 'pulldown_en', 'enabled': False},
-                     {'name': 'drivestrength', 'enabled': False},
-                     {'name': 'pushpull_en', 'enabled': False},
-                     {'name': 'opendrain_en', 'enabled': False},
-                     {'name': 'inputval', 'action': True, 'io': True},
-                          ])
+                           [{'name': 'outputval', 'enabled': False},
+                            {'name': 'output_en', 'enabled': False},
+                               {'name': 'input_en', 'enabled': False},
+                               {'name': 'pullup_en', 'enabled': False},
+                               {'name': 'pulldown_en', 'enabled': False},
+                               {'name': 'drivestrength', 'enabled': False},
+                               {'name': 'pushpull_en', 'enabled': False},
+                               {'name': 'opendrain_en', 'enabled': False},
+                               {'name': 'inputval', 'action': True, 'io': True},
+                            ])
 
 # == Peripheral Interface definitions == #
 # these are the interface of the peripherals to the pin mux
@@ -259,14 +261,14 @@ ifaces = Interfaces()
 if __name__ == '__main__':
 
     uartinterface_decl = Interface('uart',
-                                [{'name': 'rx'},
-                                 {'name': 'tx', 'action': True},
-                                ])
+                                   [{'name': 'rx'},
+                                    {'name': 'tx', 'action': True},
+                                    ])
 
     twiinterface_decl = Interface('twi',
-                                [{'name': 'sda', 'outen': True},
-                                 {'name': 'scl', 'outen': True},
-                                ])
+                                  [{'name': 'sda', 'outen': True},
+                                   {'name': 'scl', 'outen': True},
+                                   ])
 
     def _pinmunge(p, sep, repl, dedupe=True):
         """ munges the text so it's easier to compare.

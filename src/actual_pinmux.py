@@ -39,17 +39,19 @@ dedicated_wire = '''
 '''
 # ============================================================
 pinmux = ''' '''
-digits = maketrans('0123456789', ' '*10) # delete space later
+digits = maketrans('0123456789', ' '*10)  # delete space later
+
 
 def cn(idx):
     return "cell%s_mux" % str(idx)
+
 
 for cell in muxed_cells:
     pinmux = pinmux + "      %s_out=" % cn(cell[0])
     i = 0
     while(i < len(cell) - 1):
         pinmux = pinmux + "wr%s" % cn(cell[0]) + \
-             "==" + str(i) + "?" + cell[i + 1] + "_io:\n\t\t\t"
+            "==" + str(i) + "?" + cell[i + 1] + "_io:\n\t\t\t"
         if(i + 2 == len(cell) - 1):
             pinmux = pinmux + cell[i + 2] + "_io"
             i = i + 2
@@ -69,14 +71,14 @@ for cell in muxed_cells:
         x = dictionary.get(temp)
         if(x is None):
             print(
-              "ERROR: The signal : " +
-              str(cell[i + 1]) +
-              " of pinmap.txt isn't present in the current dictionary.\
+                "ERROR: The signal : " +
+                str(cell[i + 1]) +
+                " of pinmap.txt isn't present in the current dictionary.\
               \nUpdate dictionary or fix-typo.")
             exit(1)
         if(x == "input"):
             pinmux = pinmux + \
-              mux_wire.format(cell[0], i, "wr" + cell[i + 1]) + "\n"
+                mux_wire.format(cell[0], i, "wr" + cell[i + 1]) + "\n"
         elif(x == "inout"):
             pinmux = pinmux + \
                 mux_wire.format(cell[0], i, "wr" + cell[i + 1] +

@@ -79,7 +79,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
 
     for cell in muxed_cells:
         bsv_file.write(mux_interface.ifacefmt(cell[0],
-                                        int(math.log(len(cell) - 1, 2))))
+                                              int(math.log(len(cell) - 1, 2))))
 
     bsv_file.write('''
       endinterface
@@ -117,8 +117,8 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
       // values for each mux assigned to a CELL
 ''')
     for cell in muxed_cells:
-        bsv_file.write(muxwire.format(cell[0], int(math.log(len(cell) - 1, 2))))
-
+        bsv_file.write(muxwire.format(
+            cell[0], int(math.log(len(cell) - 1, 2))))
 
     bsv_file.write(
         '''\n      // following wires capture the values sent to the IO Cell''')
@@ -144,7 +144,7 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
 ''')
     for cell in muxed_cells:
         bsv_file.write(mux_interface.ifacedef(cell[0],
-                                            int(math.log(len(cell) - 1, 2))))
+                                              int(math.log(len(cell) - 1, 2))))
     bsv_file.write('''
     endinterface;
     interface peripheral_side = interface PeripheralSide
@@ -233,4 +233,3 @@ endpackage
 with open('bsv_src/bus.bsv', 'w') as bsv_file:
     bsv_file.write(axi4_lite.format(ADDR_WIDTH, DATA_WIDTH))
 # ##################################################
-
