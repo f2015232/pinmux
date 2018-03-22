@@ -167,7 +167,7 @@ jtaginterface_decl = Interface([{'name': 'jtag{0}_tdi'},
                                 {'name': 'jtag{0}_trst'},
                                 {'name': 'jtag{0}_tdo', 'action': True}])
 
-pwminterface_decl = Interface([{'name': "pwm{0}", 'action': True}])
+pwminterface_decl = Interface([{'name': "pwm{0}_pwm", 'action': True}])
 
 # ======================================= #
 

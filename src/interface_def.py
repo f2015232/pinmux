@@ -104,8 +104,8 @@ jtaginterface_def = '''
 '''
 
 pwminterface_def = '''
-      method Action pwm{0}(Bit#(1) in);
-        wrpwm{0}<=in;
+      method Action pwm{0}_pwm(Bit#(1) in);
+        wrpwm{0}_pwm<=in;
       endmethod
 '''
 # ============================================== #

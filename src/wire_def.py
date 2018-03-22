@@ -116,8 +116,8 @@ jtagwires = '''
 '''
 
 pwmwires = '''
-      Wire#(Bit#(1)) wrpwm{0} <-mkDWire(0);
-      GenericIOType pwm{0}_io=GenericIOType{{outputval:wrpwm{0},
+      Wire#(Bit#(1)) wrpwm{0}_pwm <-mkDWire(0);
+      GenericIOType pwm{0}_pwm_io=GenericIOType{{outputval:wrpwm{0}_pwm,
                 output_en:1, input_en:0, pullup_en:0, pulldown_en:0,
                 pushpull_en:0, drivestrength:0, opendrain_en:0}};
 '''
