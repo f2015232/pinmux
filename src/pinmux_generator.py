@@ -16,6 +16,7 @@
 # ========================================================================
 
 # default module imports
+import getopt
 import os
 import os.path
 import sys
@@ -237,6 +238,39 @@ endpackage
         bsv_file.write(axi4_lite.format(p.ADDR_WIDTH, p.DATA_WIDTH))
     # ##################################################
 
+def printhelp():
+    print ('''pinmux_generator.py [-o outputdir] [-v|--validate] [-h|--help]
+    -o outputdir    : defaults to bsv_src.  also location for reading pinmux.txt
+                      interfaces.txt and *.txt
+    -v | --validate : runs some validation on the pinmux
+    -h | --help     : this help message
+''')
+
 if __name__ == '__main__':
-    pinmuxgen()
+    try:
+        options, remainder = getopt.getopt(
+            sys.argv[1:],
+            'o:vh',
+            ['output=',
+             'validate',
+             'help',
+             'version=',
+             ])
+    except getopt.GetoptError as err:
+        print "ERROR: %s" % str(err)
+        printhelp()
+        sys.exit(1)
+
+    output_dir = None
+    validate = False
+    for opt, arg in options:
+        if opt in ('-o', '--output'):
+            output_dir = arg
+        elif opt in ('-v', '--validate'):
+            validate = True
+        elif opt in ('-h', '--help'):
+            printhelp()
+            sys.exit(0)
+
+    pinmuxgen(output_dir, validate)
 
