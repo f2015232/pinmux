@@ -22,6 +22,7 @@ import sys
 
 from bsv.pinmux_generator import pinmuxgen as bsvgen
 
+
 def printhelp():
     print ('''pinmux_generator.py [-o outputdir] [-v|--validate] [-h|--help]
                                   [-t outputtype]
@@ -69,4 +70,3 @@ if __name__ == '__main__':
         printhelp()
         sys.exit(0)
     gentypes[output_type](output_dir, validate)
-

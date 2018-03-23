@@ -236,4 +236,3 @@ endpackage
     with open(bvp, 'w') as bsv_file:
         bsv_file.write(axi4_lite.format(p.ADDR_WIDTH, p.DATA_WIDTH))
     # ##################################################
-
