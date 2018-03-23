@@ -19,13 +19,13 @@ class Parse(object):
 
     # Generating the number of bits for memory map #
     lower_offset = 0
-    if(Addressing == 'BYTE'):
+    if Addressing == 'BYTE':
         lower_offset = 0
-    elif(Addressing == 'HWORD'):
+    elif Addressing == 'HWORD':
         lower_offset = 1
-    elif(Addressing == 'WORD'):
+    elif Addressing == 'WORD':
         lower_offset = 2
-    elif(Addressing == 'DWORD'):
+    elif Addressing == 'DWORD':
         lower_offset = 3
     else:
         print('ERROR: Addressing should be one of: BYTE, HWORD, WORD, DWORD')
@@ -75,7 +75,7 @@ class Parse(object):
         if(count > 1):
             print("ERROR: Multiple assignment for pin: " + str(each))
             duplicate = True
-    if(duplicate):
+    if duplicate:
         exit(1)
 
     # Check-2: confirm if N_* matches the instances in the pinmap
