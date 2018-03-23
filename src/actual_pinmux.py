@@ -49,15 +49,10 @@ def init(p):
     global dedicated_wire
     for cell in p.muxed_cells:
         p.pinmux += "      %s_out=" % cn(cell[0])
-        i = 0
-        while (i < len(cell) - 1):
+        for i in range(0, len(cell) - 2):
             p.pinmux += "wr%s" % cn(cell[0]) + \
                 "==" + str(i) + "?" + cell[i + 1] + "_io:\n\t\t\t"
-            if i + 2 == len(cell) - 1:
-                p.pinmux += cell[i + 2] + "_io"
-                i = i + 2
-            else:
-                i = i + 1
+        p.pinmux += cell[i + 2] + "_io"
         p.pinmux += ";\n"
         # ======================================================== #
 
