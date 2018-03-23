@@ -26,7 +26,7 @@ check-restore:
 
 .PHONY: gen_pinmux
 gen_pinmux: 
-	@python ./src/pinmux_generator.py
+	@python ./src/pinmux_generator.py -v -o test
 
 .PHONY: gen_verilog 
 gen_verilog: check-restore check-blue 
@@ -40,7 +40,8 @@ gen_verilog: check-restore check-blue
 
 .PHONY: clean
 clean:
-	rm -rf $(BSVBUILDDIR) *.log $(BSVOUTDIR) ./bbl* verilog obj_dir bsv_src src/*.pyc
+	rm -rf $(BSVBUILDDIR) *.log $(BSVOUTDIR) ./bbl*
+	rm -rf verilog obj_dir test/bsv_src src/*.pyc
 
 pep8:
 	autopep8 -r -i src
