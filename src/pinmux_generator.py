@@ -19,6 +19,7 @@
 import getopt
 import os.path
 import sys
+from spec import modules, specgen
 
 from bsv.pinmux_generator import pinmuxgen as bsvgen
 
@@ -38,10 +39,11 @@ if __name__ == '__main__':
     try:
         options, remainder = getopt.getopt(
             sys.argv[1:],
-            'o:vht:',
+            'o:vht:s:',
             ['output=',
              'validate',
              'outputtype=',
+             'spec=',
              'help',
              'version=',
              ])
@@ -53,9 +55,12 @@ if __name__ == '__main__':
     output_type = 'bsv'
     output_dir = None
     validate = False
+    spec = None
     for opt, arg in options:
         if opt in ('-o', '--output'):
             output_dir = arg
+        elif opt in ('-s', '--spec'):
+            pinspec = arg
         elif opt in ('-t', '--outputtype'):
             output_type = arg
         elif opt in ('-v', '--validate'):
@@ -64,9 +69,18 @@ if __name__ == '__main__':
             printhelp()
             sys.exit(0)
 
-    gentypes = {'bsv': bsvgen}
-    if not gentypes.has_key(output_type):
-        print "ERROR: output type '%s' does not exist" % output_type
-        printhelp()
-        sys.exit(0)
-    gentypes[output_type](output_dir, validate)
+    if pinspec:
+        if not modules.has_key(pinspec):
+            print "ERROR: spec type '%s' does not exist" % pinspec
+            printhelp()
+            sys.exit(1)
+        module = modules[pinspec]
+        pinout, bankspec, fixedpins = module.pinspec()
+        specgen(output_dir, pinout, bankspec, fixedpins)
+    else:
+        gentypes = {'bsv': bsvgen}
+        if not gentypes.has_key(output_type):
+            print "ERROR: output type '%s' does not exist" % output_type
+            printhelp()
+            sys.exit(0)
+        gentypes[output_type](output_dir, validate)

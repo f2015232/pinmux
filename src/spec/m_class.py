@@ -2,7 +2,8 @@
 
 from interfaces import jtag, uart, ulpi, uartfull, rgbttl, rgmii
 from interfaces import flexbus1, flexbus2, sdram1, sdram2, mcu8080
-from interfaces import eint, pwm, gpio
+from interfaces import eint, pwm, gpio, spi, i2c, emmc, sdmmc
+from interfaces import quadspi, i2s
 from interfaces import display, display_fns, check_functions
 from interfaces import pinmerge, display_fixed
 
