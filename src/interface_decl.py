@@ -189,11 +189,11 @@ class Interfaces(UserDict):
         self.ifacecount = []
         UserDict.__init__(self, {})
         with open('interfaces.txt', 'r') as ifile:
-            for l in ifile.readlines():
-                l = l.strip()
-                l = l.split("\t")
-                name = l[0]
-                count = int(l[1])
+            for ln in ifile.readlines():
+                ln = ln.strip()
+                ln = ln.split("\t")
+                name = ln[0]
+                count = int(ln[1])
                 spec = self.read_spec(name)
                 self.ifaceadd(name, count, Interface(name, spec))
 
@@ -206,13 +206,13 @@ class Interfaces(UserDict):
     def read_spec(self, name):
         spec = []
         with open('%s.txt' % name, 'r') as sfile:
-            for l in sfile.readlines():
-                l = l.strip()
-                l = l.split("\t")
-                d = {'name': l[0]}
-                if l[1] == 'out':
+            for ln in sfile.readlines():
+                ln = ln.strip()
+                ln = ln.split("\t")
+                d = {'name': ln[0]}
+                if ln[1] == 'out':
                     d['action'] = True
-                elif l[1] == 'inout':
+                elif ln[1] == 'inout':
                     d['outen'] = True
                 spec.append(d)
         return spec
