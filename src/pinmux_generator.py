@@ -59,6 +59,7 @@ footer = '''
 endpackage
 '''
 
+
 def pinmuxgen(pth=None, verify=True):
     """ populating the file with the code
     """
@@ -92,8 +93,8 @@ def pinmuxgen(pth=None, verify=True):
       // where each IO will have the same number of muxes.''')
 
         for cell in p.muxed_cells:
-            bsv_file.write(mux_interface.ifacefmt(cell[0],
-                                              int(math.log(len(cell) - 1, 2))))
+            cnum = int(math.log(len(cell) - 1, 2))
+            bsv_file.write(mux_interface.ifacefmt(cell[0], cnum))
 
         bsv_file.write('''
       endinterface
@@ -238,6 +239,7 @@ endpackage
         bsv_file.write(axi4_lite.format(p.ADDR_WIDTH, p.DATA_WIDTH))
     # ##################################################
 
+
 def printhelp():
     print ('''pinmux_generator.py [-o outputdir] [-v|--validate] [-h|--help]
     -o outputdir    : defaults to bsv_src.  also location for reading pinmux.txt
@@ -245,6 +247,7 @@ def printhelp():
     -v | --validate : runs some validation on the pinmux
     -h | --help     : this help message
 ''')
+
 
 if __name__ == '__main__':
     try:
@@ -273,4 +276,3 @@ if __name__ == '__main__':
             sys.exit(0)
 
     pinmuxgen(output_dir, validate)
-

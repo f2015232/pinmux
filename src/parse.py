@@ -56,7 +56,7 @@ class Parse(object):
 
         self.pinnumbers = sorted(self.pinnumbers)
         self.upper_offset = self.lower_offset + \
-                            int(math.log(len(self.muxed_cells), 2))
+            int(math.log(len(self.muxed_cells), 2))
 
         if verify:
             self.do_checks()
@@ -99,6 +99,7 @@ class Parse(object):
         # ============================================================== #
 
         # TODO
+
 
 if __name__ == '__main__':
     p = Parse()

@@ -66,9 +66,9 @@ def init(p):
             temp = temp.replace(' ', '')
             x = dictionary.get(temp)
             assert x is not None, "ERROR: The signal : " + \
-                    str(cell[i + 1]) + \
-                    " of pinmap.txt isn't present \nin the current" + \
-                  " dictionary. Update dictionary or fix-typo."
+                str(cell[i + 1]) + \
+                " of pinmap.txt isn't present \nin the current" + \
+                " dictionary. Update dictionary or fix-typo."
             if x == "input":
                 p.pinmux += \
                     mux_wire.format(cell[0], i, "wr" + cell[i + 1]) + "\n"
