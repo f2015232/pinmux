@@ -31,63 +31,70 @@ class Parse(object):
         print('ERROR: Addressing should be one of: BYTE, HWORD, WORD, DWORD')
         exit(1)
 
-    # == capture the number of IO cells required == #
-    pinmapfile = open('pinmap.txt', 'r')
-    max_io = 0
-    muxed_cells = []
-    dedicated_cells = []
-    pinnumbers = []
+    def __init__(self, verify=True):
 
-    for lineno, line in enumerate(pinmapfile):
-        line1 = line.split()
-        if len(line1) <= 1:
-            continue
-        pinnumbers.append(int(line1[0]))
-        if len(line1) == 2:  # dedicated
-            dedicated_cells.append(line1)
-        else:
-            muxed_cells.append(line1)
+        # == capture the number of IO cells required == #
+        pinmapfile = open('pinmap.txt', 'r')
+        max_io = 0
+        self.muxed_cells = []
+        self.dedicated_cells = []
+        self.pinnumbers = []
 
-    pinnumbers = sorted(pinnumbers)
-    upper_offset = lower_offset + int(math.log(len(muxed_cells), 2))
+        for lineno, line in enumerate(pinmapfile):
+            line1 = line.split()
+            if len(line1) <= 1:
+                continue
+            self.pinnumbers.append(int(line1[0]))
+            if len(line1) == 2:  # dedicated
+                self.dedicated_cells.append(line1)
+            else:
+                self.muxed_cells.append(line1)
 
-    # ============================================= #
-    # ======= Multiple checks to see if the user has not screwed ======#
-    missing_pins = missing_numbers(pinnumbers)
+        self.pinnumbers = sorted(self.pinnumbers)
+        self.upper_offset = self.lower_offset + \
+                            int(math.log(len(self.muxed_cells), 2))
 
-    # Check-1: ensure that no pin is present in both muxed and dedicated pins
-    for muxcell in muxed_cells:
-        for dedcel in dedicated_cells:
-            if dedcel[1] in muxcell:
-                print("ERROR: " + str(dedcel[1]) + " present \
-                                      in dedicated & muxed lists")
-                exit(1)
+        if verify:
+            self.do_checks()
 
-    # Check-2: if pin numbering is consistent:
-    if missing_pins:
-        print("ERROR: Following pins have no assignment: " +
-              str(missing_numbers(pinnumbers)))
-        exit(1)
-    unique = set(pinnumbers)
-    duplicate = False
-    for each in unique:
-        count = pinnumbers.count(each)
-        if count > 1:
-            print("ERROR: Multiple assignment for pin: " + str(each))
-            duplicate = True
-    if duplicate:
-        exit(1)
+        # == user info after parsing ================= #
+        self.N_IO = len(self.dedicated_cells) + len(self.muxed_cells)
+        print("Max number of IO: " + str(self.N_IO))
+        print("Muxed IOs: " + str(len(self.muxed_cells)))
+        print("Dedicated IOs: " + str(len(self.dedicated_cells)))
 
-    # Check-2: confirm if N_* matches the instances in the pinmap
-    # ============================================================== #
+    def do_checks(self):
+        """ Multiple checks to see if the user has not screwed up
+        """
+        missing_pins = missing_numbers(self.pinnumbers)
 
-    # == user info after parsin ================= #
-    N_IO = len(dedicated_cells) + len(muxed_cells)
-    print("Max number of IO: " + str(N_IO))
-    print("Muxed IOs: " + str(len(muxed_cells)))
-    print("Dedicated IOs: " + str(len(dedicated_cells)))
-    # ============================================ #
+        # Check-1: ensure no pin is present in both muxed and dedicated pins
+        for muxcell in self.muxed_cells:
+            for dedcel in self.dedicated_cells:
+                if dedcel[1] in muxcell:
+                    print("ERROR: " + str(dedcel[1]) + " present \
+                                          in dedicated & muxed lists")
+                    exit(1)
 
+        # Check-2: if pin numbering is consistent:
+        if missing_pins:
+            print("ERROR: Following pins have no assignment: " +
+                  str(missing_numbers(self.pinnumbers)))
+            exit(1)
+        unique = set(self.pinnumbers)
+        duplicate = False
+        for each in unique:
+            count = self.pinnumbers.count(each)
+            if count > 1:
+                print("ERROR: Multiple assignment for pin: " + str(each))
+                duplicate = True
+        if duplicate:
+            exit(1)
+
+        # Check-3: confirm if N_* matches the instances in the pinmap
+        # ============================================================== #
+
+        # TODO
 
 if __name__ == '__main__':
     p = Parse()
