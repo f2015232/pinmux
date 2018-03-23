@@ -1,4 +1,5 @@
 import math
+import os.path
 
 
 def missing_numbers(num_list):
@@ -31,24 +32,27 @@ class Parse(object):
         print('ERROR: Addressing should be one of: BYTE, HWORD, WORD, DWORD')
         exit(1)
 
-    def __init__(self, verify=True):
+    def __init__(self, pth=None, verify=True):
 
-        # == capture the number of IO cells required == #
-        pinmapfile = open('pinmap.txt', 'r')
         max_io = 0
         self.muxed_cells = []
         self.dedicated_cells = []
         self.pinnumbers = []
 
-        for lineno, line in enumerate(pinmapfile):
-            line1 = line.split()
-            if len(line1) <= 1:
-                continue
-            self.pinnumbers.append(int(line1[0]))
-            if len(line1) == 2:  # dedicated
-                self.dedicated_cells.append(line1)
-            else:
-                self.muxed_cells.append(line1)
+        # == capture the number of IO cells required == #
+        fname = 'pinmap.txt'
+        if pth:
+            fname = os.path.join(pth, fname)
+        with open(fname) as pinmapfile:
+            for lineno, line in enumerate(pinmapfile):
+                line1 = line.split()
+                if len(line1) <= 1:
+                    continue
+                self.pinnumbers.append(int(line1[0]))
+                if len(line1) == 2:  # dedicated
+                    self.dedicated_cells.append(line1)
+                else:
+                    self.muxed_cells.append(line1)
 
         self.pinnumbers = sorted(self.pinnumbers)
         self.upper_offset = self.lower_offset + \
