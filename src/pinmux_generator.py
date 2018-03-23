@@ -65,7 +65,7 @@ def pinmuxgen(pth=None, verify=True):
 
     p = Parse(pth, verify)
     init(p)
-    ifaces = Interfaces()
+    ifaces = Interfaces(pth)
     ifaces.ifaceadd('io', p.N_IO, io_interface, 0)
 
     bp = 'bsv_src'

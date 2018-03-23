@@ -1,3 +1,5 @@
+import os.path
+
 from UserDict import UserDict
 
 from wire_def import generic_io  # special case
@@ -185,16 +187,20 @@ class Interfaces(UserDict):
     """ contains a list of interface definitions
     """
 
-    def __init__(self):
+    def __init__(self, pth):
+        self.pth = pth
         self.ifacecount = []
         UserDict.__init__(self, {})
-        with open('interfaces.txt', 'r') as ifile:
+        ift = 'interfaces.txt'
+        if pth:
+            ift = os.path.join(pth, ift)
+        with open(ift, 'r') as ifile:
             for ln in ifile.readlines():
                 ln = ln.strip()
                 ln = ln.split("\t")
                 name = ln[0]
                 count = int(ln[1])
-                spec = self.read_spec(name)
+                spec = self.read_spec(pth, name)
                 self.ifaceadd(name, count, Interface(name, spec))
 
     def ifaceadd(self, name, count, iface, at=None):
@@ -203,9 +209,12 @@ class Interfaces(UserDict):
         self.ifacecount.insert(at, (name, count))
         self[name] = iface
 
-    def read_spec(self, name):
+    def read_spec(self, pth, name):
         spec = []
-        with open('%s.txt' % name, 'r') as sfile:
+        fname = '%s.txt' % name
+        if pth:
+            ift = os.path.join(pth, fname)
+        with open(ift, 'r') as sfile:
             for ln in sfile.readlines():
                 ln = ln.strip()
                 ln = ln.split("\t")
