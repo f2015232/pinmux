@@ -37,17 +37,20 @@ class Parse(object):
     muxed_cells = []
     dedicated_cells = []
     pinnumbers = []
+
     for lineno, line in enumerate(pinmapfile):
         line1 = line.split()
-        if(len(line1) > 1):
-            pinnumbers.append(int(line1[0]))
-            if(len(line1) == 2):  # dedicated
-                dedicated_cells.append(line1)
-            if(len(line1) > 2):
-                muxed_cells.append(line1)
-    pinnumbers = sorted(pinnumbers)
+        if len(line1) <= 1:
+            continue
+        pinnumbers.append(int(line1[0]))
+        if len(line1) == 2:  # dedicated
+            dedicated_cells.append(line1)
+        else:
+            muxed_cells.append(line1)
 
+    pinnumbers = sorted(pinnumbers)
     upper_offset = lower_offset + int(math.log(len(muxed_cells), 2))
+
     # ============================================= #
     # ======= Multiple checks to see if the user has not screwed ======#
     missing_pins = missing_numbers(pinnumbers)
