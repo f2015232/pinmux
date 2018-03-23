@@ -64,15 +64,17 @@ footer = '''
    endmodule
 endpackage
 '''
-# ============================================#
-# ==== populating the file with the code =====#
-# ============================================#
 
-# package and interface declaration followed by the generic io_cell definition
-with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
-    bsv_file.write(header)
+def pinmuxgen():
+    """ populating the file with the code
+    """
 
-    bsv_file.write('''\
+    # package and interface declaration followed by
+    # the generic io_cell definition
+    with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
+        bsv_file.write(header)
+
+        bsv_file.write('''\
    interface MuxSelectionLines;
 
       // declare the method which will capture the user pin-mux
@@ -80,26 +82,26 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
       // of muxes happening per IO. For now we have a generalized width
       // where each IO will have the same number of muxes.''')
 
-    for cell in p.muxed_cells:
-        bsv_file.write(mux_interface.ifacefmt(cell[0],
+        for cell in p.muxed_cells:
+            bsv_file.write(mux_interface.ifacefmt(cell[0],
                                               int(math.log(len(cell) - 1, 2))))
 
-    bsv_file.write('''
+        bsv_file.write('''
       endinterface
 
       interface PeripheralSide;
       // declare the interface to the IO cells.
       // Each IO cell will have 8 input field (output from pin mux
       // and on output field (input to pinmux)''')
-    # ==============================================================
+        # ==============================================================
 
-    # == create method definitions for all peripheral interfaces ==#
-    ifaces.ifacefmt(bsv_file)
+        # == create method definitions for all peripheral interfaces ==#
+        ifaces.ifacefmt(bsv_file)
 
-    # ==============================================================
+        # ==============================================================
 
-    # ===== finish interface definition and start module definition=======
-    bsv_file.write('''
+        # ===== finish interface definition and start module definition=======
+        bsv_file.write('''
    endinterface
 
    interface Ifc_pinmux;
@@ -109,48 +111,48 @@ with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
    (*synthesize*)
    module mkpinmux(Ifc_pinmux);
 ''')
-    # ====================================================================
+        # ====================================================================
 
-    # ======================= create wire and registers =================#
-    bsv_file.write('''
+        # ======================= create wire and registers =================#
+        bsv_file.write('''
       // the followins wires capture the pin-mux selection
       // values for each mux assigned to a CELL
 ''')
-    for cell in p.muxed_cells:
-        bsv_file.write(mux_interface.wirefmt(
-            cell[0], int(math.log(len(cell) - 1, 2))))
+        for cell in p.muxed_cells:
+            bsv_file.write(mux_interface.wirefmt(
+                cell[0], int(math.log(len(cell) - 1, 2))))
 
-    ifaces.wirefmt(bsv_file)
+        ifaces.wirefmt(bsv_file)
 
-    bsv_file.write("\n")
-    # ====================================================================
-    # ========================= Actual pinmuxing ========================#
-    bsv_file.write('''
+        bsv_file.write("\n")
+        # ====================================================================
+        # ========================= Actual pinmuxing ========================#
+        bsv_file.write('''
       /*====== This where the muxing starts for each io-cell======*/
 ''')
-    bsv_file.write(p.pinmux)
-    bsv_file.write('''
+        bsv_file.write(p.pinmux)
+        bsv_file.write('''
       /*============================================================*/
 ''')
-    # ====================================================================
-    # ================= interface definitions for each method =============#
-    bsv_file.write('''
+        # ====================================================================
+        # ================= interface definitions for each method =============#
+        bsv_file.write('''
     interface mux_lines = interface MuxSelectionLines
 ''')
-    for cell in p.muxed_cells:
-        bsv_file.write(mux_interface.ifacedef(cell[0],
-                                              int(math.log(len(cell) - 1, 2))))
-    bsv_file.write('''
+        for cell in p.muxed_cells:
+            bsv_file.write(mux_interface.ifacedef(cell[0],
+                                                  int(math.log(len(cell) - 1, 2))))
+        bsv_file.write('''
     endinterface;
     interface peripheral_side = interface PeripheralSide
 ''')
-    ifaces.ifacedef(bsv_file)
-    bsv_file.write(footer)
-    print("BSV file successfully generated: bsv_src/pinmux.bsv")
-    # ======================================================================
+        ifaces.ifacedef(bsv_file)
+        bsv_file.write(footer)
+        print("BSV file successfully generated: bsv_src/pinmux.bsv")
+        # ======================================================================
 
-with open('bsv_src/PinTop.bsv', 'w') as bsv_file:
-    bsv_file.write(copyright + '''
+    with open('bsv_src/PinTop.bsv', 'w') as bsv_file:
+        bsv_file.write(copyright + '''
 package PinTop;
     import pinmux::*;
     interface Ifc_PintTop;
@@ -166,53 +168,53 @@ package PinTop;
         // declare the registers which will be used to mux the IOs
 '''.format(p.ADDR_WIDTH, p.DATA_WIDTH))
 
-    for cell in p.muxed_cells:
-        bsv_file.write('''
-            Reg#(Bit#({0})) rg_muxio_{1} <-mkReg(0);'''.format(
-            int(math.log(len(cell) - 1, 2)), cell[0]))
+        for cell in p.muxed_cells:
+            bsv_file.write('''
+                Reg#(Bit#({0})) rg_muxio_{1} <-mkReg(0);'''.format(
+                int(math.log(len(cell) - 1, 2)), cell[0]))
 
-    bsv_file.write('''
+        bsv_file.write('''
         // rule to connect the registers to the selection lines of the
         // pin-mux module
         rule connect_selection_registers;''')
 
-    for cell in p.muxed_cells:
-        bsv_file.write('''
+        for cell in p.muxed_cells:
+            bsv_file.write('''
           pinmux.mux_lines.cell{0}_mux(rg_muxio_{0});'''.format(cell[0]))
 
-    bsv_file.write('''
+        bsv_file.write('''
         endrule
         // method definitions for the write user interface
         method ActionValue#(Bool) write(Bit#({2}) addr, Bit#({3}) data);
           Bool err=False;
           case (addr[{0}:{1}])'''.format(p.upper_offset, p.lower_offset,
                                          p.ADDR_WIDTH, p.DATA_WIDTH))
-    index = 0
-    for cell in p.muxed_cells:
-        bsv_file.write('''
+        index = 0
+        for cell in p.muxed_cells:
+            bsv_file.write('''
             {0}: rg_muxio_{1}<=truncate(data);'''.format(index, cell[0]))
-        index = index + 1
+            index = index + 1
 
-    bsv_file.write('''
+        bsv_file.write('''
             default: err=True;
           endcase
           return err;
         endmethod''')
 
-    bsv_file.write('''
+        bsv_file.write('''
         // method definitions for the read user interface
         method Tuple2#(Bool,Bit#({3})) read(Bit#({2}) addr);
           Bool err=False;
           Bit#(32) data=0;
           case (addr[{0}:{1}])'''.format(p.upper_offset, p.lower_offset,
                                          p.ADDR_WIDTH, p.DATA_WIDTH))
-    index = 0
-    for cell in p.muxed_cells:
-        bsv_file.write('''
-            {0}: data=zeroExtend(rg_muxio_{1});'''.format(index, cell[0]))
-        index = index + 1
+        index = 0
+        for cell in p.muxed_cells:
+            bsv_file.write('''
+                {0}: data=zeroExtend(rg_muxio_{1});'''.format(index, cell[0]))
+            index = index + 1
 
-    bsv_file.write('''
+        bsv_file.write('''
             default:err=True;
           endcase
           return tuple2(err,data);
@@ -222,7 +224,10 @@ package PinTop;
 endpackage
 ''')
 
-# ######## Generate bus transactors ################
-with open('bsv_src/bus.bsv', 'w') as bsv_file:
-    bsv_file.write(axi4_lite.format(p.ADDR_WIDTH, p.DATA_WIDTH))
-# ##################################################
+    # ######## Generate bus transactors ################
+    with open('bsv_src/bus.bsv', 'w') as bsv_file:
+        bsv_file.write(axi4_lite.format(p.ADDR_WIDTH, p.DATA_WIDTH))
+    # ##################################################
+
+pinmuxgen()
+
