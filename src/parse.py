@@ -58,7 +58,7 @@ class Parse(object):
     # Check-1: ensure that no pin is present in both muxed and dedicated pins
     for muxcell in muxed_cells:
         for dedcel in dedicated_cells:
-            if(dedcel[1] in muxcell):
+            if dedcel[1] in muxcell:
                 print("ERROR: " + str(dedcel[1]) + " present \
                                       in dedicated & muxed lists")
                 exit(1)
@@ -72,7 +72,7 @@ class Parse(object):
     duplicate = False
     for each in unique:
         count = pinnumbers.count(each)
-        if(count > 1):
+        if count > 1:
             print("ERROR: Multiple assignment for pin: " + str(each))
             duplicate = True
     if duplicate:
