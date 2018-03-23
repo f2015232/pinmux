@@ -17,6 +17,7 @@
 
 # default module imports
 import os
+import os.path
 import sys
 import time
 import math
@@ -26,14 +27,6 @@ from interface_decl import Interfaces, mux_interface, io_interface
 from parse import Parse
 from actual_pinmux import init
 from bus_transactors import axi4_lite
-
-p = Parse()
-init(p)
-ifaces = Interfaces()
-ifaces.ifaceadd('io', p.N_IO, io_interface, 0)
-
-if not os.path.exists("bsv_src"):
-    os.makedirs("bsv_src")
 
 copyright = '''
 /*
@@ -65,13 +58,28 @@ footer = '''
 endpackage
 '''
 
-def pinmuxgen():
+def pinmuxgen(pth=None, verify=True):
     """ populating the file with the code
     """
 
+    p = Parse(pth, verify)
+    init(p)
+    ifaces = Interfaces()
+    ifaces.ifaceadd('io', p.N_IO, io_interface, 0)
+
+    bp = 'bsv_src'
+    if pth:
+        bp = os.path.join(pth, bp)
+    if not os.path.exists(bp):
+        os.makedirs(bp)
+
+    pmp = os.path.join(bp, 'pinmux.bsv')
+    ptp = os.path.join(bp, 'PinTop.bsv')
+    bvp = os.path.join(bp, 'bus.bsv')
+
     # package and interface declaration followed by
     # the generic io_cell definition
-    with open("./bsv_src/pinmux.bsv", "w") as bsv_file:
+    with open(pmp, "w") as bsv_file:
         bsv_file.write(header)
 
         bsv_file.write('''\
@@ -151,7 +159,7 @@ def pinmuxgen():
         print("BSV file successfully generated: bsv_src/pinmux.bsv")
         # ======================================================================
 
-    with open('bsv_src/PinTop.bsv', 'w') as bsv_file:
+    with open(ptp, 'w') as bsv_file:
         bsv_file.write(copyright + '''
 package PinTop;
     import pinmux::*;
@@ -225,9 +233,10 @@ endpackage
 ''')
 
     # ######## Generate bus transactors ################
-    with open('bsv_src/bus.bsv', 'w') as bsv_file:
+    with open(bvp, 'w') as bsv_file:
         bsv_file.write(axi4_lite.format(p.ADDR_WIDTH, p.DATA_WIDTH))
     # ##################################################
 
-pinmuxgen()
+if __name__ == '__main__':
+    pinmuxgen()
 
