@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from UserDict import UserDict
 from interfaces import jtag, uart, ulpi, uartfull, rgbttl, rgmii
 from interfaces import flexbus1, flexbus2, sdram1, sdram2, mcu8080
 from interfaces import eint, pwm, gpio, spi, i2c, emmc, sdmmc
@@ -8,7 +9,7 @@ from interfaces import display, display_fns, check_functions
 from interfaces import pinmerge, display_fixed
 
 def pinspec():
-    pinouts = {}
+    pinouts = UserDict()
 
     pinbanks = {'A': 16,
                 'B': 28,
@@ -44,7 +45,7 @@ def pinspec():
     pinmerge(pinouts, gpio(bankspec, "", ('B', 0), "B", 0, 28, 0))
     pinmerge(pinouts, rgbttl(bankspec, "0", ('B', 0), "B", 1))
     pinmerge(pinouts, spi(bankspec, "1", ('B', 12), "B", 2))
-    pinmerge(pinouts, quadspi(bankspec, "3", ('B', 4), "B", 2, limit=4))
+    pinmerge(pinouts, quadspi(bankspec, "0", ('B', 4), "B", 2, limit=4))
     pinmerge(pinouts, uart(bankspec, "3", ('B', 16), "B", 2))
     pinmerge(pinouts, i2c(bankspec, "3", ('B', 18), "B", 2))
     pinmerge(pinouts, pwm(bankspec, "0", ('B', 9), "B", mux=2))
@@ -52,7 +53,7 @@ def pinspec():
     pinmerge(pinouts, pwm(bankspec, "2", ('B', 21), "B", mux=2))
     pinmerge(pinouts, sdmmc(bankspec, "1", ('B', 22), "B", 2))
     pinmerge(pinouts, eint(bankspec, "", ('B', 0), "B", 6, 4, mux=3))
-    pinmerge(pinouts, flexbus2(bankspec, "", ('B', 4), "B", 3))
+    pinmerge(pinouts, flexbus2(bankspec, "0", ('B', 4), "B", 3))
     pinmerge(pinouts, i2c(bankspec, "1", ('B', 0), "B", 2))
     pinmerge(pinouts, uart(bankspec, "2", ('B', 2), "B", 2))
     pinmerge(pinouts, uart(bankspec, "4", ('B', 10), "B", 2))
@@ -84,7 +85,7 @@ def pinspec():
     }
     #pinmerge(pinouts, mcu8080("", 72, "D", 1))
     pinmerge(pinouts, gpio(bankspec, "", ('D', 0), "D", 0, 24, 0))
-    pinmerge(pinouts, flexbus1(bankspec, "", ('D', 0), "D", 1, spec=flexspec))
+    pinmerge(pinouts, flexbus1(bankspec, "0", ('D', 0), "D", 1, spec=flexspec))
     pinmerge(pinouts, i2c(bankspec, "2", ('D', 17), "D", 2))
     pinmerge(pinouts, pwm(bankspec, "0", ('D', 21), "D", mux=1))
     pinmerge(pinouts, pwm(bankspec, "1", ('D', 22), "D", mux=1))
@@ -103,10 +104,10 @@ def pinspec():
 
     # Bank E
     pinmerge(pinouts, gpio(bankspec, "", ('E', 0), "E", 0, 24, 0))
-    pinmerge(pinouts, flexbus2(bankspec, "", ('E', 0), "E", 1))
+    pinmerge(pinouts, flexbus2(bankspec, "0", ('E', 0), "E", 1))
     pinmerge(pinouts, sdmmc(bankspec, "2", ('E', 0), "E", 2))
     pinmerge(pinouts, sdmmc(bankspec, "3", ('E', 8), "E", 2))
-    pinmerge(pinouts, quadspi(bankspec, "3", ('E', 18), "E", 2))
+    pinmerge(pinouts, quadspi(bankspec, "0", ('E', 18), "E", 2))
     pinmerge(pinouts, uartfull(bankspec, "1", ('E', 14), "E", 2))
     pinmerge(pinouts, i2c(bankspec, "2", ('E', 6), "E", 2))
     pinmerge(pinouts, eint(bankspec, "", ('E', 0), "E", 10, 8, mux=3))
@@ -131,8 +132,8 @@ def pinspec():
     pinmerge(pinouts, rgmii(bankspec, "", ('G', 0), "G", 1))
     pinmerge(pinouts, ulpi(bankspec, "3", ('G', 20), "G", 1))
     pinmerge(pinouts, rgbttl(bankspec, "1", ('G', 0), "G", 2))
-    pinmerge(pinouts, quadspi(bankspec, "3", ('G', 26), "G", 3))
-    pinmerge(pinouts, flexbus2(bankspec, "", ('G', 0), "G", 3))
+    pinmerge(pinouts, quadspi(bankspec, "0", ('G', 26), "G", 3))
+    pinmerge(pinouts, flexbus2(bankspec, "0", ('G', 0), "G", 3))
     mmc2 = sdmmc(bankspec, "2", ('G', 24), "G", 3, limit=2)
     pinmerge(pinouts, mmc2)
     mmc2 = sdmmc(bankspec, "2", ('G', 28), "G", 2, start=2)
@@ -236,7 +237,7 @@ def pinspec():
                       'SD3': 'SD/MMC 3',
                       'SPI1': 'SPI (Serial Peripheral Interface) 1',
                       'SPI2': 'SPI (Serial Peripheral Interface) 2',
-                      'SPI3': 'Quad SPI (Serial Peripheral Interface) 3',
+                      'QSPI': 'Quad SPI (Serial Peripheral Interface) 1',
                       'TWI1': 'I2C 1',
                       'TWI2': 'I2C 2',
                       'TWI3': 'I2C 3',
@@ -294,12 +295,12 @@ def pinspec():
     # OTG_ID (if to be used) would require dropping some functions in order
     # to free up GPIO.  LCD could be reduced to 15-bit (freeing 3).
     # MMC could be reduced to 4-bit-wide, used as SD/MMC (freeing 4).
-    # SPI3 could be used in 1-bit (MOSI/MISO) mode (freeing up 2 more).
+    # QSPI could be used in 1-bit (MOSI/MISO) mode (freeing up 2 more).
 
     industrial = ['D1:FB/17', 'E1:FB/8', 'B1:LCD/22', 'ULPI1/8', 'ULPI2/8',
                 'MMC', 'B2:SD1',
                 'JTAG1', 'A3:UART2', 'E2:UART1', 'C3:UART0',
-              'F2:TWI1', 'D2:TWI2', 'D2:TWI3', 'SPI2', 'SPI3', 'F2:SD3']
+              'F2:TWI1', 'D2:TWI2', 'D2:TWI3', 'SPI2', 'QSPI', 'F2:SD3']
     industrial_pwm = ['F2:PWM_0', 'F2:PWM_1', 'D1:PWM_2']
     industrial_eint = ['EINT24', 'EINT25', 'EINT26', 'EINT27',
                        'EINT20', 'EINT21', 'EINT22', 'EINT23']
@@ -319,7 +320,7 @@ def pinspec():
                 'MMC', 'B2:SD1',
                 'JTAG1',
                 'A3:UART2', 'E2:UART1', 'C3:UART0', 'B2:UART4', 'B2:UART3',
-              'F2:TWI1', 'D2:TWI2', 'D2:TWI3', 'SPI2', 'SPI3', 'F2:SD3']
+              'F2:TWI1', 'D2:TWI2', 'D2:TWI3', 'SPI2', 'QSPI', 'F2:SD3']
     industrial_pwm = ['F2:PWM_0', 'F2:PWM_1', 'D1:PWM_2']
     industrial_eint = ['EINT24', 'EINT25', 'EINT26', 'EINT27',
                        'EINT20', 'EINT21', 'EINT22', 'EINT23']
@@ -343,7 +344,7 @@ def pinspec():
                 'C3:UART0', # GPS
                 'D2:UART3', 
                 'D2:UART4', 
-              'D3:TWI1', 'D2:TWI3', 'SPI2', 'SPI3']
+              'D3:TWI1', 'D2:TWI3', 'SPI2', 'QSPI']
     tablet_pwm = ['F2:PWM_0', # LCD_BACKLIGHT
                   'F2:PWM_1', 'D1:PWM_2']
     tablet_eint = ['EINT24', # BT_HOST_WAKE
@@ -374,7 +375,7 @@ def pinspec():
         'TWI2': 'Connect to AC97 Audio IC',
         'E2:UART1': 'Connect to BT on AP6234/AP6335',
         'E2:SD2': 'Connect to WIFI on AP6234/AP6335',
-        'SPI3': 'Boot Storage (connection to companion / debug / boot MCU)\n'
+        'QSPI': 'Boot Storage (connection to companion / debug / boot MCU)\n'
                 'Only actually needs MISO/MOSI, bootstrap loader v. small\n'
                 'Bootstrap loader checks eMMC, USB-OTG, SD/MMC, SPI, etc.',
         'SPI2': 'Spare? SPI, connect to higher-speed sensor?',
@@ -421,7 +422,7 @@ def pinspec():
                 'TWI2',   # I2C Audio
                 'E2:UART1', # WIFI/BT 
                 'E2:SD3',   # WIFI
-              'D2:TWI3', 'SPI3']
+              'D2:TWI3', 'QSPI']
     laptop_pwm = ['F2:PWM_0', # LCD_BACKLIGHT
                  ]
     laptop_eint = ['EINT20', # BT_HOST_WAKE
@@ -450,7 +451,7 @@ def pinspec():
         'TWI2': 'Connect to AC97 Audio IC',
         'E2:UART1': 'Connect to BT on AP6234/AP6335',
         'E2:SD3': 'Connect to WIFI on AP6234/AP6335',
-        'SPI3': 'Boot Storage (connection to companion / debug / boot MCU)\n'
+        'QSPI': 'Boot Storage (connection to companion / debug / boot MCU)\n'
                 'Only actually needs MISO/MOSI, bootstrap loader v. small\n'
                 'Bootstrap loader checks eMMC, USB-OTG, SD/MMC, SPI, etc.\n'
                 'MCU implements keyboard-matrix for keyboard (also trackpad?)',
@@ -480,7 +481,7 @@ def pinspec():
                 'C2:SPI2', # HSPI SPI
                 'E2:SD3',   # WIFI
                 'D3:TWI1', # sensors CTP,
-              'D2:TWI3', 'SPI3']
+              'D2:TWI3', 'QSPI']
     iot_pwm = ['F2:PWM_0', # LCD_BACKLIGHT
                  ]
     iot_eint = [ 'EINT5', # 'HSPA_MST_RDY',
@@ -516,7 +517,7 @@ def pinspec():
         'E2:UART1': 'Connect to BT UART',
         'E2:SD3': 'Connect to WIFI',
         'C2:SPI2': 'HSPA SPI',
-        'SPI3': 'Boot Storage (connection to companion / debug / boot MCU)\n'
+        'QSPI': 'Boot Storage (connection to companion / debug / boot MCU)\n'
                 'Only actually needs MISO/MOSI, bootstrap loader v. small\n'
                 'Bootstrap loader checks eMMC, USB-OTG, SD/MMC, SPI, etc.\n'
                 'MCU implements keyboard-matrix for keyboard (also trackpad?)',
