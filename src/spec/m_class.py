@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 
-from UserDict import UserDict
 from interfaces import jtag, uart, ulpi, uartfull, rgbttl, rgmii
 from interfaces import flexbus1, flexbus2, sdram1, sdram2, mcu8080
 from interfaces import eint, pwm, gpio, spi, i2c, emmc, sdmmc
 from interfaces import quadspi, i2s
 from interfaces import display, display_fns, check_functions
-from interfaces import pinmerge, display_fixed
+from interfaces import pinmerge, display_fixed, Pinouts
 
 def pinspec():
-    pinouts = UserDict()
+    pinouts = Pinouts()
 
     pinbanks = {'A': 16,
                 'B': 28,
@@ -74,14 +73,14 @@ def pinspec():
 
     # Bank D, 72-96
     flexspec = {
-        'FB_TS': ('FB_ALE', 2, "D"),
-        'FB_CS2': ('FB_BWE2', 2, "D"),
-        'FB_A0': ('FB_BWE2', 3, "D"),
-        'FB_CS3': ('FB_BWE3', 2, "D"),
-        'FB_A1': ('FB_BWE3', 3, "D"),
-        'FB_TBST': ('FB_OE', 2, "D"),
-        'FB_TSIZ0': ('FB_BWE0', 2, "D"),
-        'FB_TSIZ1': ('FB_BWE1', 2, "D"),
+        'FB0_TS': ('FB0_ALE', 2, "D"),
+        'FB0_CS2': ('FB0_BWE2', 2, "D"),
+        'FB0_A0': ('FB0_BWE2', 3, "D"),
+        'FB0_CS3': ('FB0_BWE3', 2, "D"),
+        'FB0_A1': ('FB0_BWE3', 3, "D"),
+        'FB0_TBST': ('FB0_OE', 2, "D"),
+        'FB0_TSIZ0': ('FB0_BWE0', 2, "D"),
+        'FB0_TSIZ1': ('FB0_BWE1', 2, "D"),
     }
     #pinmerge(pinouts, mcu8080("", 72, "D", 1))
     pinmerge(pinouts, gpio(bankspec, "", ('D', 0), "D", 0, 24, 0))
@@ -145,6 +144,7 @@ def pinspec():
     print
     print "[[!toc  ]]"
     print
+    print pinouts.keys()
     display(pinouts)
     print
 
