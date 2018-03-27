@@ -26,7 +26,8 @@ from bsv.pinmux_generator import pinmuxgen as bsvgen
 
 def printhelp():
     print ('''pinmux_generator.py [-o outputdir] [-v|--validate] [-h|--help]
-                                  [-t outputtype]
+                                  [-t outputtype] [-s|--spec spec]
+    -s | spec       : generate from spec (python module)
     -t | outputtype : outputtype, defaults to bsv
     -o outputdir    : defaults to bsv_src.  also location for reading pinmux.txt
                       interfaces.txt and *.txt
