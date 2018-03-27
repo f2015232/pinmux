@@ -8,7 +8,6 @@ def specgen(pth, pinouts, bankspec, fixedpins):
     """
     pth = pth or ''
     #print bankspec.keys()
-    #print pinouts.keys()
     #print fixedpins.keys()
     if not os.path.exists(pth):
         os.makedirs(pth)
@@ -29,3 +28,25 @@ def specgen(pth, pinouts, bankspec, fixedpins):
                         k_ = k.lower()
                         pn = pinname.lower()
                         g.write("%s_%s\t%s\n" % (k_, pn, fntype))
+
+    pks = pinouts.keys()
+    pks.sort()
+
+    # truly dreadful way to work out the max mux size...
+    muxsz = 0
+    for k in pks:
+        for m in pinouts[k].keys():
+            muxsz = max(muxsz, m + 1)
+
+    with open(os.path.join(pth, 'pinmap.txt'), 'w') as g:
+        for k in pks:
+            res = [str(k)]
+            # append pin mux 
+            for midx in range(muxsz):
+                if pinouts[k].has_key(midx):
+                    fname = pinouts[k][midx][0]
+                else:
+                    fname = ''
+                print k, midx, fname
+                res.append(fname.lower())
+            g.write('\t'.join(res) + '\n')

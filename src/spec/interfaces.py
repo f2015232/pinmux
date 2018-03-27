@@ -32,6 +32,9 @@ class Pinouts(object):
     def __delitem__(self, k):
         del self.pins[k]
 
+    def __getitem__(self, k):
+        return self.pins[k]
+
 
 class Pins(object):
 
