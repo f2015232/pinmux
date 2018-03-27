@@ -241,8 +241,8 @@ def pinspec():
                       'TWI1': 'I2C 1',
                       'TWI2': 'I2C 2',
                       'TWI3': 'I2C 3',
-                      'UART0': 'UART (TX/RX/CTS/RTS) 0',
-                      'UART1': 'UART (TX/RX/CTS/RTS) 1',
+                      'UARTQ0': 'UART (TX/RX/CTS/RTS) 0',
+                      'UARTQ1': 'UART (TX/RX/CTS/RTS) 1',
                       'UART2': 'UART (TX/RX) 2',
                       'UART3': 'UART (TX/RX) 3',
                       'UART4': 'UART (TX/RX) 4',
@@ -268,7 +268,7 @@ def pinspec():
 
     eoma68 = ['B1:LCD/22', 'ULPI1/8', 'ULPI2', 'MMC', 'SD1', 'UART3',
               'TWI3', 'SPI2', 'E2:SD2',]
-    eoma68_eint = ['EINT16', 'EINT17', 'EINT18', 'EINT19']
+    eoma68_eint = ['EINT_16', 'EINT_17', 'EINT_18', 'EINT_19']
     eoma68_pwm = ['D1:PWM_2']
     descriptions = {
             'MMC': 'internal (on Card)',
@@ -302,8 +302,8 @@ def pinspec():
                 'JTAG1', 'A3:UART2', 'E2:UART1', 'C3:UART0',
               'F2:TWI1', 'D2:TWI2', 'D2:TWI3', 'SPI2', 'QSPI', 'F2:SD3']
     industrial_pwm = ['F2:PWM_0', 'F2:PWM_1', 'D1:PWM_2']
-    industrial_eint = ['EINT24', 'EINT25', 'EINT26', 'EINT27',
-                       'EINT20', 'EINT21', 'EINT22', 'EINT23']
+    industrial_eint = ['EINT_24', 'EINT_25', 'EINT_26', 'EINT_27',
+                       'EINT_20', 'EINT_21', 'EINT_22', 'EINT_23']
 
     unused_pins = check_functions("Industrial", bankspec, fns, pinouts,
                  industrial, industrial_eint, industrial_pwm)
@@ -322,8 +322,8 @@ def pinspec():
                 'A3:UART2', 'E2:UART1', 'C3:UART0', 'B2:UART4', 'B2:UART3',
               'F2:TWI1', 'D2:TWI2', 'D2:TWI3', 'SPI2', 'QSPI', 'F2:SD3']
     industrial_pwm = ['F2:PWM_0', 'F2:PWM_1', 'D1:PWM_2']
-    industrial_eint = ['EINT24', 'EINT25', 'EINT26', 'EINT27',
-                       'EINT20', 'EINT21', 'EINT22', 'EINT23']
+    industrial_eint = ['EINT_24', 'EINT_25', 'EINT_26', 'EINT_27',
+                       'EINT_20', 'EINT_21', 'EINT_22', 'EINT_23']
     ind_descriptions = {
             'B2:SPI1': 'Used for 320x240 or 640x480 etc. SPI-based LCD.\n'
                         'Frees up large numbers of GPIO from RGB/TTL bank'
@@ -347,18 +347,18 @@ def pinspec():
               'D3:TWI1', 'D2:TWI3', 'SPI2', 'QSPI']
     tablet_pwm = ['F2:PWM_0', # LCD_BACKLIGHT
                   'F2:PWM_1', 'D1:PWM_2']
-    tablet_eint = ['EINT24', # BT_HOST_WAKE
-                   'EINT25', # WIFI_HOST_WAKE 
-                   'EINT26', # CTP_INT
-                    'EINT27', # GSENSOR_INT
-                    'EINT8', # GPS_INT
-                    'EINT7', # TILT_SENSOR_INT
-                    'EINT22', # COMPASS_INT
-                    'EINT23',  # MCU_INT
-                    'EINT16', # PMIC_INT
-                    'EINT17',  # PWR_BUTTON_INT
-                    'EINT30', # OTG_ID
-                    'EINT31',
+    tablet_eint = ['EINT_24', # BT_HOST_WAKE
+                   'EINT_25', # WIFI_HOST_WAKE 
+                   'EINT_26', # CTP_INT
+                    'EINT_27', # GSENSOR_INT
+                    'EINT_8', # GPS_INT
+                    'EINT_7', # TILT_SENSOR_INT
+                    'EINT_22', # COMPASS_INT
+                    'EINT_23',  # MCU_INT
+                    'EINT_16', # PMIC_INT
+                    'EINT_17',  # PWR_BUTTON_INT
+                    'EINT_30', # OTG_ID
+                    'EINT_31',
                 ]
     descriptions = {
         'B1:LCD/22':
@@ -396,18 +396,18 @@ def pinspec():
         'F2:PWM_0': 'LCD Backlight',
         'F2:PWM_1': 'Spare? PWM (or extra GPIO / EINT)',
         'D1:PWM_2': 'Spare? PWM (or extra GPIO / EINT)',
-        'EINT24': 'BT_HOST_WAKE',
-        'EINT25': 'WIFI_HOST_WAKE',
-        'EINT26': 'CTP_INT',
-        'EINT27': 'GSENSOR_INT',
-        'EINT8': 'GPS_INT',
-        'EINT7': 'TILT_SENSOR_INT',
-        'EINT22': 'COMPASS_INT',
-        'EINT23': 'MCU_INT',
-        'EINT16': 'PMIC_INT',
-        'EINT17': 'PWR_BUTTON_INT',
-        'EINT30': 'OTG_ID',
-        'EINT31': 'Spare?',
+        'EINT_24': 'BT_HOST_WAKE',
+        'EINT_25': 'WIFI_HOST_WAKE',
+        'EINT_26': 'CTP_INT',
+        'EINT_27': 'GSENSOR_INT',
+        'EINT_8': 'GPS_INT',
+        'EINT_7': 'TILT_SENSOR_INT',
+        'EINT_22': 'COMPASS_INT',
+        'EINT_23': 'MCU_INT',
+        'EINT_16': 'PMIC_INT',
+        'EINT_17': 'PWR_BUTTON_INT',
+        'EINT_30': 'OTG_ID',
+        'EINT_31': 'Spare?',
     }
     unused_pins = check_functions("Smartphone / Tablet",
                  bankspec, fns, pinouts,
@@ -425,10 +425,10 @@ def pinspec():
               'D2:TWI3', 'QSPI']
     laptop_pwm = ['F2:PWM_0', # LCD_BACKLIGHT
                  ]
-    laptop_eint = ['EINT20', # BT_HOST_WAKE
-                   'EINT21', # WIFI_HOST_WAKE 
-                    'EINT9',  # MCU_INT
-                    'EINT31', # PMIC_INT
+    laptop_eint = ['EINT_20', # BT_HOST_WAKE
+                   'EINT_21', # WIFI_HOST_WAKE 
+                    'EINT_9',  # MCU_INT
+                    'EINT_31', # PMIC_INT
                 ]
     descriptions = {
         'D1:FB/17': 'FlexBus.  Connect to DM9000 or AX99896A MCU-style Bus\n'
@@ -460,10 +460,10 @@ def pinspec():
                 'MCU EINT-capable GPIO may be used to generate extra EINTs\n'
                 'on the single MCU_INT line, if really needed',
         'F2:PWM_0': 'LCD Backlight',
-        'EINT20': 'BT_HOST_WAKE',
-        'EINT21': 'WIFI_HOST_WAKE',
-        'EINT9': 'MCU_INT',
-        'EINT31': 'PMIC_INT',
+        'EINT_20': 'BT_HOST_WAKE',
+        'EINT_21': 'WIFI_HOST_WAKE',
+        'EINT_9': 'MCU_INT',
+        'EINT_31': 'PMIC_INT',
     }
     unused_pins = check_functions("Laptop / Netbook",
                  bankspec, fns, pinouts,
@@ -484,21 +484,21 @@ def pinspec():
               'D2:TWI3', 'QSPI']
     iot_pwm = ['F2:PWM_0', # LCD_BACKLIGHT
                  ]
-    iot_eint = [ 'EINT5', # 'HSPA_MST_RDY',
-                'EINT6', # 'HSPA_SL_RDY',
-                'EINT7', # 'HSPA_RING',
-                'EINT8', # 'WL_PMU_EN',
-                'EINT9', # HSPA_GPIO1
-                'EINT10', # IR_DT
-                'EINT11', # 'BT_PCM_CLK',
-                'EINT12', # 'BT_PCM_DIN',
-                'EINT13', # 'BT_PCM_SYNC',
-                'EINT14', # 'BT_PCM_DOUT',
-                'EINT16', # 'USB_DRVVBUS',
-                'EINT17', # 'USB_VBUSDET',
-                'EINT21', # 'USB_ID',
-                'EINT30', # 'CTP_INT',
-                'EINT31', # 'SD_DET#',
+    iot_eint = [ 'EINT_5', # 'HSPA_MST_RDY',
+                'EINT_6', # 'HSPA_SL_RDY',
+                'EINT_7', # 'HSPA_RING',
+                'EINT_8', # 'WL_PMU_EN',
+                'EINT_9', # HSPA_GPIO1
+                'EINT_10', # IR_DT
+                'EINT_11', # 'BT_PCM_CLK',
+                'EINT_12', # 'BT_PCM_DIN',
+                'EINT_13', # 'BT_PCM_SYNC',
+                'EINT_14', # 'BT_PCM_DOUT',
+                'EINT_16', # 'USB_DRVVBUS',
+                'EINT_17', # 'USB_VBUSDET',
+                'EINT_21', # 'USB_ID',
+                'EINT_30', # 'CTP_INT',
+                'EINT_31', # 'SD_DET#',
                 ]
     descriptions = {
         'B1:LCD':
@@ -541,7 +541,7 @@ def pinspec():
         'GPIOD18': 'LCD_RS',
         'GPIOD21': 'LCD_CSN',
 
-        'EINT5': 'HSPA_MST_RDY',
+        'EINT_5': 'HSPA_MST_RDY',
         'EINT6': 'HSPA_SL_RDY',
         'EINT7': 'HSPA_RING',
         'EINT8': 'WL_PMU_EN',
