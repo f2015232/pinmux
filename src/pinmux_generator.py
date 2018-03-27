@@ -57,6 +57,7 @@ if __name__ == '__main__':
     output_dir = None
     validate = False
     spec = None
+    pinspec = None
     for opt, arg in options:
         if opt in ('-o', '--output'):
             output_dir = arg
