@@ -4,8 +4,9 @@ from interfaces import i2s, emmc, sdmmc, spi, quadspi, i2c
 from interfaces import jtag, uart, ulpi, uartfull, rgbttl, rgmii
 from interfaces import flexbus1, flexbus2, sdram1, sdram2, mcu8080
 from interfaces import eint, pwm, gpio
-from interfaces import display, display_fns, check_functions
-from interfaces import pinmerge, display_fixed
+from interfaces import pinmerge
+from ifaceprint import display, display_fns, check_functions
+from ifaceprint import display_fixed
 
 def pinspec():
     pinouts = {}
