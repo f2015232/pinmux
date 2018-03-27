@@ -105,9 +105,9 @@ class Pins(object):
 
 
 def i2s(bankspec, suffix, offs, bank, mux=1, spec=None, limit=None):
-    i2spins = ['MCK+', 'BCK+', 'LRCK+', 'DI-']
-    for i in range(4):
-        i2spins.append("DO%d+" % i)
+    i2spins = ['MCK+', 'BCK+', 'LRCK+', 'DI-', 'DO+']
+    #for i in range(4):
+    #    i2spins.append("DO%d+" % i)
     return Pins('IIS', i2spins, bankspec, suffix, offs, bank, mux, spec, limit,
                 origsuffix=suffix)
 
