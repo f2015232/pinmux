@@ -7,9 +7,9 @@ def specgen(pth, pinouts, bankspec, fixedpins):
         for reading in by pinmux
     """
     pth = pth or ''
-    print bankspec.keys()
-    print pinouts.keys()
-    print fixedpins.keys()
+    #print bankspec.keys()
+    #print pinouts.keys()
+    #print fixedpins.keys()
     if not os.path.exists(pth):
         os.makedirs(pth)
     with open(os.path.join(pth, 'interfaces.txt'), 'w') as f:
@@ -25,7 +25,7 @@ def specgen(pth, pinouts, bankspec, fixedpins):
                         g.write("%s\t%s\n" % (k_, fntype))
                 else:
                     for pinname in s0.pingroup:
-                        fntype = 'inout'
+                        fntype = s0.fntype.get(pinname, 'inout')
                         k_ = k.lower()
                         pn = pinname.lower()
                         g.write("%s_%s\t%s\n" % (k_, pn, fntype))
