@@ -4,6 +4,4 @@ from gen import specgen
 
 modules = {'m_class': m_class,
            'c_class': c_class
-          }
-
-
+           }

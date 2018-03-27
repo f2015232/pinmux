@@ -8,6 +8,7 @@ from interfaces import pinmerge
 from ifaceprint import display, display_fns, check_functions
 from ifaceprint import display_fixed
 
+
 def pinspec():
     pinouts = {}
 
@@ -18,7 +19,7 @@ def pinspec():
                 'E': 16,
                 'F': 48,
                 'G': 24,
-              }
+                }
     bankspec = {}
     pkeys = pinbanks.keys()
     pkeys.sort()
@@ -101,43 +102,43 @@ def pinspec():
     print
 
     fixedpins = {
-      'CTRL_SYS':
+        'CTRL_SYS':
         [
-        'TEST', 'BOOT_SEL', 
-        'NMI#', 'RESET#', 
-        'CLK24M_IN', 'CLK24M_OUT', 
-        'CLK32K_IN', 'CLK32K_OUT', 
-        'PLLTEST', 'PLLREGIO', 'PLLVP25', 
-        'PLLDV', 'PLLVREG', 'PLLGND', 
-       ],
+            'TEST', 'BOOT_SEL',
+            'NMI#', 'RESET#',
+            'CLK24M_IN', 'CLK24M_OUT',
+            'CLK32K_IN', 'CLK32K_OUT',
+            'PLLTEST', 'PLLREGIO', 'PLLVP25',
+            'PLLDV', 'PLLVREG', 'PLLGND',
+        ],
 
-      'POWER_CPU':
+        'POWER_CPU':
         ['VDD0_CPU', 'VDD1_CPU', 'VDD2_CPU', 'VDD3_CPU', 'VDD4_CPU', 'VDD5_CPU',
          'GND0_CPU', 'GND1_CPU', 'GND2_CPU', 'GND3_CPU', 'GND4_CPU', 'GND5_CPU',
-        ],
+         ],
 
-      'POWER_DLL':
-        ['VDD0_DLL', 'VDD1_DLL', 'VDD2_DLL', 
-         'GND0_DLL', 'GND1_DLL', 'GND2_DLL', 
-        ],
+        'POWER_DLL':
+        ['VDD0_DLL', 'VDD1_DLL', 'VDD2_DLL',
+         'GND0_DLL', 'GND1_DLL', 'GND2_DLL',
+         ],
 
-      'POWER_INT':
-        ['VDD0_INT', 'VDD1_INT', 'VDD2_INT', 'VDD3_INT', 'VDD4_INT', 
-         'VDD5_INT', 'VDD6_INT', 'VDD7_INT', 'VDD8_INT', 'VDD9_INT', 
-         'GND0_INT', 'GND1_INT', 'GND2_INT', 'GND3_INT', 'GND4_INT', 
-         'GND5_INT', 'GND6_INT', 'GND7_INT', 'GND8_INT', 'GND9_INT', 
-        ],
+        'POWER_INT':
+        ['VDD0_INT', 'VDD1_INT', 'VDD2_INT', 'VDD3_INT', 'VDD4_INT',
+         'VDD5_INT', 'VDD6_INT', 'VDD7_INT', 'VDD8_INT', 'VDD9_INT',
+         'GND0_INT', 'GND1_INT', 'GND2_INT', 'GND3_INT', 'GND4_INT',
+         'GND5_INT', 'GND6_INT', 'GND7_INT', 'GND8_INT', 'GND9_INT',
+         ],
 
-      'POWER_GPIO':
+        'POWER_GPIO':
         ['VDD_GPIOA', 'VDD_GPIOB', 'VDD_GPIOC',
          'VDD_GPIOD', 'VDD_GPIOE', 'VDD_GPIOF',
          'VDD_GPIOG',
          'GND_GPIOA', 'GND_GPIOB', 'GND_GPIOC',
          'GND_GPIOD', 'GND_GPIOE', 'GND_GPIOF',
          'GND_GPIOG',
-        ]
+         ]
 
-      }
+    }
 
     display_fixed(fixedpins, len(pinouts))
 
@@ -178,8 +179,8 @@ def pinspec():
                       'ULPI1': 'ULPI (USB Low Pin-count) 1',
                       'ULPI2': 'ULPI (USB Low Pin-count) 2',
                       'ULPI3': 'ULPI (USB Low Pin-count) 3',
-                    }
-            
+                      }
+
     fns = display_fns(bankspec, pinouts, function_names)
     print
 
@@ -190,21 +191,21 @@ def pinspec():
     # using "BM:Name".  Pins are removed in-order as listed from
     # lists (interfaces, EINTs, PWMs) from available pins.
 
-    # Robotics scenario.  
+    # Robotics scenario.
 
-    robotics = ['FB', 'RG', 'ULPI0/8', 
+    robotics = ['FB', 'RG', 'ULPI0/8',
                 'SD0',
-                'JTAG0', 'E1:UART0', 
-              'D1:SPI0', 'E1:TWI0']
+                'JTAG0', 'E1:UART0',
+                'D1:SPI0', 'E1:TWI0']
     robotics_pwm = []
     for i in range(32):
         robotics_pwm.append('PWM_%d' % i)
     robotics_eint = ['EINT24', 'EINT25', 'EINT26', 'EINT27',
-                       'EINT20', 'EINT21', 'EINT22', 'EINT23']
+                     'EINT20', 'EINT21', 'EINT22', 'EINT23']
     robotics_eint = []
 
     unused_pins = check_functions("Robotics", bankspec, fns, pinouts,
-                 robotics, robotics_eint, robotics_pwm)
+                                  robotics, robotics_eint, robotics_pwm)
 
     print "# Reference Datasheets"
     print

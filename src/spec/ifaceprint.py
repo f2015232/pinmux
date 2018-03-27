@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 
+
 def display(pins):
     print "| Pin | Mux0        | Mux1        | Mux2        | Mux3        |"
     print "| --- | ----------- | ----------- | ----------- | ----------- |"
@@ -18,6 +19,7 @@ def display(pins):
             res += " %s %-9s |" % (bank, name)
         print res
 
+
 def fnsplit(f):
     a = ''
     n = 0
@@ -33,6 +35,7 @@ def fnsplit(f):
         f = f[1:]
     return a, int(f) if f else None
 
+
 def fnsort(f1, f2):
     a1, n1 = fnsplit(f1)
     a2, n2 = fnsplit(f2)
@@ -40,17 +43,19 @@ def fnsort(f1, f2):
     if x != 0:
         return x
     return cmp(n1, n2)
-    
+
+
 def find_fn(fname, names):
     for n in names:
         if fname.startswith(n):
             return n
 
+
 def display_fns(bankspec, pins, function_names):
     fn_names = function_names.keys()
     fns = {}
     for (pin, pdata) in pins.items():
-        for mux in range(1,4): # skip GPIO for now
+        for mux in range(1, 4):  # skip GPIO for now
             if not pdata.has_key(mux):
                 continue
             name, bank = pdata[mux]
@@ -80,6 +85,7 @@ def display_fns(bankspec, pins, function_names):
 
     return fns
 
+
 def check_functions(title, bankspec, fns, pins, required, eint, pwm,
                     descriptions=None):
     fns = deepcopy(fns)
@@ -89,7 +95,6 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
 
     print "# Pinmap for %s" % title
     print
-
 
     for name in required:
         print "## %s" % name
@@ -115,7 +120,7 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
         name = name[0]
         found = set()
         fnidx = fns.keys()
-        #fnidx.sort(fnsort)
+        # fnidx.sort(fnsort)
         pinfound = {}
         for fname in fnidx:
             if not fname.startswith(name):
@@ -154,7 +159,7 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
             continue
         gpios.append(name)
     gpios.sort()
-    
+
     if gpios:
         print "## GPIO"
         print
@@ -184,11 +189,12 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
     print
     if descriptions and descriptions.has_key('GPIO'):
         print descriptions['GPIO']
-        print 
+        print
     display(pins)
     print
 
-    return pins # unused
+    return pins  # unused
+
 
 def display_group(bankspec, title, todisplay, fns, pins, descriptions):
     print "## %s" % title
@@ -224,6 +230,7 @@ def display_group(bankspec, title, todisplay, fns, pins, descriptions):
             print "* %s %d %s%d/%d %s" % (fname, pin_, bank, pin, mux, desc)
     print
 
+
 def display_fixed(fixed, offs):
 
     fkeys = fixed.keys()
@@ -251,4 +258,3 @@ def display_fixed(fixed, offs):
         if linecount != 0:
             print
         print
-

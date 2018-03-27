@@ -9,6 +9,7 @@ from interfaces import pinmerge, Pinouts
 from ifaceprint import display, display_fns, check_functions
 from ifaceprint import display_fixed
 
+
 def pinspec():
     pinouts = Pinouts()
 
@@ -19,7 +20,7 @@ def pinspec():
                 'E': 24,
                 'F': 10,
                 'G': 32,
-              }
+                }
     bankspec = {}
     pkeys = pinbanks.keys()
     pkeys.sort()
@@ -154,7 +155,7 @@ def pinspec():
     print
 
     fixedpins = {
-      'DDR3':
+        'DDR3':
         ['SDQ0', 'SDQ1', 'SDQ2', 'SDQ3', 'SDQ4', 'SDQ5', 'SDQ6', 'SDQ7',
          'SDQ8', 'SDQ9', 'SDQ10', 'SDQ11', 'SDQ12', 'SDQ13', 'SDQ14', 'SDQ15',
          'SDQ16', 'SDQ17', 'SDQ18', 'SDQ19', 'SDQ20', 'SDQ21', 'SDQ22', 'SDQ23',
@@ -172,51 +173,51 @@ def pinspec():
          'SZQ', 'SRST',
          'SDBG0', 'SDBG1', 'ADBG',
          'ODT0', 'ODT1'
-        ],
+         ],
 
-      'CTRL_SYS':
+        'CTRL_SYS':
         [
-        'TEST', 'JTAG_SEL', 'UBOOT_SEL', 
-        'NMI#', 'RESET#', 
-        'CLK24M_IN', 'CLK24M_OUT', 
-        'PLLTEST', 'PLLREGIO', 'PLLVP25', 
-        'PLLDV', 'PLLVREG', 'PLLGND', 
-       ],
-
-      'POWER_DRAM':
-        ['VCC0_DRAM', 'VCC1_DRAM', 'VCC2_DRAM', 'VCC3_DRAM', 'VCC4_DRAM', 
-         'VCC5_DRAM', 'VCC6_DRAM', 'VCC7_DRAM', 'VCC8_DRAM', 'VCC9_DRAM',
-        'GND0_DRAM', 'GND1_DRAM', 'GND2_DRAM', 'GND3_DRAM', 'GND4_DRAM',
-        'GND5_DRAM', 'GND6_DRAM', 'GND7_DRAM', 'GND8_DRAM', 'GND9_DRAM',
+            'TEST', 'JTAG_SEL', 'UBOOT_SEL',
+            'NMI#', 'RESET#',
+            'CLK24M_IN', 'CLK24M_OUT',
+            'PLLTEST', 'PLLREGIO', 'PLLVP25',
+            'PLLDV', 'PLLVREG', 'PLLGND',
         ],
 
-      'POWER_CPU':
+        'POWER_DRAM':
+        ['VCC0_DRAM', 'VCC1_DRAM', 'VCC2_DRAM', 'VCC3_DRAM', 'VCC4_DRAM',
+         'VCC5_DRAM', 'VCC6_DRAM', 'VCC7_DRAM', 'VCC8_DRAM', 'VCC9_DRAM',
+         'GND0_DRAM', 'GND1_DRAM', 'GND2_DRAM', 'GND3_DRAM', 'GND4_DRAM',
+         'GND5_DRAM', 'GND6_DRAM', 'GND7_DRAM', 'GND8_DRAM', 'GND9_DRAM',
+         ],
+
+        'POWER_CPU':
         ['VDD0_CPU', 'VDD1_CPU', 'VDD2_CPU', 'VDD3_CPU', 'VDD4_CPU', 'VDD5_CPU',
          'GND0_CPU', 'GND1_CPU', 'GND2_CPU', 'GND3_CPU', 'GND4_CPU', 'GND5_CPU',
-        ],
+         ],
 
-      'POWER_DLL':
-        ['VDD0_DLL', 'VDD1_DLL', 'VDD2_DLL', 
-         'GND0_DLL', 'GND1_DLL', 'GND2_DLL', 
-        ],
+        'POWER_DLL':
+        ['VDD0_DLL', 'VDD1_DLL', 'VDD2_DLL',
+         'GND0_DLL', 'GND1_DLL', 'GND2_DLL',
+         ],
 
-      'POWER_INT':
-        ['VDD0_INT', 'VDD1_INT', 'VDD2_INT', 'VDD3_INT', 'VDD4_INT', 
-         'VDD5_INT', 'VDD6_INT', 'VDD7_INT', 'VDD8_INT', 'VDD9_INT', 
-         'GND0_INT', 'GND1_INT', 'GND2_INT', 'GND3_INT', 'GND4_INT', 
-         'GND5_INT', 'GND6_INT', 'GND7_INT', 'GND8_INT', 'GND9_INT', 
-        ],
+        'POWER_INT':
+        ['VDD0_INT', 'VDD1_INT', 'VDD2_INT', 'VDD3_INT', 'VDD4_INT',
+         'VDD5_INT', 'VDD6_INT', 'VDD7_INT', 'VDD8_INT', 'VDD9_INT',
+         'GND0_INT', 'GND1_INT', 'GND2_INT', 'GND3_INT', 'GND4_INT',
+         'GND5_INT', 'GND6_INT', 'GND7_INT', 'GND8_INT', 'GND9_INT',
+         ],
 
-      'POWER_GPIO':
+        'POWER_GPIO':
         ['VDD_GPIOA', 'VDD_GPIOB', 'VDD_GPIOC',
          'VDD_GPIOD', 'VDD_GPIOE', 'VDD_GPIOF',
          'VDD_GPIOG',
          'GND_GPIOA', 'GND_GPIOB', 'GND_GPIOC',
-         'GND_GPIOD', 'GND_GPIOE', 'GND_GPIOF', 
+         'GND_GPIOD', 'GND_GPIOE', 'GND_GPIOF',
          'GND_GPIOG',
-        ]
+         ]
 
-      }
+    }
 
     display_fixed(fixedpins, len(pinouts))
 
@@ -251,8 +252,8 @@ def pinspec():
                       'ULPI1': 'ULPI (USB Low Pin-count) 1',
                       'ULPI2': 'ULPI (USB Low Pin-count) 2',
                       'ULPI3': 'ULPI (USB Low Pin-count) 3',
-                    }
-            
+                      }
+
     fns = display_fns(bankspec, pinouts, function_names)
     print
 
@@ -269,26 +270,26 @@ def pinspec():
     # of spare GPIO.
 
     eoma68 = ['B1:LCD/22', 'ULPI1/8', 'ULPI2', 'MMC', 'SD1', 'UART3',
-              'TWI3', 'SPI2', 'E2:SD2',]
+              'TWI3', 'SPI2', 'E2:SD2', ]
     eoma68_eint = ['EINT_16', 'EINT_17', 'EINT_18', 'EINT_19']
     eoma68_pwm = ['D1:PWM_2']
     descriptions = {
-            'MMC': 'internal (on Card)',
-            'SD1': 'user-facing: internal (on Card), multiplexed with JTAG1\n'
-                   'and UART2, for debug purposes',
-            'TWI3': 'EOMA68-compliance: must be entirely free of devices.\n'
-                    'Address 0x51 used (externally) for EOMA68 EEPROM Id',
-            'E2:SD2': 'EOMA68-compliance',
-            'SPI2': 'EOMA68-compliance',
-            'UART3': 'EOMA68-compliance',
-            'B1:LCD/22': 'EOMA68-compliance, 18-bit RGB/TTL LCD',
-            'ULPI1/8': 'user-facing: internal (on Card), USB-OTG ULPI PHY',
-            'ULPI2': 'EOMA68-compliance: dual USB2 Host ULPI PHY'
+        'MMC': 'internal (on Card)',
+        'SD1': 'user-facing: internal (on Card), multiplexed with JTAG1\n'
+        'and UART2, for debug purposes',
+        'TWI3': 'EOMA68-compliance: must be entirely free of devices.\n'
+        'Address 0x51 used (externally) for EOMA68 EEPROM Id',
+        'E2:SD2': 'EOMA68-compliance',
+        'SPI2': 'EOMA68-compliance',
+        'UART3': 'EOMA68-compliance',
+        'B1:LCD/22': 'EOMA68-compliance, 18-bit RGB/TTL LCD',
+        'ULPI1/8': 'user-facing: internal (on Card), USB-OTG ULPI PHY',
+        'ULPI2': 'EOMA68-compliance: dual USB2 Host ULPI PHY'
     }
 
     unused_pins = check_functions("EOMA68", bankspec, fns, pinouts,
-                 eoma68, eoma68_eint, eoma68_pwm,
-                 descriptions)
+                                  eoma68, eoma68_eint, eoma68_pwm,
+                                  descriptions)
 
     # Industrial scenario.  not totally complete (some GPIO needed for PMIC)
     # One interface to be connected to the MCU to give RTC, boot/dbg,
@@ -300,15 +301,15 @@ def pinspec():
     # QSPI could be used in 1-bit (MOSI/MISO) mode (freeing up 2 more).
 
     industrial = ['D1:FB/17', 'E1:FB/8', 'B1:LCD/22', 'ULPI1/8', 'ULPI2/8',
-                'MMC', 'B2:SD1',
-                'JTAG1', 'A3:UART2', 'E2:UART1', 'C3:UART0',
-              'F2:TWI1', 'D2:TWI2', 'D2:TWI3', 'SPI2', 'QSPI', 'F2:SD3']
+                  'MMC', 'B2:SD1',
+                  'JTAG1', 'A3:UART2', 'E2:UART1', 'C3:UART0',
+                  'F2:TWI1', 'D2:TWI2', 'D2:TWI3', 'SPI2', 'QSPI', 'F2:SD3']
     industrial_pwm = ['F2:PWM_0', 'F2:PWM_1', 'D1:PWM_2']
     industrial_eint = ['EINT_24', 'EINT_25', 'EINT_26', 'EINT_27',
                        'EINT_20', 'EINT_21', 'EINT_22', 'EINT_23']
 
     unused_pins = check_functions("Industrial", bankspec, fns, pinouts,
-                 industrial, industrial_eint, industrial_pwm)
+                                  industrial, industrial_eint, industrial_pwm)
 
     # Industrial scenario, using an SPI-based LCD instead of RGB/TTL
     # not totally complete (some GPIO needed for PMIC)
@@ -319,58 +320,58 @@ def pinspec():
     # also possibility of freeing up FlexBus CS# with a little reorg.
 
     industrial = ['D1:FB/17', 'E1:FB/8', 'B2:SPI1', 'ULPI1/8', 'ULPI2/8',
-                'MMC', 'B2:SD1',
-                'JTAG1',
-                'A3:UART2', 'E2:UART1', 'C3:UART0', 'B2:UART4', 'B2:UART3',
-              'F2:TWI1', 'D2:TWI2', 'D2:TWI3', 'SPI2', 'QSPI', 'F2:SD3']
+                  'MMC', 'B2:SD1',
+                  'JTAG1',
+                  'A3:UART2', 'E2:UART1', 'C3:UART0', 'B2:UART4', 'B2:UART3',
+                  'F2:TWI1', 'D2:TWI2', 'D2:TWI3', 'SPI2', 'QSPI', 'F2:SD3']
     industrial_pwm = ['F2:PWM_0', 'F2:PWM_1', 'D1:PWM_2']
     industrial_eint = ['EINT_24', 'EINT_25', 'EINT_26', 'EINT_27',
                        'EINT_20', 'EINT_21', 'EINT_22', 'EINT_23']
     ind_descriptions = {
-            'B2:SPI1': 'Used for 320x240 or 640x480 etc. SPI-based LCD.\n'
-                        'Frees up large numbers of GPIO from RGB/TTL bank'
+        'B2:SPI1': 'Used for 320x240 or 640x480 etc. SPI-based LCD.\n'
+        'Frees up large numbers of GPIO from RGB/TTL bank'
     }
     unused_pins = check_functions("Industrial with SPI-LCD",
-                 bankspec, fns, pinouts,
-                 industrial, industrial_eint, industrial_pwm,
-                 ind_descriptions)
+                                  bankspec, fns, pinouts,
+                                  industrial, industrial_eint, industrial_pwm,
+                                  ind_descriptions)
 
     # Smartphone / Tablet - basically the same thing
 
     tablet = ['B1:LCD/22', 'ULPI1/8', 'ULPI2/8',
-                'MMC', 'SD1',
-                'F1:IIS', # I2C Audio
-                'TWI2',   # I2C Audio
-                'E2:UART1', # WIFI/BT 
-                'E2:SD2',   # WIFI
-                'C3:UART0', # GPS
-                'D2:UART3', 
-                'D2:UART4', 
+              'MMC', 'SD1',
+              'F1:IIS',  # I2C Audio
+              'TWI2',   # I2C Audio
+              'E2:UART1',  # WIFI/BT
+              'E2:SD2',   # WIFI
+              'C3:UART0',  # GPS
+              'D2:UART3',
+              'D2:UART4',
               'D3:TWI1', 'D2:TWI3', 'SPI2', 'QSPI']
-    tablet_pwm = ['F2:PWM_0', # LCD_BACKLIGHT
+    tablet_pwm = ['F2:PWM_0',  # LCD_BACKLIGHT
                   'F2:PWM_1', 'D1:PWM_2']
-    tablet_eint = ['EINT_24', # BT_HOST_WAKE
-                   'EINT_25', # WIFI_HOST_WAKE 
-                   'EINT_26', # CTP_INT
-                    'EINT_27', # GSENSOR_INT
-                    'EINT_8', # GPS_INT
-                    'EINT_7', # TILT_SENSOR_INT
-                    'EINT_22', # COMPASS_INT
-                    'EINT_23',  # MCU_INT
-                    'EINT_16', # PMIC_INT
-                    'EINT_17',  # PWR_BUTTON_INT
-                    'EINT_30', # OTG_ID
-                    'EINT_31',
-                ]
+    tablet_eint = ['EINT_24',  # BT_HOST_WAKE
+                   'EINT_25',  # WIFI_HOST_WAKE
+                   'EINT_26',  # CTP_INT
+                   'EINT_27',  # GSENSOR_INT
+                   'EINT_8',  # GPS_INT
+                   'EINT_7',  # TILT_SENSOR_INT
+                   'EINT_22',  # COMPASS_INT
+                   'EINT_23',  # MCU_INT
+                   'EINT_16',  # PMIC_INT
+                   'EINT_17',  # PWR_BUTTON_INT
+                   'EINT_30',  # OTG_ID
+                   'EINT_31',
+                   ]
     descriptions = {
         'B1:LCD/22':
-             'RGB/TTL LCD, 800x480 or use SN75LVDS83b for up to 1440x900',
+        'RGB/TTL LCD, 800x480 or use SN75LVDS83b for up to 1440x900',
         'MMC': 'eMMC: main internal storage',
         'ULPI1/8': 'USB-OTG, connect to ULPI OTG PHY (for charging)\n'
                    'as well as USB Host or USB Device',
         'ULPI2/8': 'USB2 Host, connect to ULPI PHY w/and 4-port USB2 Hub\n'
-                    'for example GL850G or FE1.1. '
-                    'Connects to 2/3/4G/LTE Modem, 2x USB-Camera (VC0345)',
+        'for example GL850G or FE1.1. '
+        'Connects to 2/3/4G/LTE Modem, 2x USB-Camera (VC0345)',
         'SD1': 'internal, multiplexed with JTAG1\n'
                'and UART2, for debug purposes',
         'F1:IIS': 'I2C Audio, connect to AC97 Audio IC',
@@ -412,35 +413,35 @@ def pinspec():
         'EINT_31': 'Spare?',
     }
     unused_pins = check_functions("Smartphone / Tablet",
-                 bankspec, fns, pinouts,
-                 tablet, tablet_eint, tablet_pwm,
-                 descriptions)
+                                  bankspec, fns, pinouts,
+                                  tablet, tablet_eint, tablet_pwm,
+                                  descriptions)
 
     # Laptop
 
     laptop = ['D1:FB/17', 'E1:FB/8', 'B1:LCD/22', 'ULPI1/8', 'ULPI2/8',
-                'MMC', 'SD1',
-                'F1:IIS', # I2C Audio
-                'TWI2',   # I2C Audio
-                'E2:UART1', # WIFI/BT 
-                'E2:SD3',   # WIFI
+              'MMC', 'SD1',
+              'F1:IIS',  # I2C Audio
+              'TWI2',   # I2C Audio
+              'E2:UART1',  # WIFI/BT
+              'E2:SD3',   # WIFI
               'D2:TWI3', 'QSPI']
-    laptop_pwm = ['F2:PWM_0', # LCD_BACKLIGHT
-                 ]
-    laptop_eint = ['EINT_20', # BT_HOST_WAKE
-                   'EINT_21', # WIFI_HOST_WAKE 
-                    'EINT_9',  # MCU_INT
-                    'EINT_31', # PMIC_INT
-                ]
+    laptop_pwm = ['F2:PWM_0',  # LCD_BACKLIGHT
+                  ]
+    laptop_eint = ['EINT_20',  # BT_HOST_WAKE
+                   'EINT_21',  # WIFI_HOST_WAKE
+                   'EINT_9',  # MCU_INT
+                   'EINT_31',  # PMIC_INT
+                   ]
     descriptions = {
         'D1:FB/17': 'FlexBus.  Connect to DM9000 or AX99896A MCU-style Bus\n'
                     '10/100 Ethernet PHY.',
         'E1:FB/8': 'FlexBus bus bits 8-15, needed to make a 16-bit bus width',
         'B1:LCD/22':
-             'RGB/TTL LCD, use SN75LVDS83b for LVDS or SSD2828 for MIPI,\n'
-             'or a Chrontel CH7039, CH7038, CH7034 or CH7018 for dual\n'
-             'display output (eDP/LVDS and HDMI/VGA) '
-             'conversion.',
+        'RGB/TTL LCD, use SN75LVDS83b for LVDS or SSD2828 for MIPI,\n'
+        'or a Chrontel CH7039, CH7038, CH7034 or CH7018 for dual\n'
+        'display output (eDP/LVDS and HDMI/VGA) '
+        'conversion.',
         'MMC': 'eMMC: main internal storage',
         'ULPI1/8': 'USB-OTG, connect to ULPI OTG PHY (for charging)\n'
                    'as well as USB Host or USB Device',
@@ -468,46 +469,46 @@ def pinspec():
         'EINT_31': 'PMIC_INT',
     }
     unused_pins = check_functions("Laptop / Netbook",
-                 bankspec, fns, pinouts,
-                 laptop, laptop_eint, laptop_pwm,
-                 descriptions)
+                                  bankspec, fns, pinouts,
+                                  laptop, laptop_eint, laptop_pwm,
+                                  descriptions)
 
     # IoT
 
     iot = ['B1:LCD', 'ULPI2/8', 'ULPI1/8',
-                'MMC', 'SD1',
-                'F1:IIS', # I2C Audio
-                #'TWI2',   # I2C Audio
-                'C3:UART0', # HSPA UART
-                'E2:UART1', # BT UART
-                'C2:SPI2', # HSPI SPI
-                'E2:SD3',   # WIFI
-                'D3:TWI1', # sensors CTP,
-              'D2:TWI3', 'QSPI']
-    iot_pwm = ['F2:PWM_0', # LCD_BACKLIGHT
-                 ]
-    iot_eint = [ 'EINT_5', # 'HSPA_MST_RDY',
-                'EINT_6', # 'HSPA_SL_RDY',
-                'EINT_7', # 'HSPA_RING',
-                'EINT_8', # 'WL_PMU_EN',
-                'EINT_9', # HSPA_GPIO1
-                'EINT_10', # IR_DT
-                'EINT_11', # 'BT_PCM_CLK',
-                'EINT_12', # 'BT_PCM_DIN',
-                'EINT_13', # 'BT_PCM_SYNC',
-                'EINT_14', # 'BT_PCM_DOUT',
-                'EINT_16', # 'USB_DRVVBUS',
-                'EINT_17', # 'USB_VBUSDET',
-                'EINT_21', # 'USB_ID',
-                'EINT_30', # 'CTP_INT',
-                'EINT_31', # 'SD_DET#',
+           'MMC', 'SD1',
+           'F1:IIS',  # I2C Audio
+           #'TWI2',   # I2C Audio
+           'C3:UART0',  # HSPA UART
+           'E2:UART1',  # BT UART
+           'C2:SPI2',  # HSPI SPI
+           'E2:SD3',   # WIFI
+           'D3:TWI1',  # sensors CTP,
+           'D2:TWI3', 'QSPI']
+    iot_pwm = ['F2:PWM_0',  # LCD_BACKLIGHT
+               ]
+    iot_eint = ['EINT_5',  # 'HSPA_MST_RDY',
+                'EINT_6',  # 'HSPA_SL_RDY',
+                'EINT_7',  # 'HSPA_RING',
+                'EINT_8',  # 'WL_PMU_EN',
+                'EINT_9',  # HSPA_GPIO1
+                'EINT_10',  # IR_DT
+                'EINT_11',  # 'BT_PCM_CLK',
+                'EINT_12',  # 'BT_PCM_DIN',
+                'EINT_13',  # 'BT_PCM_SYNC',
+                'EINT_14',  # 'BT_PCM_DOUT',
+                'EINT_16',  # 'USB_DRVVBUS',
+                'EINT_17',  # 'USB_VBUSDET',
+                'EINT_21',  # 'USB_ID',
+                'EINT_30',  # 'CTP_INT',
+                'EINT_31',  # 'SD_DET#',
                 ]
     descriptions = {
         'B1:LCD':
-             'RGB/TTL LCD, use SN75LVDS83b for LVDS or SSD2828 for MIPI,\n'
-             'or a Chrontel CH7039, CH7038, CH7034 or CH7018 for dual\n'
-             'display output (eDP/LVDS and HDMI/VGA) '
-             'conversion.',
+        'RGB/TTL LCD, use SN75LVDS83b for LVDS or SSD2828 for MIPI,\n'
+        'or a Chrontel CH7039, CH7038, CH7034 or CH7018 for dual\n'
+        'display output (eDP/LVDS and HDMI/VGA) '
+        'conversion.',
         'MMC': 'eMMC: main internal storage',
         'F1:IIS': 'I2C Audio, connect to AC97 Audio IC',
         'ULPI2/8': 'USB-OTG, connect to ULPI OTG PHY (for charging)\n'
@@ -561,9 +562,9 @@ def pinspec():
         'EINT_31': 'SD_DETN',
     }
     unused_pins = check_functions("IoT",
-                 bankspec, fns, pinouts,
-                 iot, iot_eint, iot_pwm,
-                 descriptions)
+                                  bankspec, fns, pinouts,
+                                  iot, iot_eint, iot_pwm,
+                                  descriptions)
 
     print "# Reference Datasheets"
     print

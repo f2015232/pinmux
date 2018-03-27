@@ -2,6 +2,7 @@ import os
 import os.path
 from spec.interfaces import Pinouts
 
+
 def specgen(pth, pinouts, bankspec, fixedpins):
     """ generates a specification of pinouts (tsv files)
         for reading in by pinmux
@@ -15,9 +16,9 @@ def specgen(pth, pinouts, bankspec, fixedpins):
         for k in pinouts.fnspec.keys():
             s = pinouts.fnspec[k]
             f.write("%s\t%d\n" % (k.lower(), len(s)))
-            s0 = s[s.keys()[0]] # hack, take first
+            s0 = s[s.keys()[0]]  # hack, take first
             with open(os.path.join(pth, '%s.txt' % k.lower()), 'w') as g:
-                if len(s0.pingroup) == 1: # only one function, grouped higher up
+                if len(s0.pingroup) == 1:  # only one function, grouped higher
                     for ks in s.keys():  # grouped by interface
                         k = "%s_%s" % (s[ks].fname, s[ks].suffix)
                         k_ = k.lower()
@@ -41,7 +42,7 @@ def specgen(pth, pinouts, bankspec, fixedpins):
     with open(os.path.join(pth, 'pinmap.txt'), 'w') as g:
         for k in pks:
             res = [str(k)]
-            # append pin mux 
+            # append pin mux
             for midx in range(muxsz):
                 if pinouts[k].has_key(midx):
                     fname = pinouts[k][midx][0]
