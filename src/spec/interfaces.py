@@ -278,8 +278,11 @@ def eint(bankspec, suffix, offs, bank, gpiooffs, gpionum=1, mux=1, spec=None):
     return Pins('EINT', gpiopins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
-def pwm(bankspec, suffix, offs, bank, mux=1, spec=None):
-    return Pins('PWM', ['+', ], bankspec, suffix, offs, bank, mux, spec,
+def pwm(bankspec, suffix, offs, bank, pwmoffs, pwmnum=1, mux=1, spec=None):
+    pwmpins = []
+    for i in range(pwmoffs, pwmoffs+pwmnum):
+        pwmpins.append("%d+" % (i))
+    return Pins('PWM', pwmpins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
 def gpio(bankspec, suffix, offs, bank, gpiooffs, gpionum=1, mux=1, spec=None):
