@@ -171,7 +171,7 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
             if descriptions and descriptions.has_key(fname):
                 desc = ': %s' % descriptions[fname]
             bank = fname[4]
-            pin = int(fname[5:])
+            pin = int(fname[7:])
             pin_ = pin + bankspec[bank]
             if not pins.has_key(pin_):
                 continue

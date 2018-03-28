@@ -20,15 +20,15 @@ def specgen(pth, pinouts, bankspec, fixedpins):
             with open(os.path.join(pth, '%s.txt' % k.lower()), 'w') as g:
                 if len(s0.pingroup) == 1:  # only one function, grouped higher
                     for ks in s.keys():  # grouped by interface
+                        fntype = 'inout' # XXX TODO
                         k = "%s_%s" % (s[ks].fname, s[ks].suffix)
                         k_ = k.lower()
                         g.write("%s\t%s\n" % (k_, fntype))
                 else:
                     for pinname in s0.pingroup:
                         fntype = s0.fntype.get(pinname, 'inout')
-                        k_ = k.lower()
                         pn = pinname.lower()
-                        g.write("%s_%s\t%s\n" % (k_, pn, fntype))
+                        g.write("%s\t%s\n" % (pn, fntype))
 
     pks = pinouts.keys()
     pks.sort()

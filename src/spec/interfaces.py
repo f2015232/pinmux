@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-
 class Pinouts(object):
     def __init__(self):
         self.pins = {}
@@ -40,7 +39,7 @@ class Pinouts(object):
 class Pins(object):
 
     def __init__(self, fname, pingroup, bankspec, suffix, offs, bank, mux,
-                 spec=None, limit=None, origsuffix=None):
+             spec=None, limit=None, origsuffix=None):
 
         # function type can be in, out or inout, represented by - + *
         # strip function type out of each pin name
@@ -67,7 +66,7 @@ class Pins(object):
 
         # create consistent name suffixes
         pingroup = namesuffix(fname, suffix, pingroup)
-        suffix = ''  # hack
+        suffix = '' # hack
 
         res = {}
         names = {}
@@ -108,11 +107,10 @@ class Pins(object):
 
 def i2s(bankspec, suffix, offs, bank, mux=1, spec=None, limit=None):
     i2spins = ['MCK+', 'BCK+', 'LRCK+', 'DI-', 'DO+']
-    # for i in range(4):
+    #for i in range(4):
     #    i2spins.append("DO%d+" % i)
     return Pins('IIS', i2spins, bankspec, suffix, offs, bank, mux, spec, limit,
                 origsuffix=suffix)
-
 
 def emmc(bankspec, suffix, offs, bank, mux=1, spec=None):
     emmcpins = ['CMD+', 'CLK+']
@@ -121,9 +119,8 @@ def emmc(bankspec, suffix, offs, bank, mux=1, spec=None):
     return Pins('MMC', emmcpins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
-
 def sdmmc(bankspec, suffix, offs, bank, mux=1, spec=None,
-          start=None, limit=None):
+                start=None, limit=None):
     sdmmcpins = ['CMD+', 'CLK+']
     for i in range(4):
         sdmmcpins.append("D%d*" % i)
@@ -131,36 +128,30 @@ def sdmmc(bankspec, suffix, offs, bank, mux=1, spec=None,
     return Pins('SD', sdmmcpins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
-
 def spi(bankspec, suffix, offs, bank, mux=1, spec=None):
     spipins = ['CLK*', 'NSS*', 'MOSI*', 'MISO*']
     return Pins('SPI', spipins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
-
 
 def quadspi(bankspec, suffix, offs, bank, mux=1, spec=None, limit=None):
     spipins = ['CK*', 'NSS*', 'IO0*', 'IO1*', 'IO2*', 'IO3*']
     return Pins('QSPI', spipins, bankspec, suffix, offs, bank, mux, spec, limit,
                 origsuffix=suffix)
 
-
 def i2c(bankspec, suffix, offs, bank, mux=1, spec=None):
     spipins = ['SDA*', 'SCL*']
     return Pins('TWI', spipins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
-
 
 def jtag(bankspec, suffix, offs, bank, mux=1, spec=None):
     jtagpins = ['MS+', 'DI-', 'DO+', 'CK+']
     return Pins('JTAG', jtagpins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
-
 def uart(bankspec, suffix, offs, bank, mux=1, spec=None):
     uartpins = ['TX+', 'RX-']
     return Pins('UART', uartpins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
-
 
 def namesuffix(name, suffix, namelist):
     names = []
@@ -171,7 +162,6 @@ def namesuffix(name, suffix, namelist):
             names.append("%s_%s" % (name, suffix))
     return names
 
-
 def ulpi(bankspec, suffix, offs, bank, mux=1, spec=None):
     ulpipins = ['CK+', 'DIR+', 'STP+', 'NXT+']
     for i in range(8):
@@ -179,12 +169,10 @@ def ulpi(bankspec, suffix, offs, bank, mux=1, spec=None):
     return Pins('ULPI', ulpipins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
-
 def uartfull(bankspec, suffix, offs, bank, mux=1, spec=None):
     uartpins = ['TX+', 'RX-', 'CTS-', 'RTS+']
     return Pins('UARTQ', uartpins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
-
 
 def rgbttl(bankspec, suffix, offs, bank, mux=1, spec=None):
     ttlpins = ['CK+', 'DE+', 'HS+', 'VS+']
@@ -192,7 +180,6 @@ def rgbttl(bankspec, suffix, offs, bank, mux=1, spec=None):
         ttlpins.append("D%d+" % i)
     return Pins('LCD', ttlpins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
-
 
 def rgmii(bankspec, suffix, offs, bank, mux=1, spec=None):
     buspins = []
@@ -207,7 +194,6 @@ def rgmii(bankspec, suffix, offs, bank, mux=1, spec=None):
     return Pins('RG', buspins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
-
 def flexbus1(bankspec, suffix, offs, bank, mux=1, spec=None, limit=None):
     buspins = []
     for i in range(8):
@@ -219,19 +205,17 @@ def flexbus1(bankspec, suffix, offs, bank, mux=1, spec=None, limit=None):
                 'TSIZ0', 'TSIZ1']
     for i in range(4):
         buspins.append("BWE%d" % i)
-    for i in range(2, 6):
+    for i in range(2,6):
         buspins.append("CS%d+" % i)
     return Pins('FB', buspins, bankspec, suffix, offs, bank, mux, spec, limit,
                 origsuffix=suffix)
 
-
 def flexbus2(bankspec, suffix, offs, bank, mux=1, spec=None, limit=None):
     buspins = []
-    for i in range(8, 32):
+    for i in range(8,32):
         buspins.append("AD%d*" % i)
     return Pins('FB', buspins, bankspec, suffix, offs, bank, mux, spec, limit,
                 origsuffix=suffix)
-
 
 def sdram1(bankspec, suffix, offs, bank, mux=1, spec=None):
     buspins = []
@@ -252,16 +236,14 @@ def sdram1(bankspec, suffix, offs, bank, mux=1, spec=None):
     return Pins('SDR', buspins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
-
 def sdram2(bankspec, suffix, offs, bank, mux=1, spec=None, limit=None):
     buspins = []
-    for i in range(3, 6):
+    for i in range(3,6):
         buspins.append("SDRCS%d#+" % i)
-    for i in range(8, 32):
+    for i in range(8,32):
         buspins.append("SDRDQ%d*" % i)
     return Pins('SDR', buspins, bankspec, suffix, offs, bank, mux, spec, limit,
                 origsuffix=suffix)
-
 
 def mcu8080(bankspec, suffix, offs, bank, mux=1, spec=None):
     buspins = []
@@ -278,15 +260,13 @@ def mcu8080(bankspec, suffix, offs, bank, mux=1, spec=None):
     return Pins('MCU', buspins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
-
 def _pinbank(bankspec, prefix, suffix, offs, bank, gpiooffs, gpionum=1, mux=1,
              spec=None):
     gpiopins = []
     for i in range(gpiooffs, gpiooffs+gpionum):
         gpiopins.append("%s%d*" % (bank, i))
-    return Pins('GPIO', gpiopins, bankspec, suffix, offs, bank, mux, spec,
+    return Pins(prefix, gpiopins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
-
 
 def eint(bankspec, suffix, offs, bank, gpiooffs, gpionum=1, mux=1, spec=None):
     gpiopins = []
@@ -295,16 +275,13 @@ def eint(bankspec, suffix, offs, bank, gpiooffs, gpionum=1, mux=1, spec=None):
     return Pins('EINT', gpiopins, bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
-
 def pwm(bankspec, suffix, offs, bank, mux=1, spec=None):
     return Pins('PWM', ['+', ], bankspec, suffix, offs, bank, mux, spec,
                 origsuffix=suffix)
 
-
 def gpio(bankspec, suffix, offs, bank, gpiooffs, gpionum=1, mux=1, spec=None):
-    return _pinbank(bankspec, "GPIO", suffix, offs, bank, gpiooffs,
+    return _pinbank(bankspec, "GPIO%s" % bank, suffix, offs, bank, gpiooffs,
                               gpionum, mux=0, spec=None)
-
 
 def pinmerge(pins, fn):
     # hack, store the function specs in the pins dict
@@ -326,7 +303,8 @@ def pinmerge(pins, fn):
         specname = fname + bank
     pins.fnspec[fname][specname] = fn
 
+
     # merge actual pins
     for (pinidx, v) in fn.pins.items():
-        print "pinidx", pinidx
         pins.update(pinidx, v)
+
