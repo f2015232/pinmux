@@ -21,7 +21,7 @@ def specgen(pth, pinouts, bankspec, fixedpins):
                 if len(s0.pingroup) == 1:  # only one function, grouped higher
                     for ks in s.keys():  # grouped by interface
                         fntype = 'inout' # XXX TODO
-                        k = "%s_%s" % (s[ks].fname, s[ks].suffix)
+                        k = s[ks].suffix
                         k_ = k.lower()
                         g.write("%s\t%s\n" % (k_, fntype))
                 else:
@@ -48,6 +48,5 @@ def specgen(pth, pinouts, bankspec, fixedpins):
                     fname = pinouts[k][midx][0]
                 else:
                     fname = ''
-                print k, midx, fname
                 res.append(fname.lower())
             g.write('\t'.join(res) + '\n')

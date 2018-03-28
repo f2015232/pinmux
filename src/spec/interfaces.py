@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+from copy import deepcopy
+
+
 class Pinouts(object):
     def __init__(self):
         self.pins = {}
@@ -301,8 +304,19 @@ def pinmerge(pins, fn):
         specname = fname + suffix
     else:
         specname = fname + bank
-    pins.fnspec[fname][specname] = fn
-
+    if pins.fnspec[fname].has_key(specname):
+        # ok so some declarations may bring in different
+        # names at different stages (EINT, PWM, flexbus1/2)
+        # so we have to merge the names in.  main thing is
+        # the pingroup
+        tomerge = pins.fnspec[fname][specname]
+        for p in fn.pingroup:
+            if p not in tomerge.pingroup:
+                tomerge.pingroup.append(p)
+        tomerge.pins.update(fn.pins)
+        tomerge.fntype.update(fn.fntype)
+    else:
+        pins.fnspec[fname][specname] = deepcopy(fn)
 
     # merge actual pins
     for (pinidx, v) in fn.pins.items():
