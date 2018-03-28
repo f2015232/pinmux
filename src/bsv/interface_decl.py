@@ -99,6 +99,18 @@ class Interface(object):
                 _p['name'] = self.pname(p['name'])
                 self.pins.append(Pin(**_p))
 
+    def getifacetype(self, name):
+        for p in self.pinspecs:
+            fname = "%s_%s" % (self.ifacename, p['name'])
+            print "search", self.ifacename, name, fname
+            if fname == name:
+                if p.get('action'):
+                    return 'out'
+                elif p.get('outen'):
+                    return 'inout'
+                return 'input'
+        return None
+
     def pname(self, name):
         return '%s{0}_%s' % (self.ifacename, name)
 
@@ -202,6 +214,14 @@ class Interfaces(UserDict):
                 count = int(ln[1])
                 spec = self.read_spec(pth, name)
                 self.ifaceadd(name, count, Interface(name, spec))
+
+    def getifacetype(self, fname):
+        # finds the interface type, e.g sd_d0 returns "inout"
+        for iface in self.values():
+            typ = iface.getifacetype(fname)
+            if typ:
+                return typ
+        return None
 
     def ifaceadd(self, name, count, iface, at=None):
         if at is None:
