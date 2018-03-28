@@ -20,6 +20,7 @@ def specgen(pth, pinouts, bankspec, fixedpins):
             with open(os.path.join(pth, '%s.txt' % k.lower()), 'w') as g:
                 if len(s0.pingroup) == 1:  # only one function, grouped higher
                     for ks in s.keys():  # grouped by interface
+                        assert False, "TODO, single-function"
                         fntype = 'inout' # XXX TODO
                         k = s[ks].suffix
                         k_ = k.lower()
