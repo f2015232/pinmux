@@ -77,8 +77,8 @@ if __name__ == '__main__':
             printhelp()
             sys.exit(1)
         module = modules[pinspec]
-        pinout, bankspec, fixedpins = module.pinspec()
-        specgen(output_dir, pinout, bankspec, fixedpins)
+        pinout, bankspec, pinspec, fixedpins = module.pinspec()
+        specgen(output_dir, pinout, bankspec, pinspec, fixedpins)
     else:
         gentypes = {'bsv': bsvgen}
         if output_type not in gentypes:

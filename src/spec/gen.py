@@ -3,7 +3,7 @@ import os.path
 from spec.interfaces import Pinouts
 
 
-def specgen(pth, pinouts, bankspec, fixedpins):
+def specgen(pth, pinouts, bankspec, pinbanks, fixedpins):
     """ generates a specification of pinouts (tsv files)
         for reading in by pinmux
     """
@@ -58,3 +58,8 @@ def specgen(pth, pinouts, bankspec, fixedpins):
             p = map(str, p)
             p = map(str.lower, p)
             g.write('\t'.join(p) + '\n')
+
+    # lists bankspec, shows where the pin-numbers *start*
+    print ("# Pin Bank starting points and lengths\n")
+    for bank, pinstart in bankspec.items():
+        print ("* %s %d %d" % (bank, pinstart, pinbanks[bank]))

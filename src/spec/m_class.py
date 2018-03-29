@@ -689,4 +689,4 @@ datasheets and pinout links
 * ULPI OTG PHY, TI TUSB1210 <http://ti.com/product/TUSB1210/>
 """)
 
-    return pinouts, bankspec, fixedpins
+    return pinouts, bankspec, pinbanks, fixedpins
