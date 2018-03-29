@@ -91,7 +91,7 @@ def pinmuxgen(pth=None, verify=True):
       // where each IO will have the same number of muxes.''')
 
         for cell in p.muxed_cells:
-            cnum = int(math.log(len(cell) - 1, 2))
+            cnum = 'Bit#(' + str(int(math.log(len(cell) - 1, 2))) + ')'
             bsv_file.write(mux_interface.ifacefmt(cell[0], cnum))
 
         bsv_file.write('''
@@ -128,7 +128,7 @@ def pinmuxgen(pth=None, verify=True):
 ''')
         for cell in p.muxed_cells:
             bsv_file.write(mux_interface.wirefmt(
-                cell[0], int(math.log(len(cell) - 1, 2))))
+                cell[0], 'Bit#('+str(int(math.log(len(cell) - 1, 2)))+')'))
 
         ifaces.wirefmt(bsv_file)
 
@@ -150,9 +150,9 @@ def pinmuxgen(pth=None, verify=True):
         for cell in p.muxed_cells:
             bsv_file.write(
                 mux_interface.ifacedef(
-                    cell[0], int(
+                    cell[0], 'Bit#(' + str(int(
                         math.log(
-                            len(cell) - 1, 2))))
+                            len(cell) - 1, 2))) + ')'))
         bsv_file.write('''
     endinterface;
     interface peripheral_side = interface PeripheralSide
