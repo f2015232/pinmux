@@ -40,6 +40,7 @@ def specgen(pth, pinouts, bankspec, fixedpins):
         for m in pinouts[k].keys():
             muxsz = max(muxsz, m + 1)
 
+    # write out the mux...
     with open(os.path.join(pth, 'pinmap.txt'), 'w') as g:
         for k in pks:
             res = [str(k)]
@@ -51,3 +52,10 @@ def specgen(pth, pinouts, bankspec, fixedpins):
                     fname = ''
                 res.append(fname.lower())
             g.write('\t'.join(res) + '\n')
+
+    # ... and the dedicated pins 
+    with open(os.path.join(pth, 'fixedpins.txt'), 'w') as g:
+        for p in fixedpins:
+            p = map(str, p)
+            p = map(str.lower, p)
+            g.write('\t'.join(p) + '\n')

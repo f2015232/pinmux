@@ -216,7 +216,7 @@ def pinspec():
 
     }
 
-    display_fixed(fixedpins, len(pinouts))
+    fixedpins = display_fixed(fixedpins, len(pinouts))
 
     print "# Functions (PinMux)"
     print

@@ -236,6 +236,7 @@ def display_fixed(fixed, offs):
     fkeys = fixed.keys()
     fkeys.sort()
     pin_ = offs
+    res = []
     for pin, k in enumerate(fkeys):
         print "## %s" % k
         print
@@ -253,8 +254,12 @@ def display_fixed(fixed, offs):
                     print
                 print "* %d: %d %s" % (pin_, pin, name),
                 linecount = 1
+                res.append((pin_, name))
+
             prevname = name
             pin_ += 1
         if linecount != 0:
             print
         print
+
+    return res
