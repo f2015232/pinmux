@@ -8,6 +8,9 @@ class Pinouts(object):
         self.pins = {}
         self.fnspec = {}
 
+    def __contains__(self, k):
+        return k in self.pins
+
     def has_key(self, k):
         return k in self.pins
 
