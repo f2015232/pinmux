@@ -18,8 +18,8 @@ class SafeInputMux(Module):
         self.selector = Signal(max=inwidth + 1)
         self.io = set(self.inputs) | set([self.output, self.selector]) 
         sel_r = Signal(max=inwidth + 1)
-        sel25 = Signal(max=1<<inwidth + 1)
-        zero = Constant(0, wlog)
+        sel25 = Signal(max=1<<inwidth)
+        zero = Constant(0)
         muxes = []
         for i in range(len(self.inputs)):
             x = Constant(1<<i, inwidth)
@@ -69,12 +69,20 @@ def tb(dut):
             for sel in [0,1,2,3]:
                 yield dut.selector.eq(sel)
                 yield # run one more clock
-                s = ''
-                for x in range(len(dut.inputs)):
-                    s += ("{0} ".format((yield dut.inputs[x])))
-                print("{0} out={1} sel={2}".format(s, (yield dut.output),
-                                                (yield dut.selector)))
                 yield
+                s = ''
+                ins = []
+                for x in range(len(dut.inputs)):
+                    ins.append((yield dut.inputs[x]))
+                for x in range(len(dut.inputs)):
+                    s += ("{0} ".format(ins[x]))
+                sel = (yield dut.selector)
+                out = (yield dut.output)
+                yield
+                print("{0} out={1} sel={2}".format(s, out, sel))
+
+                print ("%d %d" % (out, ins[sel]))
+                #assert out == ins[sel]
 
 
 if __name__ == '__main__':
