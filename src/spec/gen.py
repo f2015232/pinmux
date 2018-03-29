@@ -60,6 +60,8 @@ def specgen(pth, pinouts, bankspec, pinbanks, fixedpins):
             g.write('\t'.join(p) + '\n')
 
     # lists bankspec, shows where the pin-numbers *start*
-    print ("# Pin Bank starting points and lengths\n")
-    for bank, pinstart in bankspec.items():
-        print ("* %s %d %d" % (bank, pinstart, pinbanks[bank]))
+        print ("# Pin Bank starting points and lengths\n")
+    with open(os.path.join(pth, 'pinspec.txt'), 'w') as g:
+        for bank, pinstart in bankspec.items():
+            print ("* %s %d %d" % (bank, pinstart, pinbanks[bank]))
+            g.write("%s\t%d\t%d\n" % (bank, pinstart, pinbanks[bank]))
