@@ -1,5 +1,5 @@
-import m_class
-import c_class
+from spec import m_class
+from spec import c_class
 from gen import specgen
 
 modules = {'m_class': m_class,

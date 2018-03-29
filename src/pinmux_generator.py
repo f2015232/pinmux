@@ -49,7 +49,7 @@ if __name__ == '__main__':
              'version=',
              ])
     except getopt.GetoptError as err:
-        print "ERROR: %s" % str(err)
+        print ("ERROR: %s" % str(err))
         printhelp()
         sys.exit(1)
 
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
     if pinspec:
         if pinspec not in modules:
-            print "ERROR: spec type '%s' does not exist" % pinspec
+            print ("ERROR: spec type '%s' does not exist" % pinspec)
             printhelp()
             sys.exit(1)
         module = modules[pinspec]
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     else:
         gentypes = {'bsv': bsvgen}
         if output_type not in gentypes:
-            print "ERROR: output type '%s' does not exist" % output_type
+            print ("ERROR: output type '%s' does not exist" % output_type)
             printhelp()
             sys.exit(0)
         gentypes[output_type](output_dir, validate)
