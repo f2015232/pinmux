@@ -72,7 +72,7 @@ if __name__ == '__main__':
             sys.exit(0)
 
     if pinspec:
-        if not modules.has_key(pinspec):
+        if pinspec not in modules:
             print "ERROR: spec type '%s' does not exist" % pinspec
             printhelp()
             sys.exit(1)
@@ -81,7 +81,7 @@ if __name__ == '__main__':
         specgen(output_dir, pinout, bankspec, fixedpins)
     else:
         gentypes = {'bsv': bsvgen}
-        if not gentypes.has_key(output_type):
+        if output_type not in gentypes:
             print "ERROR: output type '%s' does not exist" % output_type
             printhelp()
             sys.exit(0)

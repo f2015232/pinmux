@@ -21,7 +21,7 @@ def specgen(pth, pinouts, bankspec, fixedpins):
                 if len(s0.pingroup) == 1:  # only one function, grouped higher
                     for ks in s.keys():  # grouped by interface
                         assert False, "TODO, single-function"
-                        fntype = 'inout' # XXX TODO
+                        fntype = 'inout'  # XXX TODO
                         k = s[ks].suffix
                         k_ = k.lower()
                         g.write("%s\t%s\n" % (k_, fntype))
@@ -31,8 +31,7 @@ def specgen(pth, pinouts, bankspec, fixedpins):
                         pn = pinname.lower()
                         g.write("%s\t%s\n" % (pn, fntype))
 
-    pks = pinouts.keys()
-    pks.sort()
+    pks = sorted(pinouts.keys())
 
     # truly dreadful way to work out the max mux size...
     muxsz = 0
@@ -46,14 +45,14 @@ def specgen(pth, pinouts, bankspec, fixedpins):
             res = [str(k)]
             # append pin mux
             for midx in range(muxsz):
-                if pinouts[k].has_key(midx):
+                if midx in pinouts[k]:
                     fname = pinouts[k][midx][0]
                 else:
                     fname = ''
                 res.append(fname.lower())
             g.write('\t'.join(res) + '\n')
 
-    # ... and the dedicated pins 
+    # ... and the dedicated pins
     with open(os.path.join(pth, 'fixedpins.txt'), 'w') as g:
         for p in fixedpins:
             p = map(str, p)

@@ -53,7 +53,7 @@ def init(p, ifaces):
         # since the interfaces are always standard and cannot change from
         # user-to-user. Plus this also reduces human-error as well :)
         for i in range(0, len(cell) - 1):
-            cname = cell[i+1]
+            cname = cell[i + 1]
             temp = transfn(cname)
             x = ifaces.getifacetype(temp)
             print cname, temp, x

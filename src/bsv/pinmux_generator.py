@@ -148,8 +148,11 @@ def pinmuxgen(pth=None, verify=True):
     interface mux_lines = interface MuxSelectionLines
 ''')
         for cell in p.muxed_cells:
-            bsv_file.write(mux_interface.ifacedef(cell[0],
-                                                  int(math.log(len(cell) - 1, 2))))
+            bsv_file.write(
+                mux_interface.ifacedef(
+                    cell[0], int(
+                        math.log(
+                            len(cell) - 1, 2))))
         bsv_file.write('''
     endinterface;
     interface peripheral_side = interface PeripheralSide

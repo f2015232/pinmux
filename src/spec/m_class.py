@@ -22,8 +22,7 @@ def pinspec():
                 'G': 32,
                 }
     bankspec = {}
-    pkeys = pinbanks.keys()
-    pkeys.sort()
+    pkeys = sorted(pinbanks.keys())
     offs = 0
     for kn in pkeys:
         bankspec[kn] = offs
@@ -152,69 +151,186 @@ def pinspec():
     print
 
     fixedpins = {
-        'DDR3':
-        ['SDQ0', 'SDQ1', 'SDQ2', 'SDQ3', 'SDQ4', 'SDQ5', 'SDQ6', 'SDQ7',
-         'SDQ8', 'SDQ9', 'SDQ10', 'SDQ11', 'SDQ12', 'SDQ13', 'SDQ14', 'SDQ15',
-         'SDQ16', 'SDQ17', 'SDQ18', 'SDQ19', 'SDQ20', 'SDQ21', 'SDQ22', 'SDQ23',
-         'SDQ24', 'SDQ25', 'SDQ26', 'SDQ27', 'SDQ28', 'SDQ29', 'SDQ30', 'SDQ31',
-         'SVREF0', 'SVREF1', 'SVREF2', 'SVREF3',
-         'SDQS0', 'SDQS0#', 'SDQS1', 'SDQS1#',
-         'SDQS2', 'SDQS2#', 'SDQS3', 'SDQS3#',
-         'SDQM0', 'SDQM1', 'SDQM2', 'SDQM3',
-         'SCK#', 'SCK', 'SCKE0', 'SCKE1',
-         'SA0', 'SA1', 'SA2', 'SA3', 'SA4', 'SA5', 'SA6', 'SA7',
-         'SA8', 'SA9', 'SA10', 'SA11', 'SA12', 'SA13', 'SA14',
-         'SBA0', 'SBA1', 'SBA2',
-         'SWE', 'SCAS', 'SRAS',
-         'SCS0', 'SCS1',
-         'SZQ', 'SRST',
-         'SDBG0', 'SDBG1', 'ADBG',
-         'ODT0', 'ODT1'
-         ],
-
-        'CTRL_SYS':
-        [
-            'TEST', 'JTAG_SEL', 'UBOOT_SEL',
-            'NMI#', 'RESET#',
-            'CLK24M_IN', 'CLK24M_OUT',
-            'PLLTEST', 'PLLREGIO', 'PLLVP25',
-            'PLLDV', 'PLLVREG', 'PLLGND',
+        'DDR3': [
+            'SDQ0',
+            'SDQ1',
+            'SDQ2',
+            'SDQ3',
+            'SDQ4',
+            'SDQ5',
+            'SDQ6',
+            'SDQ7',
+            'SDQ8',
+            'SDQ9',
+            'SDQ10',
+            'SDQ11',
+            'SDQ12',
+            'SDQ13',
+            'SDQ14',
+            'SDQ15',
+            'SDQ16',
+            'SDQ17',
+            'SDQ18',
+            'SDQ19',
+            'SDQ20',
+            'SDQ21',
+            'SDQ22',
+            'SDQ23',
+            'SDQ24',
+            'SDQ25',
+            'SDQ26',
+            'SDQ27',
+            'SDQ28',
+            'SDQ29',
+            'SDQ30',
+            'SDQ31',
+            'SVREF0',
+            'SVREF1',
+            'SVREF2',
+            'SVREF3',
+            'SDQS0',
+            'SDQS0#',
+            'SDQS1',
+            'SDQS1#',
+            'SDQS2',
+            'SDQS2#',
+            'SDQS3',
+            'SDQS3#',
+            'SDQM0',
+            'SDQM1',
+            'SDQM2',
+            'SDQM3',
+            'SCK#',
+            'SCK',
+            'SCKE0',
+            'SCKE1',
+            'SA0',
+            'SA1',
+            'SA2',
+            'SA3',
+            'SA4',
+            'SA5',
+            'SA6',
+            'SA7',
+            'SA8',
+            'SA9',
+            'SA10',
+            'SA11',
+            'SA12',
+            'SA13',
+            'SA14',
+            'SBA0',
+            'SBA1',
+            'SBA2',
+            'SWE',
+            'SCAS',
+            'SRAS',
+            'SCS0',
+            'SCS1',
+            'SZQ',
+            'SRST',
+            'SDBG0',
+            'SDBG1',
+            'ADBG',
+            'ODT0',
+            'ODT1'],
+        'CTRL_SYS': [
+            'TEST',
+            'JTAG_SEL',
+            'UBOOT_SEL',
+            'NMI#',
+            'RESET#',
+            'CLK24M_IN',
+            'CLK24M_OUT',
+            'PLLTEST',
+            'PLLREGIO',
+            'PLLVP25',
+            'PLLDV',
+            'PLLVREG',
+            'PLLGND',
         ],
-
-        'POWER_DRAM':
-        ['VCC0_DRAM', 'VCC1_DRAM', 'VCC2_DRAM', 'VCC3_DRAM', 'VCC4_DRAM',
-         'VCC5_DRAM', 'VCC6_DRAM', 'VCC7_DRAM', 'VCC8_DRAM', 'VCC9_DRAM',
-         'GND0_DRAM', 'GND1_DRAM', 'GND2_DRAM', 'GND3_DRAM', 'GND4_DRAM',
-         'GND5_DRAM', 'GND6_DRAM', 'GND7_DRAM', 'GND8_DRAM', 'GND9_DRAM',
-         ],
-
-        'POWER_CPU':
-        ['VDD0_CPU', 'VDD1_CPU', 'VDD2_CPU', 'VDD3_CPU', 'VDD4_CPU', 'VDD5_CPU',
-         'GND0_CPU', 'GND1_CPU', 'GND2_CPU', 'GND3_CPU', 'GND4_CPU', 'GND5_CPU',
-         ],
-
-        'POWER_DLL':
-        ['VDD0_DLL', 'VDD1_DLL', 'VDD2_DLL',
-         'GND0_DLL', 'GND1_DLL', 'GND2_DLL',
-         ],
-
-        'POWER_INT':
-        ['VDD0_INT', 'VDD1_INT', 'VDD2_INT', 'VDD3_INT', 'VDD4_INT',
-         'VDD5_INT', 'VDD6_INT', 'VDD7_INT', 'VDD8_INT', 'VDD9_INT',
-         'GND0_INT', 'GND1_INT', 'GND2_INT', 'GND3_INT', 'GND4_INT',
-         'GND5_INT', 'GND6_INT', 'GND7_INT', 'GND8_INT', 'GND9_INT',
-         ],
-
-        'POWER_GPIO':
-        ['VDD_GPIOA', 'VDD_GPIOB', 'VDD_GPIOC',
-         'VDD_GPIOD', 'VDD_GPIOE', 'VDD_GPIOF',
-         'VDD_GPIOG',
-         'GND_GPIOA', 'GND_GPIOB', 'GND_GPIOC',
-         'GND_GPIOD', 'GND_GPIOE', 'GND_GPIOF',
-         'GND_GPIOG',
-         ]
-
-    }
+        'POWER_DRAM': [
+            'VCC0_DRAM',
+            'VCC1_DRAM',
+            'VCC2_DRAM',
+            'VCC3_DRAM',
+            'VCC4_DRAM',
+            'VCC5_DRAM',
+            'VCC6_DRAM',
+            'VCC7_DRAM',
+            'VCC8_DRAM',
+            'VCC9_DRAM',
+            'GND0_DRAM',
+            'GND1_DRAM',
+            'GND2_DRAM',
+            'GND3_DRAM',
+            'GND4_DRAM',
+            'GND5_DRAM',
+            'GND6_DRAM',
+            'GND7_DRAM',
+            'GND8_DRAM',
+            'GND9_DRAM',
+        ],
+        'POWER_CPU': [
+            'VDD0_CPU',
+            'VDD1_CPU',
+            'VDD2_CPU',
+            'VDD3_CPU',
+            'VDD4_CPU',
+            'VDD5_CPU',
+            'GND0_CPU',
+            'GND1_CPU',
+            'GND2_CPU',
+            'GND3_CPU',
+            'GND4_CPU',
+            'GND5_CPU',
+        ],
+        'POWER_DLL': [
+            'VDD0_DLL',
+            'VDD1_DLL',
+            'VDD2_DLL',
+            'GND0_DLL',
+            'GND1_DLL',
+            'GND2_DLL',
+        ],
+        'POWER_INT': [
+            'VDD0_INT',
+            'VDD1_INT',
+            'VDD2_INT',
+            'VDD3_INT',
+            'VDD4_INT',
+            'VDD5_INT',
+            'VDD6_INT',
+            'VDD7_INT',
+            'VDD8_INT',
+            'VDD9_INT',
+            'GND0_INT',
+            'GND1_INT',
+            'GND2_INT',
+            'GND3_INT',
+            'GND4_INT',
+            'GND5_INT',
+            'GND6_INT',
+            'GND7_INT',
+            'GND8_INT',
+            'GND9_INT',
+        ],
+        'POWER_GPIO': [
+            'VDD_GPIOA',
+            'VDD_GPIOB',
+            'VDD_GPIOC',
+            'VDD_GPIOD',
+            'VDD_GPIOE',
+            'VDD_GPIOF',
+            'VDD_GPIOG',
+            'GND_GPIOA',
+            'GND_GPIOB',
+            'GND_GPIOC',
+            'GND_GPIOD',
+            'GND_GPIOE',
+            'GND_GPIOF',
+            'GND_GPIOG',
+        ]}
 
     fixedpins = display_fixed(fixedpins, len(pinouts))
 
@@ -432,33 +548,33 @@ def pinspec():
                    ]
     descriptions = {
         'D1:FB/17': 'FlexBus.  Connect to DM9000 or AX99896A MCU-style Bus\n'
-                    '10/100 Ethernet PHY.',
+        '10/100 Ethernet PHY.',
         'E1:FB/8': 'FlexBus bus bits 8-15, needed to make a 16-bit bus width',
-        'B1:LCD/22':
-        'RGB/TTL LCD, use SN75LVDS83b for LVDS or SSD2828 for MIPI,\n'
+        'B1:LCD/22': 'RGB/TTL LCD, use SN75LVDS83b for '
+                     'LVDS or SSD2828 for MIPI,\n'
         'or a Chrontel CH7039, CH7038, CH7034 or CH7018 for dual\n'
         'display output (eDP/LVDS and HDMI/VGA) '
         'conversion.',
         'MMC': 'eMMC: main internal storage',
         'ULPI1/8': 'USB-OTG, connect to ULPI OTG PHY (for charging)\n'
-                   'as well as USB Host or USB Device',
+        'as well as USB Host or USB Device',
         'ULPI2/8': 'USB2 Host, connect to ULPI PHY w/and 4-port USB2 Hub\n'
-                    'for example GL850G or FE1.1. '
-                    'Connects to USB-Camera (VC0345 and 3x external USB Ports)',
+        'for example GL850G or FE1.1. '
+        'Connects to USB-Camera (VC0345 and 3x external USB Ports)',
         'SD1': 'internal, multiplexed with JTAG1\n'
-               'and UART2, for debug purposes',
+        'and UART2, for debug purposes',
         'F1:IIS': 'I2C Audio, connect to AC97 Audio IC',
         'TWI2': 'Connect to AC97 Audio IC',
         'E2:UART1': 'Connect to BT on AP6234/AP6335',
         'E2:SD3': 'Connect to WIFI on AP6234/AP6335',
         'QSPI': 'Boot Storage (connection to companion / debug / boot MCU)\n'
-                'Only actually needs MISO/MOSI, bootstrap loader v. small\n'
-                'Bootstrap loader checks eMMC, USB-OTG, SD/MMC, SPI, etc.\n'
-                'MCU implements keyboard-matrix for keyboard (also trackpad?)',
+        'Only actually needs MISO/MOSI, bootstrap loader v. small\n'
+        'Bootstrap loader checks eMMC, USB-OTG, SD/MMC, SPI, etc.\n'
+        'MCU implements keyboard-matrix for keyboard (also trackpad?)',
         'D2:TWI3': 'Connect to PMIC',
         'GPIO': 'Plenty of spare GPIO pins for miscellaneous functions\n'
-                'MCU EINT-capable GPIO may be used to generate extra EINTs\n'
-                'on the single MCU_INT line, if really needed',
+        'MCU EINT-capable GPIO may be used to generate extra EINTs\n'
+        'on the single MCU_INT line, if really needed',
         'F2:PWM_0': 'LCD Backlight',
         'EINT_20': 'BT_HOST_WAKE',
         'EINT_21': 'WIFI_HOST_WAKE',

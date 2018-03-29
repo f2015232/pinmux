@@ -6,13 +6,12 @@ from copy import deepcopy
 def display(pins):
     print "| Pin | Mux0        | Mux1        | Mux2        | Mux3        |"
     print "| --- | ----------- | ----------- | ----------- | ----------- |"
-    pinidx = pins.keys()
-    pinidx.sort()
+    pinidx = sorted(pins.keys())
     for pin in pinidx:
         pdata = pins.get(pin)
         res = '| %3d |' % pin
         for mux in range(4):
-            if not pdata.has_key(mux):
+            if mux not in pdata:
                 res += "             |"
                 continue
             name, bank = pdata[mux]
@@ -56,13 +55,13 @@ def display_fns(bankspec, pins, function_names):
     fns = {}
     for (pin, pdata) in pins.items():
         for mux in range(1, 4):  # skip GPIO for now
-            if not pdata.has_key(mux):
+            if mux not in pdata:
                 continue
             name, bank = pdata[mux]
-            assert name != None, str(bank)
-            if not fns.has_key(name):
+            assert name is not None, str(bank)
+            if name not in fns:
                 fns[name] = []
-            fns[name].append((pin-bankspec[bank], mux, bank))
+            fns[name].append((pin - bankspec[bank], mux, bank))
 
     fnidx = fns.keys()
     fnidx.sort(fnsort)
@@ -99,7 +98,7 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
     for name in required:
         print "## %s" % name
         print
-        if descriptions and descriptions.has_key(name):
+        if descriptions and name in descriptions:
             print descriptions[name]
             print
 
@@ -132,11 +131,10 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
                     if findmux != mux:
                         continue
                 pin_ = pin + bankspec[bank]
-                if pins.has_key(pin_):
+                if pin_ in pins:
                     pinfound[pin_] = (fname, pin_, bank, pin, mux)
 
-        pinidx = pinfound.keys()
-        pinidx.sort()
+        pinidx = sorted(pinfound.keys())
 
         for pin_ in pinidx:
             fname, pin_, bank, pin, mux = pinfound[pin_]
@@ -168,12 +166,12 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
             if fname in found:
                 continue
             desc = ''
-            if descriptions and descriptions.has_key(fname):
+            if descriptions and fname in descriptions:
                 desc = ': %s' % descriptions[fname]
             bank = fname[4]
             pin = int(fname[7:])
             pin_ = pin + bankspec[bank]
-            if not pins.has_key(pin_):
+            if pin_ not in pins:
                 continue
             del pins[pin_]
             found.add(fname)
@@ -187,7 +185,7 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
 
     print "## Unused Pinouts (spare as GPIO) for '%s'" % title
     print
-    if descriptions and descriptions.has_key('GPIO'):
+    if descriptions and 'GPIO' in descriptions:
         print descriptions['GPIO']
         print
     display(pins)
@@ -203,7 +201,7 @@ def display_group(bankspec, title, todisplay, fns, pins, descriptions):
     found = set()
     for fname in todisplay:
         desc = ''
-        if descriptions and descriptions.has_key(fname):
+        if descriptions and fname in descriptions:
             desc = ': %s' % descriptions[fname]
         fname = fname.split(':')
         if len(fname) == 2:
@@ -223,7 +221,7 @@ def display_group(bankspec, title, todisplay, fns, pins, descriptions):
             if fname in found:
                 continue
             pin_ = pin + bankspec[bank]
-            if not pins.has_key(pin_):
+            if pin_ not in pins:
                 continue
             del pins[pin_]
             found.add(fname)
@@ -233,8 +231,7 @@ def display_group(bankspec, title, todisplay, fns, pins, descriptions):
 
 def display_fixed(fixed, offs):
 
-    fkeys = fixed.keys()
-    fkeys.sort()
+    fkeys = sorted(fixed.keys())
     pin_ = offs
     res = []
     for pin, k in enumerate(fkeys):

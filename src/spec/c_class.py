@@ -21,8 +21,7 @@ def pinspec():
                 'G': 24,
                 }
     bankspec = {}
-    pkeys = pinbanks.keys()
-    pkeys.sort()
+    pkeys = sorted(pinbanks.keys())
     offs = 0
     for kn in pkeys:
         bankspec[kn] = offs
@@ -49,7 +48,7 @@ def pinspec():
     pinmerge(pinouts, i2c(bankspec, "3", ('B', 12), "B", 1))
     pinmerge(pinouts, uart(bankspec, "5", ('B', 14), "B", 1))
     for i in range(16):
-        pinmerge(pinouts, pwm(bankspec, str(i+16), ('B', i), "B", mux=2))
+        pinmerge(pinouts, pwm(bankspec, str(i + 16), ('B', i), "B", mux=2))
 
     # Bank C, 32-47
     pinmerge(pinouts, gpio(bankspec, "", ('C', 0), "C", 0, 16, 0))
@@ -102,43 +101,82 @@ def pinspec():
     print
 
     fixedpins = {
-        'CTRL_SYS':
-        [
-            'TEST', 'BOOT_SEL',
-            'NMI#', 'RESET#',
-            'CLK24M_IN', 'CLK24M_OUT',
-            'CLK32K_IN', 'CLK32K_OUT',
-            'PLLTEST', 'PLLREGIO', 'PLLVP25',
-            'PLLDV', 'PLLVREG', 'PLLGND',
+        'CTRL_SYS': [
+            'TEST',
+            'BOOT_SEL',
+            'NMI#',
+            'RESET#',
+            'CLK24M_IN',
+            'CLK24M_OUT',
+            'CLK32K_IN',
+            'CLK32K_OUT',
+            'PLLTEST',
+            'PLLREGIO',
+            'PLLVP25',
+            'PLLDV',
+            'PLLVREG',
+            'PLLGND',
         ],
-
-        'POWER_CPU':
-        ['VDD0_CPU', 'VDD1_CPU', 'VDD2_CPU', 'VDD3_CPU', 'VDD4_CPU', 'VDD5_CPU',
-         'GND0_CPU', 'GND1_CPU', 'GND2_CPU', 'GND3_CPU', 'GND4_CPU', 'GND5_CPU',
-         ],
-
-        'POWER_DLL':
-        ['VDD0_DLL', 'VDD1_DLL', 'VDD2_DLL',
-         'GND0_DLL', 'GND1_DLL', 'GND2_DLL',
-         ],
-
-        'POWER_INT':
-        ['VDD0_INT', 'VDD1_INT', 'VDD2_INT', 'VDD3_INT', 'VDD4_INT',
-         'VDD5_INT', 'VDD6_INT', 'VDD7_INT', 'VDD8_INT', 'VDD9_INT',
-         'GND0_INT', 'GND1_INT', 'GND2_INT', 'GND3_INT', 'GND4_INT',
-         'GND5_INT', 'GND6_INT', 'GND7_INT', 'GND8_INT', 'GND9_INT',
-         ],
-
-        'POWER_GPIO':
-        ['VDD_GPIOA', 'VDD_GPIOB', 'VDD_GPIOC',
-         'VDD_GPIOD', 'VDD_GPIOE', 'VDD_GPIOF',
-         'VDD_GPIOG',
-         'GND_GPIOA', 'GND_GPIOB', 'GND_GPIOC',
-         'GND_GPIOD', 'GND_GPIOE', 'GND_GPIOF',
-         'GND_GPIOG',
-         ]
-
-    }
+        'POWER_CPU': [
+            'VDD0_CPU',
+            'VDD1_CPU',
+            'VDD2_CPU',
+            'VDD3_CPU',
+            'VDD4_CPU',
+            'VDD5_CPU',
+            'GND0_CPU',
+            'GND1_CPU',
+            'GND2_CPU',
+            'GND3_CPU',
+            'GND4_CPU',
+            'GND5_CPU',
+        ],
+        'POWER_DLL': [
+            'VDD0_DLL',
+            'VDD1_DLL',
+            'VDD2_DLL',
+            'GND0_DLL',
+            'GND1_DLL',
+            'GND2_DLL',
+        ],
+        'POWER_INT': [
+            'VDD0_INT',
+            'VDD1_INT',
+            'VDD2_INT',
+            'VDD3_INT',
+            'VDD4_INT',
+            'VDD5_INT',
+            'VDD6_INT',
+            'VDD7_INT',
+            'VDD8_INT',
+            'VDD9_INT',
+            'GND0_INT',
+            'GND1_INT',
+            'GND2_INT',
+            'GND3_INT',
+            'GND4_INT',
+            'GND5_INT',
+            'GND6_INT',
+            'GND7_INT',
+            'GND8_INT',
+            'GND9_INT',
+        ],
+        'POWER_GPIO': [
+            'VDD_GPIOA',
+            'VDD_GPIOB',
+            'VDD_GPIOC',
+            'VDD_GPIOD',
+            'VDD_GPIOE',
+            'VDD_GPIOF',
+            'VDD_GPIOG',
+            'GND_GPIOA',
+            'GND_GPIOB',
+            'GND_GPIOC',
+            'GND_GPIOD',
+            'GND_GPIOE',
+            'GND_GPIOF',
+            'GND_GPIOG',
+        ]}
 
     display_fixed(fixedpins, len(pinouts))
 

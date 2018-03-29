@@ -44,4 +44,4 @@ clean:
 	rm -rf verilog obj_dir test/bsv_src src/*.pyc
 
 pep8:
-	autopep8 -r -i src
+	autopep8 -a -a -a --experimental -r -i src
