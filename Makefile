@@ -2,10 +2,10 @@
 
 TOP_MODULE:=mkbus
 TOP_FILE:=bus.bsv
-TOP_DIR:=./bsv_src/
+TOP_DIR:=./m_class/bsv_src/
 WORKING_DIR := $(shell pwd)
 
-BSVINCDIR:= .:%/Prelude:%/Libraries:%/Libraries/BlueNoC:./bsv_src:./src/bsv_lib/
+BSVINCDIR:= .:%/Prelude:%/Libraries:%/Libraries/BlueNoC:./m_class/bsv_src:./src/bsv/bsv_lib/
 default: gen_pinmux gen_verilog
 
 check-blue:
