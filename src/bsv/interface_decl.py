@@ -24,7 +24,7 @@ class Pin(object):
         self.enabled = enabled
         self.io = io
         self.action = action
-        self.bitspec = bitspec if bitspec else '1'
+        self.bitspec = bitspec if bitspec else 'Bit#(1)'
 
     def ifacefmt(self, fmtfn=None):
         res = '    '
@@ -46,9 +46,9 @@ class Pin(object):
         if self.action:
             res += " Action "
             res += name
-            res += ' (Bit#(%s) in)' % self.bitspec
+            res += ' (%s in)' % self.bitspec
         else:
-            res += " Bit#(%s) " % self.bitspec
+            res += " %s " % self.bitspec
             res += name
         res += ";"
         return res
@@ -59,7 +59,7 @@ class Pin(object):
             fmtname = fmtinfn(self.name)
             res += "Action  "
             res += fmtdecfn(self.name)
-            res += '(Bit#(%s) in);\n' % self.bitspec
+            res += '(%s in);\n' % self.bitspec
             res += '         %s<=in;\n' % fmtname
             res += '      endmethod'
         else:
@@ -68,7 +68,7 @@ class Pin(object):
         return res
 
     def wirefmt(self, fmtoutfn=None, fmtinfn=None, fmtdecfn=None):
-        res = '      Wire#(Bit#(%s)) ' % self.bitspec
+        res = '      Wire#(%s) ' % self.bitspec
         if self.action:
             res += '%s' % fmtinfn(self.name)
         else:
@@ -186,7 +186,7 @@ class IOInterface(Interface):
 
     def ifacefmtoutfn(self, name):
         """ for now strip off io{0}_ part """
-        return "cell{0}_mux_out.%s" % name[6:]
+        return "cell{0}_mux_out"
 
     def ifacefmtinfn(self, name):
         return "cell{0}_mux_in"
@@ -278,14 +278,7 @@ mux_interface = MuxInterface('cell', [{'name': 'mux', 'ready': False,
                                        'bitspec': '{1}', 'action': True}])
 
 io_interface = IOInterface('io',
-                           [{'name': 'outputval', 'enabled': False},
-                            {'name': 'output_en', 'enabled': False},
-                            {'name': 'input_en', 'enabled': False},
-                            {'name': 'pullup_en', 'enabled': False},
-                            {'name': 'pulldown_en', 'enabled': False},
-                            {'name': 'drivestrength', 'enabled': False},
-                            {'name': 'pushpull_en', 'enabled': False},
-                            {'name': 'opendrain_en', 'enabled': False},
+                           [{'name': 'cell', 'enabled': False, 'bitspec': 'GenericIOType'},
                             {'name': 'inputval', 'action': True, 'io': True},
                             ])
 
