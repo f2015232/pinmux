@@ -136,13 +136,13 @@ class Pinouts(object):
                     spec, origsuffix=suffix)
         self.pinmerge(pins)
 
-    def rgbttl(self, suffix, offs, bank, mux=1, spec=None):
+    def rgbttl(self, suffix, offs, bank, mux=1, spec=None, limit=None):
         ttlpins = ['CK+', 'DE+', 'HS+', 'VS+']
         for i in range(24):
             ttlpins.append("D%d+" % i)
         pins = Pins('LCD', ttlpins, self.bankspec,
                     suffix, offs, bank, mux,
-                    spec, origsuffix=suffix)
+                    spec, limit, origsuffix=suffix)
         self.pinmerge(pins)
 
     def rgmii(self, suffix, offs, bank, mux=1, spec=None):
