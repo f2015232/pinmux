@@ -1,5 +1,32 @@
 #!/usr/bin/env python
 
+""" define functions here, with their pin names and the pin type.
+
+    each function returns a list (or an object with a __getitem__ function)
+    containing pin name plus type specifications.
+
+    the type is:
+
+    * "-" for an input pin,
+    * "+" for an output pin,
+    * "*" for an in/out pin
+
+    each function is then added to the pinspec tuple, below, as a ("NAME",
+    function) entry.
+
+    different functions may be added multiple times under the same NAME,
+    so that complex (or large) functions can be split into one or more
+    groups (and placed on different pinbanks).
+
+    eint, pwm and gpio are slightly odd in that instead of a fixed list
+    an object is returned with a __getitem__ function that accepts a
+    slice object.  in this way the actual generation of the pin name
+    is delayed until it is known precisely how many pins are to be
+    generated, and that's not known immediately (or it would be if
+    every single one of the functions below had a start and end parameter
+    added).  see spec.interfaces.PinGen class slice on pingroup
+"""
+
 def i2s(suffix, bank):
     return ['MCK+', 'BCK+', 'LRCK+', 'DI-', 'DO+']
 

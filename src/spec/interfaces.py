@@ -14,6 +14,13 @@ def namesuffix(name, suffix, namelist):
 
 
 class PinGen(object):
+    """ a meta-helper which creates pins from the pinspec
+        and adds them to the pinouts.
+
+        __call__ is used to effectively create a lambda function, which
+        in combination with setattr (below) gives the function a name
+        in the Pinouts class, according to the pinspec.
+    """
     def __init__(self, pinouts, fname, pinfn, bankspec):
         self.pinouts = pinouts
         self.bankspec = bankspec
@@ -27,9 +34,9 @@ class PinGen(object):
             prefix, pingroup = pingroup
         else:
             prefix = self.fname
-        if start and limit:
+        if start and limit: # limit turns into an offset from start
             limit = start + limit
-        pingroup = pingroup[start:limit]
+        pingroup = pingroup[start:limit] # see comment in spec.pinfunctions
         pins = Pins(prefix, pingroup, self.bankspec,
                     suffix, offs, bank, mux,
                     spec, origsuffix=suffix)
