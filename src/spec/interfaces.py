@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
+from spec.pinfunctions import pinspec
 from copy import deepcopy
-
 
 def namesuffix(name, suffix, namelist):
     names = []
@@ -21,90 +21,19 @@ class PinGen(object):
         self.fname = fname
 
     def __call__(self, suffix, offs, bank, mux,
-                 spec=None, start=None, limit=None, origsuffix=None):
+                 start=None, limit=None, spec=None, origsuffix=None):
         pingroup = self.pinfn(suffix, bank)
+        if isinstance(pingroup, tuple):
+            prefix, pingroup = pingroup
+        else:
+            prefix = self.fname
+        if start and limit:
+            limit = start + limit
         pingroup = pingroup[start:limit]
-        pins = Pins(self.fname, pingroup, self.bankspec,
+        pins = Pins(prefix, pingroup, self.bankspec,
                     suffix, offs, bank, mux,
                     spec, origsuffix=suffix)
         self.pinouts.pinmerge(pins)
-
-
-# define functions here
-
-def i2s(suffix, bank):
-    return ['MCK+', 'BCK+', 'LRCK+', 'DI-', 'DO+']
-
-def emmc(suffix, bank):
-    emmcpins = ['CMD+', 'CLK+']
-    for i in range(8):
-        emmcpins.append("D%d*" % i)
-    return emmcpins
-
-def sdmmc(suffix, bank):
-    sdmmcpins = ['CMD+', 'CLK+']
-    for i in range(4):
-        sdmmcpins.append("D%d*" % i)
-    return sdmmcpins
-
-def spi(suffix, bank):
-    return ['CLK*', 'NSS*', 'MOSI*', 'MISO*']
-
-def quadspi(suffix, bank):
-    return ['CK*', 'NSS*', 'IO0*', 'IO1*', 'IO2*', 'IO3*']
-
-def i2c(suffix, bank):
-    return ['SDA*', 'SCL*']
-
-def jtag(suffix, bank):
-    return ['MS+', 'DI-', 'DO+', 'CK+']
-
-def uart(suffix, bank):
-    return ['TX+', 'RX-']
-
-def ulpi(suffix, bank):
-    ulpipins = ['CK+', 'DIR+', 'STP+', 'NXT+']
-    for i in range(8):
-        ulpipins.append('D%d*' % i)
-    return ulpipins
-
-def uartfull(suffix, bank):
-    return ['TX+', 'RX-', 'CTS-', 'RTS+']
-
-def rgbttl(suffix, bank):
-    ttlpins = ['CK+', 'DE+', 'HS+', 'VS+']
-    for i in range(24):
-        ttlpins.append("D%d+" % i)
-    return ttlpins
-
-def rgmii(suffix, bank):
-    buspins = []
-    for i in range(4):
-        buspins.append("ERXD%d-" % i)
-    for i in range(4):
-        buspins.append("ETXD%d+" % i)
-    buspins += ['ERXCK-', 'ERXERR-', 'ERXDV-',
-                'EMDC+', 'EMDIO*',
-                'ETXEN+', 'ETXCK+', 'ECRS-',
-                'ECOL+', 'ETXERR+']
-    return buspins
-
-
-# list functions by name here
-
-pinspec = {'IIS': i2s,
-           'MMC': emmc,
-           'SD': sdmmc,
-           'SPI': spi,
-           'QSPI': quadspi,
-           'TWI': i2c,
-           'JTAG': jtag,
-           'UART': uart,
-           'UARTQ': uartfull,
-           'LCD': rgbttl,
-           'ULPI': ulpi,
-           'RG': rgmii,
-          }
 
 # pinouts class
 
@@ -113,7 +42,7 @@ class Pinouts(object):
         self.bankspec = bankspec
         self.pins = {}
         self.fnspec = {}
-        for fname, pinfn in pinspec.items():
+        for fname, pinfn in pinspec:
             if isinstance(pinfn, tuple):
                 name, pinfn = pinfn
             else:
@@ -156,110 +85,6 @@ class Pinouts(object):
 
     def __getitem__(self, k):
         return self.pins[k]
-
-    def flexbus1(self, suffix, offs, bank, mux=1, spec=None, limit=None):
-        buspins = []
-        for i in range(8):
-            buspins.append("AD%d*" % i)
-        for i in range(2):
-            buspins.append("CS%d+" % i)
-        buspins += ['ALE', 'OE', 'RW', 'TA', 'CLK+',
-                    'A0', 'A1', 'TS', 'TBST',
-                    'TSIZ0', 'TSIZ1']
-        for i in range(4):
-            buspins.append("BWE%d" % i)
-        for i in range(2, 6):
-            buspins.append("CS%d+" % i)
-        pins = Pins('FB', buspins, self.bankspec,
-                    suffix, offs, bank, mux,
-                    spec, limit, origsuffix=suffix)
-        self.pinmerge(pins)
-
-    def flexbus2(self, suffix, offs, bank, mux=1, spec=None, limit=None):
-        buspins = []
-        for i in range(8, 32):
-            buspins.append("AD%d*" % i)
-        pins = Pins('FB', buspins, self.bankspec,
-                    suffix, offs, bank, mux,
-                    spec, limit, origsuffix=suffix)
-        self.pinmerge(pins)
-
-    def sdram1(self, suffix, offs, bank, mux=1, spec=None):
-        buspins = []
-        for i in range(16):
-            buspins.append("SDRDQM%d*" % i)
-        for i in range(12):
-            buspins.append("SDRAD%d+" % i)
-        for i in range(8):
-            buspins.append("SDRDQ%d+" % i)
-        for i in range(3):
-            buspins.append("SDRCS%d#+" % i)
-        for i in range(2):
-            buspins.append("SDRDQ%d+" % i)
-        for i in range(2):
-            buspins.append("SDRBA%d+" % i)
-        buspins += ['SDRCKE+', 'SDRRAS#+', 'SDRCAS#+', 'SDRWE#+',
-                    'SDRRST+']
-        pins = Pins('SDR', buspins, self.bankspec,
-                    suffix, offs, bank, mux,
-                    spec, origsuffix=suffix)
-        self.pinmerge(pins)
-
-    def sdram2(self, suffix, offs, bank, mux=1, spec=None, limit=None):
-        buspins = []
-        for i in range(3, 6):
-            buspins.append("SDRCS%d#+" % i)
-        for i in range(8, 32):
-            buspins.append("SDRDQ%d*" % i)
-        pins = Pins('SDR', buspins, self.bankspec,
-                    suffix, offs, bank, mux,
-                    spec, limit, origsuffix=suffix)
-        self.pinmerge(pins)
-
-    def mcu8080(self, suffix, offs, bank, mux=1, spec=None):
-        buspins = []
-        for i in range(8):
-            buspins.append("MCUD%d*" % i)
-        for i in range(8):
-            buspins.append("MCUAD%d+" % (i + 8))
-        for i in range(6):
-            buspins.append("MCUCS%d+" % i)
-        for i in range(2):
-            buspins.append("MCUNRB%d+" % i)
-        buspins += ['MCUCD+', 'MCURD+', 'MCUWR+', 'MCUCLE+', 'MCUALE+',
-                    'MCURST+']
-        pins = Pins('MCU', buspins, self.bankspec,
-                    suffix, offs, bank, mux,
-                    spec, origsuffix=suffix)
-        self.pinmerge(pins)
-
-    def eint(self, suffix, offs, bank, gpiooffs, gpionum=1, mux=1, spec=None):
-        gpiopins = []
-        for i in range(gpiooffs, gpiooffs + gpionum):
-            gpiopins.append("%d*" % (i))
-        pins = Pins('EINT', gpiopins, self.bankspec,
-                    suffix, offs, bank, mux,
-                    spec, origsuffix=suffix)
-        self.pinmerge(pins)
-
-    def pwm(self, suffix, offs, bank, pwmoffs, pwmnum=1, mux=1, spec=None):
-        pwmpins = []
-        for i in range(pwmoffs, pwmoffs + pwmnum):
-            pwmpins.append("%d+" % (i))
-        pins = Pins('PWM', pwmpins, self.bankspec,
-                    suffix, offs, bank, mux,
-                    spec, origsuffix=suffix)
-        self.pinmerge(pins)
-
-    def gpio(self, suffix, offs, bank, gpiooffs, gpionum=1, mux=1, spec=None):
-        prefix = "GPIO%s" % bank
-        gpiopins = []
-        for i in range(gpiooffs, gpiooffs + gpionum):
-            gpiopins.append("%s%d*" % (bank, i))
-        pins = Pins(prefix, gpiopins, self.bankspec,
-                    suffix, offs, bank, mux,
-                    spec, origsuffix=suffix)
-        self.pinmerge(pins)
 
     def pinmerge(self, fn):
         # hack, store the function specs in the pins dict
