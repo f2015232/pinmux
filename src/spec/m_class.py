@@ -46,14 +46,14 @@ def pinspec():
     pinmerge(pinouts, gpio(bankspec, "", ('B', 0), "B", 0, 28, 0))
     pinmerge(pinouts, rgbttl(bankspec, "0", ('B', 0), "B", 1))
     pinmerge(pinouts, spi(bankspec, "1", ('B', 12), "B", 2))
-    pinmerge(pinouts, quadspi(bankspec, "0", ('B', 4), "B", 2, limit=4))
+    pinmerge(pinouts, quadspi(bankspec, "", ('B', 4), "B", 2, limit=4))
     pinmerge(pinouts, uart(bankspec, "3", ('B', 16), "B", 2))
     pinmerge(pinouts, i2c(bankspec, "3", ('B', 18), "B", 2))
     pinmerge(pinouts, pwm(bankspec, "", ('B', 9), "B", 0, 1, mux=2))
     pinmerge(pinouts, pwm(bankspec, "", ('B', 20), "B", 1, 2, mux=2))
     pinmerge(pinouts, sdmmc(bankspec, "1", ('B', 22), "B", 2))
     pinmerge(pinouts, eint(bankspec, "", ('B', 0), "B", 6, 4, mux=3))
-    pinmerge(pinouts, flexbus2(bankspec, "0", ('B', 4), "B", 3))
+    pinmerge(pinouts, flexbus2(bankspec, "", ('B', 4), "B", 3))
     pinmerge(pinouts, i2c(bankspec, "1", ('B', 0), "B", 2))
     pinmerge(pinouts, uart(bankspec, "2", ('B', 2), "B", 2))
     pinmerge(pinouts, uart(bankspec, "4", ('B', 10), "B", 2))
@@ -74,18 +74,18 @@ def pinspec():
 
     # Bank D, 72-96
     flexspec = {
-        'FB0_TS': ('FB0_ALE', 2, "D"),
-        'FB0_CS2': ('FB0_BWE2', 2, "D"),
-        'FB0_A0': ('FB0_BWE2', 3, "D"),
-        'FB0_CS3': ('FB0_BWE3', 2, "D"),
-        'FB0_A1': ('FB0_BWE3', 3, "D"),
-        'FB0_TBST': ('FB0_OE', 2, "D"),
-        'FB0_TSIZ0': ('FB0_BWE0', 2, "D"),
-        'FB0_TSIZ1': ('FB0_BWE1', 2, "D"),
+        'FB_TS': ('FB_ALE', 2, "D"),
+        'FB_CS2': ('FB_BWE2', 2, "D"),
+        'FB_A0': ('FB_BWE2', 3, "D"),
+        'FB_CS3': ('FB_BWE3', 2, "D"),
+        'FB_A1': ('FB_BWE3', 3, "D"),
+        'FB_TBST': ('FB_OE', 2, "D"),
+        'FB_TSIZ0': ('FB_BWE0', 2, "D"),
+        'FB_TSIZ1': ('FB_BWE1', 2, "D"),
     }
     #pinmerge(pinouts, mcu8080("", 72, "D", 1))
     pinmerge(pinouts, gpio(bankspec, "", ('D', 0), "D", 0, 24, 0))
-    pinmerge(pinouts, flexbus1(bankspec, "0", ('D', 0), "D", 1, spec=flexspec))
+    pinmerge(pinouts, flexbus1(bankspec, "", ('D', 0), "D", 1, spec=flexspec))
     pinmerge(pinouts, i2c(bankspec, "2", ('D', 17), "D", 2))
     pinmerge(pinouts, pwm(bankspec, "", ('D', 21), "D", 0, 3, mux=1))
     pinmerge(pinouts, i2c(bankspec, "1", ('D', 10), "D", 3))
@@ -102,10 +102,10 @@ def pinspec():
 
     # Bank E
     pinmerge(pinouts, gpio(bankspec, "", ('E', 0), "E", 0, 24, 0))
-    pinmerge(pinouts, flexbus2(bankspec, "0", ('E', 0), "E", 1))
+    pinmerge(pinouts, flexbus2(bankspec, "", ('E', 0), "E", 1))
     pinmerge(pinouts, sdmmc(bankspec, "2", ('E', 0), "E", 2))
     pinmerge(pinouts, sdmmc(bankspec, "3", ('E', 8), "E", 2))
-    pinmerge(pinouts, quadspi(bankspec, "0", ('E', 18), "E", 2))
+    pinmerge(pinouts, quadspi(bankspec, "", ('E', 18), "E", 2))
     pinmerge(pinouts, uartfull(bankspec, "1", ('E', 14), "E", 2))
     pinmerge(pinouts, i2c(bankspec, "2", ('E', 6), "E", 2))
     pinmerge(pinouts, eint(bankspec, "", ('E', 0), "E", 10, 8, mux=3))
@@ -130,8 +130,8 @@ def pinspec():
     pinmerge(pinouts, rgmii(bankspec, "", ('G', 0), "G", 1))
     pinmerge(pinouts, ulpi(bankspec, "3", ('G', 20), "G", 1))
     pinmerge(pinouts, rgbttl(bankspec, "1", ('G', 0), "G", 2))
-    pinmerge(pinouts, quadspi(bankspec, "0", ('G', 26), "G", 3))
-    pinmerge(pinouts, flexbus2(bankspec, "0", ('G', 0), "G", 3))
+    pinmerge(pinouts, quadspi(bankspec, "", ('G', 26), "G", 3))
+    pinmerge(pinouts, flexbus2(bankspec, "", ('G', 0), "G", 3))
     mmc2 = sdmmc(bankspec, "2", ('G', 24), "G", 3, limit=2)
     pinmerge(pinouts, mmc2)
     mmc2 = sdmmc(bankspec, "2", ('G', 28), "G", 2, start=2)

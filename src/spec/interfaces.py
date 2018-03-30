@@ -336,11 +336,11 @@ def pinmerge(pins, fn):
     assert 'EINT' not in pins
     if fname not in pins.fnspec:
         pins.add_spec(fname, {})
-    print "fname bank suffix", fname, bank, suffix
     if suffix or fname == 'EINT' or fname == 'PWM':
         specname = fname + suffix
     else:
-        specname = fname + bank
+        specname = fname
+    print "fname bank specname suffix ", fname, bank, specname, repr(suffix)
     if specname in pins.fnspec[fname]:
         # ok so some declarations may bring in different
         # names at different stages (EINT, PWM, flexbus1/2)
