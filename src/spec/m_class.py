@@ -69,6 +69,17 @@ def pinspec():
     pinouts.pwm("", ('C', 21), "C", 2, 1, mux=2)
 
     # Bank D, 72-96
+
+    # ok this is slightly complicated, basically there's extra
+    # functions that we want to be on the same pin (but a different mux)
+    # because their use is mutually-exclusive.  you can't have FB_TS
+    # at the same time as FB_ALE for example.  FB_BWE2 even has two
+    # mutually exclusive functions.  these extra functions are
+    # specified here, so that when e.g. FB_BWE2 has been positioned,
+    # FB_A0 will be placed in bank d, mux column 3, *on the same pin*.
+    # this saves messing about, because if FB_BWE2 moved to a
+    # different pin so would FB_A0 (and FB_CS2) likewise have to be
+    # moved.  and the rest.
     flexspec = {
         'FB_TS': ('FB_ALE', 2, "D"),
         'FB_CS2': ('FB_BWE2', 2, "D"),
