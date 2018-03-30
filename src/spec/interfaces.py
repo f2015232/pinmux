@@ -281,7 +281,7 @@ class Pinouts(object):
             specname = fname + suffix
         else:
             specname = fname
-        print "fname bank specname suffix ", fname, bank, specname, repr(
+        #print "fname bank specname suffix ", fname, bank, specname, repr(
             suffix)
         if specname in self.fnspec[fname]:
             # ok so some declarations may bring in different
