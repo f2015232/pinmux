@@ -27,8 +27,10 @@
     added).  see spec.interfaces.PinGen class slice on pingroup
 """
 
+
 def i2s(suffix, bank):
     return ['MCK+', 'BCK+', 'LRCK+', 'DI-', 'DO+']
+
 
 def emmc(suffix, bank):
     emmcpins = ['CMD+', 'CLK+']
@@ -36,26 +38,33 @@ def emmc(suffix, bank):
         emmcpins.append("D%d*" % i)
     return emmcpins
 
+
 def sdmmc(suffix, bank):
     sdmmcpins = ['CMD+', 'CLK+']
     for i in range(4):
         sdmmcpins.append("D%d*" % i)
     return sdmmcpins
 
+
 def spi(suffix, bank):
     return ['CLK*', 'NSS*', 'MOSI*', 'MISO*']
+
 
 def quadspi(suffix, bank):
     return ['CK*', 'NSS*', 'IO0*', 'IO1*', 'IO2*', 'IO3*']
 
+
 def i2c(suffix, bank):
     return ['SDA*', 'SCL*']
+
 
 def jtag(suffix, bank):
     return ['MS+', 'DI-', 'DO+', 'CK+']
 
+
 def uart(suffix, bank):
     return ['TX+', 'RX-']
+
 
 def ulpi(suffix, bank):
     ulpipins = ['CK+', 'DIR+', 'STP+', 'NXT+']
@@ -63,14 +72,17 @@ def ulpi(suffix, bank):
         ulpipins.append('D%d*' % i)
     return ulpipins
 
+
 def uartfull(suffix, bank):
     return ['TX+', 'RX-', 'CTS-', 'RTS+']
+
 
 def rgbttl(suffix, bank):
     ttlpins = ['CK+', 'DE+', 'HS+', 'VS+']
     for i in range(24):
         ttlpins.append("D%d+" % i)
     return ttlpins
+
 
 def rgmii(suffix, bank):
     buspins = []
@@ -83,6 +95,7 @@ def rgmii(suffix, bank):
                 'ETXEN+', 'ETXCK+', 'ECRS-',
                 'ECOL+', 'ETXERR+']
     return buspins
+
 
 def flexbus1(suffix, bank):
     buspins = []
@@ -99,11 +112,13 @@ def flexbus1(suffix, bank):
         buspins.append("CS%d+" % i)
     return buspins
 
+
 def flexbus2(suffix, bank):
     buspins = []
     for i in range(8, 32):
         buspins.append("AD%d*" % i)
     return buspins
+
 
 def sdram1(suffix, bank):
     buspins = []
@@ -123,6 +138,7 @@ def sdram1(suffix, bank):
                 'SDRRST+']
     return buspins
 
+
 def sdram2(suffix, bank):
     buspins = []
     for i in range(3, 6):
@@ -130,6 +146,7 @@ def sdram2(suffix, bank):
     for i in range(8, 32):
         buspins.append("SDRDQ%d*" % i)
     return buspins
+
 
 def mcu8080(suffix, bank):
     buspins = []
@@ -145,6 +162,7 @@ def mcu8080(suffix, bank):
                 'MCURST+']
     return buspins
 
+
 class RangePin(object):
     def __init__(self, suffix, prefix=None):
         self.suffix = suffix
@@ -156,11 +174,14 @@ class RangePin(object):
             res.append("%s%d%s" % (self.prefix, idx, self.suffix))
         return res
 
+
 def eint(suffix, bank):
     return RangePin("*")
 
+
 def pwm(suffix, bank):
     return RangePin("+")
+
 
 def gpio(suffix, bank):
     return ("GPIO%s" % bank, RangePin(prefix=bank, suffix="*"))
@@ -187,5 +208,4 @@ pinspec = (('IIS', i2s),
            ('EINT', eint),
            ('PWM', pwm),
            ('GPIO', gpio),
-          )
-
+           )
