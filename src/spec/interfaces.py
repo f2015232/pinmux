@@ -282,7 +282,7 @@ class Pinouts(object):
         else:
             specname = fname
         #print "fname bank specname suffix ", fname, bank, specname, repr(
-            suffix)
+        #    suffix)
         if specname in self.fnspec[fname]:
             # ok so some declarations may bring in different
             # names at different stages (EINT, PWM, flexbus1/2)
