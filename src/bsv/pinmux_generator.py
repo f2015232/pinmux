@@ -128,7 +128,7 @@ def pinmuxgen(pth=None, verify=True):
 ''')
         for cell in p.muxed_cells:
             bsv_file.write(mux_interface.wirefmt(
-                cell[0], 'Bit#('+str(int(math.log(len(cell) - 1, 2)))+')'))
+                cell[0], 'Bit#(' + str(int(math.log(len(cell) - 1, 2))) + ')'))
 
         ifaces.wirefmt(bsv_file)
 

@@ -5,8 +5,10 @@ from migen.fhdl.structure import Mux, Signal, Array, Constant, If, Case
 from migen.fhdl import verilog
 from migen.sim.core import run_simulation
 
+
 def orop(x1, x2):
     return x1 | x2
+
 
 class SafeInputMux(Module):
     def __init__(self, inwidth):
@@ -16,13 +18,13 @@ class SafeInputMux(Module):
             self.inputs.append(Signal(1, name_override="input_{}".format(i)))
         self.output = Signal(name_override="output")
         self.selector = Signal(max=inwidth + 1)
-        self.io = set(self.inputs) | set([self.output, self.selector]) 
+        self.io = set(self.inputs) | set([self.output, self.selector])
         sel_r = Signal(max=inwidth + 1)
-        sel25 = Signal(max=1<<inwidth)
+        sel25 = Signal(max=1 << inwidth)
         zero = Constant(0)
         muxes = []
         for i in range(len(self.inputs)):
-            x = Constant(1<<i, inwidth)
+            x = Constant(1 << i, inwidth)
             choose = Signal()
             choose.eq(self.selector & x)
             muxes.append(Mux(self.selector & x, self.inputs[i], zero))
@@ -39,7 +41,8 @@ class SafeInputMux(Module):
                         sel25.eq(0),
                         ).Else(
                             Case(sel_r, d)
-                        )
+        )
+
 
 class Blinker(Module):
     def __init__(self, led, maxperiod1, maxperiod2, select):
@@ -66,9 +69,9 @@ def tb(dut):
     for val in [0, 1]:
         for i in range(4):
             yield dut.inputs[i].eq(val)
-            for sel in [0,1,2,3]:
+            for sel in [0, 1, 2, 3]:
                 yield dut.selector.eq(sel)
-                yield # run one more clock
+                yield  # run one more clock
                 yield
                 s = ''
                 ins = []

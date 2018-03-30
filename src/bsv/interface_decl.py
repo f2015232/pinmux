@@ -224,7 +224,7 @@ class Interfaces(UserDict):
                 name = ln[0]
                 count = int(ln[1])
                 spec = self.read_spec(pth, name)
-                self.ifaceadd(name, count, Interface(name, spec, count==1))
+                self.ifaceadd(name, count, Interface(name, spec, count == 1))
 
     def getifacetype(self, fname):
         # finds the interface type, e.g sd_d0 returns "inout"
@@ -288,10 +288,10 @@ mux_interface = MuxInterface('cell', [{'name': 'mux', 'ready': False,
                                        'enabled': False,
                                        'bitspec': '{1}', 'action': True}])
 
-io_interface = IOInterface('io',
-                           [{'name': 'cell', 'enabled': False, 'bitspec': 'GenericIOType'},
-                            {'name': 'inputval', 'action': True, 'io': True},
-                            ])
+io_interface = IOInterface(
+    'io',
+    [{'name': 'cell', 'enabled': False, 'bitspec': 'GenericIOType'},
+     {'name': 'inputval', 'action': True, 'io': True}, ])
 
 # == Peripheral Interface definitions == #
 # these are the interface of the peripherals to the pin mux
