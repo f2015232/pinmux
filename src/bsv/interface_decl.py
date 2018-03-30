@@ -105,7 +105,7 @@ class Interface(object):
     def getifacetype(self, name):
         for p in self.pinspecs:
             fname = "%s_%s" % (self.ifacename, p['name'])
-            print "search", self.ifacename, name, fname
+            #print "search", self.ifacename, name, fname
             if fname == name:
                 if p.get('action'):
                     return 'out'
