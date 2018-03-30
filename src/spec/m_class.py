@@ -86,7 +86,7 @@ def pinspec():
     #pinmerge(pinouts, mcu8080("", 72, "D", 1))
     pinmerge(pinouts, gpio(bankspec, "", ('D', 0), "D", 0, 24, 0))
     pinmerge(pinouts, flexbus1(bankspec, "", ('D', 0), "D", 1, spec=flexspec))
-    pinmerge(pinouts, i2c(bankspec, "2", ('D', 17), "D", 2))
+    pinmerge(pinouts, i2c(bankspec, "2", ('D', 8), "D", 3))
     pinmerge(pinouts, pwm(bankspec, "", ('D', 21), "D", 0, 3, mux=1))
     pinmerge(pinouts, i2c(bankspec, "1", ('D', 10), "D", 3))
     pinmerge(pinouts, i2c(bankspec, "3", ('D', 19), "D", 2))
