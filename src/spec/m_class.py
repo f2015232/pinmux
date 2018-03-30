@@ -1,18 +1,12 @@
 #!/usr/bin/env python
 
-from spec.interfaces import jtag, uart, ulpi, uartfull, rgbttl, rgmii
-from spec.interfaces import flexbus1, flexbus2, sdram1, sdram2, mcu8080
-from spec.interfaces import eint, pwm, gpio, spi, i2c, emmc, sdmmc
-from spec.interfaces import quadspi, i2s
-from spec.interfaces import pinmerge, Pinouts
+from spec.interfaces import Pinouts
 
 from spec.ifaceprint import display, display_fns, check_functions
 from spec.ifaceprint import display_fixed
 
 
 def pinspec():
-    pinouts = Pinouts()
-
     pinbanks = {'A': 16,
                 'B': 28,
                 'C': 24,
@@ -28,49 +22,51 @@ def pinspec():
         bankspec[kn] = offs
         offs += pinbanks[kn]
 
+    pinouts = Pinouts(bankspec)
+
     # Bank A, 0-15
-    pinmerge(pinouts, gpio(bankspec, "", ('A', 0), "A", 0, 16, 0))
-    pinmerge(pinouts, spi(bankspec, "1", ('A', 0), "A", 3))
-    pinmerge(pinouts, uartfull(bankspec, "1", ('A', 0), "A", 2))
-    pinmerge(pinouts, i2c(bankspec, "1", ('A', 4), "A", 2))
-    pinmerge(pinouts, emmc(bankspec, "", ('A', 0), "A", 1))
-    #pinmerge(pinouts, uart(bankspec, "2", ('A', 14), "A", 1))
-    pinmerge(pinouts, spi(bankspec, "2", ('A', 6), "A", 2))
-    pinmerge(pinouts, eint(bankspec, "", ('A', 10), "A", 0, 6))
-    pinmerge(pinouts, eint(bankspec, "", ('A', 4), "A", 0, 6, mux=3))
-    pinmerge(pinouts, sdmmc(bankspec, "1", ('A', 10), "A", 2))
-    pinmerge(pinouts, jtag(bankspec, "1", ('A', 10), "A", 3))
-    pinmerge(pinouts, uart(bankspec, "2", ('A', 14), "A", 3))
+    pinouts.gpio("", ('A', 0), "A", 0, 16, 0)
+    pinouts.spi("1", ('A', 0), "A", 3)
+    pinouts.uartfull("1", ('A', 0), "A", 2)
+    pinouts.i2c("1", ('A', 4), "A", 2)
+    pinouts.emmc("", ('A', 0), "A", 1)
+    #pinouts.uart("2", ('A', 14), "A", 1)
+    pinouts.spi("2", ('A', 6), "A", 2)
+    pinouts.eint("", ('A', 10), "A", 0, 6)
+    pinouts.eint("", ('A', 4), "A", 0, 6, mux=3)
+    pinouts.sdmmc("1", ('A', 10), "A", 2)
+    pinouts.jtag("1", ('A', 10), "A", 3)
+    pinouts.uart("2", ('A', 14), "A", 3)
 
     # Bank B, 16-47
-    pinmerge(pinouts, gpio(bankspec, "", ('B', 0), "B", 0, 28, 0))
-    pinmerge(pinouts, rgbttl(bankspec, "0", ('B', 0), "B", 1))
-    pinmerge(pinouts, spi(bankspec, "1", ('B', 12), "B", 2))
-    pinmerge(pinouts, quadspi(bankspec, "", ('B', 4), "B", 2, limit=4))
-    pinmerge(pinouts, uart(bankspec, "3", ('B', 16), "B", 2))
-    pinmerge(pinouts, i2c(bankspec, "3", ('B', 18), "B", 2))
-    pinmerge(pinouts, pwm(bankspec, "", ('B', 9), "B", 0, 1, mux=2))
-    pinmerge(pinouts, pwm(bankspec, "", ('B', 20), "B", 1, 2, mux=2))
-    pinmerge(pinouts, sdmmc(bankspec, "1", ('B', 22), "B", 2))
-    pinmerge(pinouts, eint(bankspec, "", ('B', 0), "B", 6, 4, mux=3))
-    pinmerge(pinouts, flexbus2(bankspec, "", ('B', 4), "B", 3))
-    pinmerge(pinouts, i2c(bankspec, "1", ('B', 0), "B", 2))
-    pinmerge(pinouts, uart(bankspec, "2", ('B', 2), "B", 2))
-    pinmerge(pinouts, uart(bankspec, "4", ('B', 10), "B", 2))
+    pinouts.gpio("", ('B', 0), "B", 0, 28, 0)
+    pinouts.rgbttl("0", ('B', 0), "B", 1)
+    pinouts.spi("1", ('B', 12), "B", 2)
+    pinouts.quadspi("", ('B', 4), "B", 2, limit=4)
+    pinouts.uart("3", ('B', 16), "B", 2)
+    pinouts.i2c("3", ('B', 18), "B", 2)
+    pinouts.pwm("", ('B', 9), "B", 0, 1, mux=2)
+    pinouts.pwm("", ('B', 20), "B", 1, 2, mux=2)
+    pinouts.sdmmc("1", ('B', 22), "B", 2)
+    pinouts.eint("", ('B', 0), "B", 6, 4, mux=3)
+    pinouts.flexbus2("", ('B', 4), "B", 3)
+    pinouts.i2c("1", ('B', 0), "B", 2)
+    pinouts.uart("2", ('B', 2), "B", 2)
+    pinouts.uart("4", ('B', 10), "B", 2)
 
     # Bank C, 48-71
-    pinmerge(pinouts, gpio(bankspec, "", ("C", 0), "C", 0, 24, 0))
-    pinmerge(pinouts, ulpi(bankspec, "1", ('C', 0), "C", 1))
-    pinmerge(pinouts, ulpi(bankspec, "2", ('C', 12), "C", 1))
-    pinmerge(pinouts, spi(bankspec, "2", ('C', 8), "C", 2))
-    #pinmerge(pinouts, spi(bankspec, "2", ('C', 28), "C", 2))
-    pinmerge(pinouts, uartfull(bankspec, "0", ('C', 20), "C", 3))
-    pinmerge(pinouts, eint(bankspec, "", ('C', 0), "C", 10, 8, mux=3))
-    pinmerge(pinouts, jtag(bankspec, "2", ('C', 8), "C", 3))
-    pinmerge(pinouts, eint(bankspec, "", ('C', 12), "C", 22, 8, mux=3))
-    pinmerge(pinouts, uart(bankspec, "2", ('C', 22), "C", 2))
-    pinmerge(pinouts, i2s(bankspec, "", ('C', 13), "C", 2))
-    pinmerge(pinouts, pwm(bankspec, "", ('C', 21), "C", 2, 1, mux=2))
+    pinouts.gpio("", ("C", 0), "C", 0, 24, 0)
+    pinouts.ulpi("1", ('C', 0), "C", 1)
+    pinouts.ulpi("2", ('C', 12), "C", 1)
+    pinouts.spi("2", ('C', 8), "C", 2)
+    #pinouts.spi("2", ('C', 28), "C", 2)
+    pinouts.uartfull("0", ('C', 20), "C", 3)
+    pinouts.eint("", ('C', 0), "C", 10, 8, mux=3)
+    pinouts.jtag("2", ('C', 8), "C", 3)
+    pinouts.eint("", ('C', 12), "C", 22, 8, mux=3)
+    pinouts.uart("2", ('C', 22), "C", 2)
+    pinouts.i2s("", ('C', 13), "C", 2)
+    pinouts.pwm("", ('C', 21), "C", 2, 1, mux=2)
 
     # Bank D, 72-96
     flexspec = {
@@ -83,59 +79,57 @@ def pinspec():
         'FB_TSIZ0': ('FB_BWE0', 2, "D"),
         'FB_TSIZ1': ('FB_BWE1', 2, "D"),
     }
-    #pinmerge(pinouts, mcu8080("", 72, "D", 1))
-    pinmerge(pinouts, gpio(bankspec, "", ('D', 0), "D", 0, 24, 0))
-    pinmerge(pinouts, flexbus1(bankspec, "", ('D', 0), "D", 1, spec=flexspec))
-    pinmerge(pinouts, i2c(bankspec, "2", ('D', 8), "D", 3))
-    pinmerge(pinouts, pwm(bankspec, "", ('D', 21), "D", 0, 3, mux=1))
-    pinmerge(pinouts, i2c(bankspec, "1", ('D', 10), "D", 3))
-    pinmerge(pinouts, i2c(bankspec, "3", ('D', 19), "D", 2))
-    pinmerge(pinouts, uartfull(bankspec, "0", ('D', 0), "D", 2))
-    pinmerge(pinouts, uart(bankspec, "3", ('D', 21), "D", 2))
-    pinmerge(pinouts, uart(bankspec, "4", ('D', 13), "D", 2))
-    pinmerge(pinouts, eint(bankspec, "", ('D', 19), "D", 18, 4, mux=3))
-    pinmerge(pinouts, eint(bankspec, "", ('D', 23), "D", 9, 1, mux=3))
-    pinmerge(pinouts, eint(bankspec, "", ('D', 13), "D", 5, 4, mux=3))
-    pinmerge(pinouts, eint(bankspec, "", ('D', 0), "D", 30, 2, mux=3))
-    pinmerge(pinouts, i2c(bankspec, "2", ('D', 2), "D", 3))
-    pinmerge(pinouts, sdmmc(bankspec, "2", ('D', 4), "D", 2))
+    #pinouts.mcu8080("", 72, "D", 1)
+    pinouts.gpio("", ('D', 0), "D", 0, 24, 0)
+    pinouts.flexbus1("", ('D', 0), "D", 1, spec=flexspec)
+    pinouts.i2c("2", ('D', 8), "D", 3)
+    pinouts.pwm("", ('D', 21), "D", 0, 3, mux=1)
+    pinouts.i2c("1", ('D', 10), "D", 3)
+    pinouts.i2c("3", ('D', 19), "D", 2)
+    pinouts.uartfull("0", ('D', 0), "D", 2)
+    pinouts.uart("3", ('D', 21), "D", 2)
+    pinouts.uart("4", ('D', 13), "D", 2)
+    pinouts.eint("", ('D', 19), "D", 18, 4, mux=3)
+    pinouts.eint("", ('D', 23), "D", 9, 1, mux=3)
+    pinouts.eint("", ('D', 13), "D", 5, 4, mux=3)
+    pinouts.eint("", ('D', 0), "D", 30, 2, mux=3)
+    pinouts.i2c("2", ('D', 2), "D", 3)
+    pinouts.sdmmc("2", ('D', 4), "D", 2)
 
     # Bank E
-    pinmerge(pinouts, gpio(bankspec, "", ('E', 0), "E", 0, 24, 0))
-    pinmerge(pinouts, flexbus2(bankspec, "", ('E', 0), "E", 1))
-    pinmerge(pinouts, sdmmc(bankspec, "2", ('E', 0), "E", 2))
-    pinmerge(pinouts, sdmmc(bankspec, "3", ('E', 8), "E", 2))
-    pinmerge(pinouts, quadspi(bankspec, "", ('E', 18), "E", 2))
-    pinmerge(pinouts, uartfull(bankspec, "1", ('E', 14), "E", 2))
-    pinmerge(pinouts, i2c(bankspec, "2", ('E', 6), "E", 2))
-    pinmerge(pinouts, eint(bankspec, "", ('E', 0), "E", 10, 8, mux=3))
-    pinmerge(pinouts, eint(bankspec, "", ('E', 8), "E", 22, 6, mux=3))
-    pinmerge(pinouts, emmc(bankspec, "", ('E', 14), "E", 3))
+    pinouts.gpio("", ('E', 0), "E", 0, 24, 0)
+    pinouts.flexbus2("", ('E', 0), "E", 1)
+    pinouts.sdmmc("2", ('E', 0), "E", 2)
+    pinouts.sdmmc("3", ('E', 8), "E", 2)
+    pinouts.quadspi("", ('E', 18), "E", 2)
+    pinouts.uartfull("1", ('E', 14), "E", 2)
+    pinouts.i2c("2", ('E', 6), "E", 2)
+    pinouts.eint("", ('E', 0), "E", 10, 8, mux=3)
+    pinouts.eint("", ('E', 8), "E", 22, 6, mux=3)
+    pinouts.emmc("", ('E', 14), "E", 3)
 
     # Bank F
-    pinmerge(pinouts, gpio(bankspec, "", ('F', 0), "F", 0, 10, 0))
-    pinmerge(pinouts, i2s(bankspec, "", ('F', 0), "F", 1))
-    pinmerge(pinouts, i2c(bankspec, "1", ('F', 6), "F", 2))
-    pinmerge(pinouts, pwm(bankspec, "", ('F', 8), "F", 0, 1, mux=2))
-    pinmerge(pinouts, pwm(bankspec, "", ('F', 9), "F", 1, 1, mux=2))
-    pinmerge(pinouts, uart(bankspec, "4", ('F', 8), "F", 1))
-    pinmerge(pinouts, sdmmc(bankspec, "3", ('F', 0), "F", 2))
-    pinmerge(pinouts, eint(bankspec, "", ('F', 0), "F", 18, 4, mux=3))
-    pinmerge(pinouts, pwm(bankspec, "", ('F', 4), "F", 2, 1, mux=3))
-    pinmerge(pinouts, eint(bankspec, "", ('F', 5), "F", 7, 1, mux=3))
-    pinmerge(pinouts, eint(bankspec, "", ('F', 6), "F", 28, 4, mux=3))
+    pinouts.gpio("", ('F', 0), "F", 0, 10, 0)
+    pinouts.i2s("", ('F', 0), "F", 1)
+    pinouts.i2c("1", ('F', 6), "F", 2)
+    pinouts.pwm("", ('F', 8), "F", 0, 1, mux=2)
+    pinouts.pwm("", ('F', 9), "F", 1, 1, mux=2)
+    pinouts.uart("4", ('F', 8), "F", 1)
+    pinouts.sdmmc("3", ('F', 0), "F", 2)
+    pinouts.eint("", ('F', 0), "F", 18, 4, mux=3)
+    pinouts.pwm("", ('F', 4), "F", 2, 1, mux=3)
+    pinouts.eint("", ('F', 5), "F", 7, 1, mux=3)
+    pinouts.eint("", ('F', 6), "F", 28, 4, mux=3)
 
     # Bank G
-    pinmerge(pinouts, gpio(bankspec, "", ('G', 0), "G", 0, 32, 0))
-    pinmerge(pinouts, rgmii(bankspec, "", ('G', 0), "G", 1))
-    pinmerge(pinouts, ulpi(bankspec, "3", ('G', 20), "G", 1))
-    pinmerge(pinouts, rgbttl(bankspec, "1", ('G', 0), "G", 2))
-    pinmerge(pinouts, quadspi(bankspec, "", ('G', 26), "G", 3))
-    pinmerge(pinouts, flexbus2(bankspec, "", ('G', 0), "G", 3))
-    mmc2 = sdmmc(bankspec, "2", ('G', 24), "G", 3, limit=2)
-    pinmerge(pinouts, mmc2)
-    mmc2 = sdmmc(bankspec, "2", ('G', 28), "G", 2, start=2)
-    pinmerge(pinouts, mmc2)
+    pinouts.gpio("", ('G', 0), "G", 0, 32, 0)
+    pinouts.rgmii("", ('G', 0), "G", 1)
+    pinouts.ulpi("3", ('G', 20), "G", 1)
+    pinouts.rgbttl("1", ('G', 0), "G", 2)
+    pinouts.quadspi("", ('G', 26), "G", 3)
+    pinouts.flexbus2("", ('G', 0), "G", 3)
+    pinouts.sdmmc("2", ('G', 24), "G", 3, limit=2)
+    pinouts.sdmmc("2", ('G', 28), "G", 2, start=2)
 
     print ("""# Pinouts (PinMux)
 auto-generated by [[pinouts.py]]
