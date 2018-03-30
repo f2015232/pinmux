@@ -32,6 +32,10 @@ class Pinouts(object):
         if pinidx not in self.pins:
             self.pins[pinidx] = v
         else:
+            for k in v:
+                assert k not in self.pins[pinidx], \
+                    "pin %d position %d already taken\n%s\n%s" % \
+                        (pinidx, k, str(v), self.pins[pinidx])
             self.pins[pinidx].update(v)
 
     def keys(self):
