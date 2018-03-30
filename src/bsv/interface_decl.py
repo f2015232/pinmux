@@ -80,12 +80,15 @@ class Pin(object):
 class Interface(object):
     """ create an interface from a list of pinspecs.
         each pinspec is a dictionary, see Pin class arguments
+        single indicates that there is only one of these, and
+        so the name must *not* be extended numerically (see pname)
     """
 
-    def __init__(self, ifacename, pinspecs):
+    def __init__(self, ifacename, pinspecs, single=False):
         self.ifacename = ifacename
         self.pins = []
         self.pinspecs = pinspecs
+        self.single = single
         for p in pinspecs:
             _p = {}
             _p.update(p)
@@ -112,6 +115,14 @@ class Interface(object):
         return None
 
     def pname(self, name):
+        """ generates the interface spec e.g. flexbus_ale
+            if there is only one flexbus interface, or
+            sd{0}_cmd if there are several.  string format
+            function turns this into sd0_cmd, sd1_cmd as
+            appropriate.  single mode stops the numerical extension.
+        """
+        if self.single:
+            return '%s_%s' % (self.ifacename, name)
         return '%s{0}_%s' % (self.ifacename, name)
 
     def wirefmt(self, *args):
@@ -213,7 +224,7 @@ class Interfaces(UserDict):
                 name = ln[0]
                 count = int(ln[1])
                 spec = self.read_spec(pth, name)
-                self.ifaceadd(name, count, Interface(name, spec))
+                self.ifaceadd(name, count, Interface(name, spec, count==1))
 
     def getifacetype(self, fname):
         # finds the interface type, e.g sd_d0 returns "inout"
