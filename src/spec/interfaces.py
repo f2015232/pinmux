@@ -21,6 +21,36 @@ class PinGen(object):
         __call__ is used to effectively create a lambda function, which
         in combination with setattr (below) gives the function a name
         in the Pinouts class, according to the pinspec.
+
+        arguments to __call__ (which ends up as Pinouts.i2s, Pinouts.sdmmc
+        and so on, according to spec.pinfunctions.pinspec) are:
+
+        suffix: e.g. GPIO or SD or SPI
+        offs  : a tuple of (Bank, Bank offset) as a string, integer
+        mux   : which column in the multiplexer
+        start : the start of a subset of pins to be inserted
+        limit : the end of the subset (or the number if start also given)
+        spec  : *EXTRA* pins to be inserted.
+
+        spec is slightly complicated, basically there's extra
+        functions that we want to be on the same pin (but a different mux)
+        because their use is mutually-exclusive.  without this spec
+        argument the extra pins would need to be MANUALLY moved about
+        during the development of the pinmux, if the "main" pins
+        were also moved about.  this would be a pain.
+
+        so instead, extra pins are given of the form:
+        { 'EXTRA1' : ('PREEXISTING_NAME', MUX_COLUMN),
+          ...
+        }
+
+        where the function EXTRA1 will always be placed on the SAME ROW
+        as PREEXISTING_NAME, just in MUX_COLUMN.  this may be done
+        several times i.e. multiple new EXTRA functions can be added
+        on the same row as PRE_EXISTING_NAME, just with different
+        MUX_COLUMN values.
+
+        Note: spec must implicitly be in the same Bank.
     """
 
     def __init__(self, pinouts, fname, pinfn, bankspec):
@@ -29,8 +59,9 @@ class PinGen(object):
         self.pinfn = pinfn
         self.fname = fname
 
-    def __call__(self, suffix, offs, bank, mux,
+    def __call__(self, suffix, offs, mux,
                  start=None, limit=None, spec=None, origsuffix=None):
+        bank = offs[0]
         pingroup = self.pinfn(suffix, bank)
         if isinstance(pingroup, tuple):
             prefix, pingroup = pingroup
@@ -192,9 +223,9 @@ class Pins(object):
                 continue
             if name not in spec:
                 continue
-            idx_, mux_, bank_ = spec[name]
+            idx_, mux_ = spec[name]
             idx_ = names[idx_]
-            pin = {mux_: (name_, bank_)}
+            pin = {mux_: (name_, bank)}
             if idx_ in res:
                 res[idx_].update(pin)
             else:
