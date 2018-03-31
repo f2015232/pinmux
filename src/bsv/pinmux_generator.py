@@ -22,10 +22,10 @@ import time
 import math
 
 # project module imports
-from interface_decl import Interfaces, mux_interface, io_interface
+from bsv.interface_decl import Interfaces, mux_interface, io_interface
 from parse import Parse
-from actual_pinmux import init
-from bus_transactors import axi4_lite
+from bsv.actual_pinmux import init
+from bsv.bus_transactors import axi4_lite
 
 copyright = '''
 /*

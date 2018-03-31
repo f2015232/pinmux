@@ -16,7 +16,7 @@ def specgen(of, pth, pinouts, bankspec, pinbanks, fixedpins):
         for k in pinouts.fnspec.keys():
             s = pinouts.fnspec[k]
             f.write("%s\t%d\n" % (k.lower(), len(s)))
-            s0 = s[s.keys()[0]]  # hack, take first
+            s0 = s[list(s.keys())[0]]  # hack, take first
             with open(os.path.join(pth, '%s.txt' % k.lower()), 'w') as g:
                 if len(s0.pingroup) == 1:  # only one function, grouped higher
                     for ks in s.keys():  # grouped by interface
@@ -62,6 +62,9 @@ def specgen(of, pth, pinouts, bankspec, pinbanks, fixedpins):
     # lists bankspec, shows where the pin-numbers *start*
         of.write("# Pin Bank starting points and lengths\n\n")
     with open(os.path.join(pth, 'pinspec.txt'), 'w') as g:
-        for bank, pinstart in bankspec.items():
+        keys = list(bankspec.keys())
+        keys.sort()
+        for bank in keys:
+            pinstart = bankspec[bank]
             of.write("* %s %d %d\n" % (bank, pinstart, pinbanks[bank]))
             g.write("%s\t%d\t%d\n" % (bank, pinstart, pinbanks[bank]))

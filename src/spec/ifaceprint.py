@@ -65,8 +65,8 @@ def display_fns(of, bankspec, pins, function_names):
                 fns[name] = []
             fns[name].append((pin - bankspec[bank], mux, bank))
 
-    fnidx = fns.keys()
-    fnidx.sort(fnsort)
+    fnidx = list(fns.keys())
+    fnidx.sort(key=fnsplit)
     current_fn = None
     for fname in fnidx:
         fnbase = find_fn(fname, fn_names)

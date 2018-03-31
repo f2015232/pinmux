@@ -1,9 +1,12 @@
 import os.path
 
-from UserDict import UserDict
+try:
+    from UserDict import UserDict
+except ImportError:
+    from collections import UserDict
 
-from wire_def import generic_io  # special case
-from wire_def import muxwire  # special case
+from bsv.wire_def import generic_io  # special case
+from bsv.wire_def import muxwire  # special case
 
 
 class Pin(object):
@@ -340,19 +343,19 @@ if __name__ == '__main__':
         l1 = l1.split("\n")
         l2 = l2.split("\n")
         for p1, p2 in zip(l1, l2):
-            print repr(p1)
-            print repr(p2)
-            print
+            print (repr(p1))
+            print (repr(p2))
+            print ()
             assert p1 == p2
 
     ifaces = Interfaces()
 
     ifaceuart = ifaces['uart']
-    print ifaceuart.ifacedef(0)
-    print uartinterface_decl.ifacedef(0)
+    print (ifaceuart.ifacedef(0))
+    print (uartinterface_decl.ifacedef(0))
     assert ifaceuart.ifacedef(0) == uartinterface_decl.ifacedef(0)
 
     ifacetwi = ifaces['twi']
-    print ifacetwi.ifacedef(0)
-    print twiinterface_decl.ifacedef(0)
+    print (ifacetwi.ifacedef(0))
+    print (twiinterface_decl.ifacedef(0))
     assert ifacetwi.ifacedef(0) == twiinterface_decl.ifacedef(0)

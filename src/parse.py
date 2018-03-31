@@ -103,4 +103,4 @@ class Parse(object):
 
 if __name__ == '__main__':
     p = Parse()
-    print p.N_IO
+    print (p.N_IO)
