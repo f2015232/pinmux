@@ -75,10 +75,10 @@ def mux_tb():
                         if in_c:
                             in_d.next = not in_d
                             if in_d:
-                                if selector == 0:
-                                    selector.next = 3
+                                if selector == 3:
+                                    selector.next = 0
                                 else:
-                                    selector.next = selector - 1
+                                    selector.next = selector + 1
             yield delay(period // 2)
 
     # print simulation data on screen and file
