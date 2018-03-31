@@ -62,8 +62,7 @@ def specgen(of, pth, pinouts, bankspec, pinbanks, fixedpins):
     # lists bankspec, shows where the pin-numbers *start*
         of.write("# Pin Bank starting points and lengths\n\n")
     with open(os.path.join(pth, 'pinspec.txt'), 'w') as g:
-        keys = list(bankspec.keys())
-        keys.sort()
+        keys = sorted(bankspec.keys())
         for bank in keys:
             pinstart = bankspec[bank]
             of.write("* %s %d %d\n" % (bank, pinstart, pinbanks[bank]))
