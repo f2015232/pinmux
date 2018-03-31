@@ -3,9 +3,11 @@
 from copy import deepcopy
 
 
-def display(pins):
-    print "| Pin | Mux0        | Mux1        | Mux2        | Mux3        |"
-    print "| --- | ----------- | ----------- | ----------- | ----------- |"
+def display(of, pins):
+    of.write("""\
+| Pin | Mux0        | Mux1        | Mux2        | Mux3        |
+| --- | ----------- | ----------- | ----------- | ----------- |
+""")
     pinidx = sorted(pins.keys())
     for pin in pinidx:
         pdata = pins.get(pin)
@@ -16,7 +18,7 @@ def display(pins):
                 continue
             name, bank = pdata[mux]
             res += " %s %-9s |" % (bank, name)
-        print res
+        of.write("%s\n" % res)
 
 
 def fnsplit(f):
@@ -50,7 +52,7 @@ def find_fn(fname, names):
             return n
 
 
-def display_fns(bankspec, pins, function_names):
+def display_fns(of, bankspec, pins, function_names):
     fn_names = function_names.keys()
     fns = {}
     for (pin, pdata) in pins.items():
@@ -71,36 +73,30 @@ def display_fns(bankspec, pins, function_names):
         #print "name", fname, fnbase
         if fnbase != current_fn:
             if current_fn is not None:
-                print
-            print "## %s" % fnbase
-            print
-            print function_names[fnbase]
-            print
+                of.write('\n')
+            of.write("## %s\n\n%s\n\n" % (fnbase, function_names[fnbase]))
             current_fn = fnbase
-        print "* %-9s :" % fname,
+        of.write("* %-9s :" % fname)
         for (pin, mux, bank) in fns[fname]:
-            print "%s%d/%d" % (bank, pin, mux),
-        print
+            of.write(" %s%d/%d" % (bank, pin, mux))
+        of.write('\n')
 
     return fns
 
 
-def check_functions(title, bankspec, fns, pins, required, eint, pwm,
+def check_functions(of, title, bankspec, fns, pins, required, eint, pwm,
                     descriptions=None):
     fns = deepcopy(fns)
     pins = deepcopy(pins)
     if descriptions is None:
         descriptions = {}
 
-    print "# Pinmap for %s" % title
-    print
+    of.write("# Pinmap for %s\n\n" % title)
 
     for name in required:
-        print "## %s" % name
-        print
+        of.write("## %s\n\n" % name)
         if descriptions and name in descriptions:
-            print descriptions[name]
-            print
+            of.write("%s\n\n" % descriptions[name])
 
         name = name.split(':')
         if len(name) == 2:
@@ -144,9 +140,9 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
             if len(found) > count:
                 continue
             del pins[pin_]
-            print "* %s %d %s%d/%d" % (fname, pin_, bank, pin, mux)
+            of.write("* %s %d %s%d/%d\n" % (fname, pin_, bank, pin, mux))
 
-        print
+        of.write('\n')
 
     # gpios
     gpios = []
@@ -159,8 +155,7 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
     gpios.sort()
 
     if gpios:
-        print "## GPIO"
-        print
+        of.write("## GPIO\n\n")
 
         for fname in gpios:
             if fname in found:
@@ -175,28 +170,25 @@ def check_functions(title, bankspec, fns, pins, required, eint, pwm,
                 continue
             del pins[pin_]
             found.add(fname)
-            print "* %-8s %d %s%-2d %s" % (fname, pin_, bank, pin, desc)
-        print
+            of.write("* %-8s %d %s%-2d %s\n" % (fname, pin_, bank, pin, desc))
+        of.write('\n')
 
     if eint:
-        display_group(bankspec, "EINT", eint, fns, pins, descriptions)
+        display_group(of, bankspec, "EINT", eint, fns, pins, descriptions)
     if pwm:
-        display_group(bankspec, "PWM", pwm, fns, pins, descriptions)
+        display_group(of, bankspec, "PWM", pwm, fns, pins, descriptions)
 
-    print "## Unused Pinouts (spare as GPIO) for '%s'" % title
-    print
+    of.write("## Unused Pinouts (spare as GPIO) for '%s'\n\n" % title)
     if descriptions and 'GPIO' in descriptions:
-        print descriptions['GPIO']
-        print
-    display(pins)
-    print
+        of.write("%s\n\n" % descriptions['GPIO'])
+    display(of, pins)
+    of.write('\n')
 
     return pins  # unused
 
 
-def display_group(bankspec, title, todisplay, fns, pins, descriptions):
-    print "## %s" % title
-    print
+def display_group(of, bankspec, title, todisplay, fns, pins, descriptions):
+    of.write("## %s\n\n" % title)
 
     found = set()
     for fname in todisplay:
@@ -225,38 +217,38 @@ def display_group(bankspec, title, todisplay, fns, pins, descriptions):
                 continue
             del pins[pin_]
             found.add(fname)
-            print "* %s %d %s%d/%d %s" % (fname, pin_, bank, pin, mux, desc)
-    print
+            of.write("* %s %d %s%d/%d %s\n" %
+                     (fname, pin_, bank, pin, mux, desc))
+    of.write('\n')
 
 
-def display_fixed(fixed, offs):
+def display_fixed(of, fixed, offs):
 
     fkeys = sorted(fixed.keys())
     pin_ = offs
     res = []
     for pin, k in enumerate(fkeys):
-        print "## %s" % k
-        print
+        of.write("## %s\n\n" % k)
         prevname = ''
         linecount = 0
         for name in fixed[k]:
             if linecount == 4:
                 linecount = 0
-                print
+                of.write('\n')
             if prevname[:2] == name[:2] and linecount != 0:
-                print name,
+                of.write(" %s" % name)
                 linecount += 1
             else:
                 if linecount != 0:
-                    print
-                print "* %d: %d %s" % (pin_, pin, name),
+                    of.write('\n')
+                of.write("* %d: %d %s" % (pin_, pin, name))
                 linecount = 1
                 res.append((pin_, name))
 
             prevname = name
             pin_ += 1
         if linecount != 0:
-            print
-        print
+            of.write('\n')
+        of.write('\n')
 
     return res
