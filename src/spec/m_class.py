@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 
-from spec.interfaces import Pinouts
-
-from spec.ifaceprint import display, display_fns, check_functions
-from spec.ifaceprint import display_fixed
-
+from spec.base import PinSpec
 
 def pinspec(of):
     pinbanks = {'A': 16,
@@ -15,143 +11,6 @@ def pinspec(of):
                 'F': 10,
                 'G': 32,
                 }
-    bankspec = {}
-    pkeys = sorted(pinbanks.keys())
-    offs = 0
-    for kn in pkeys:
-        bankspec[kn] = offs
-        offs += pinbanks[kn]
-
-    pinouts = Pinouts(bankspec)
-
-    # Bank A, 0-15
-    pinouts.gpio("", ('A', 0), "A", 0, 0, 16)
-    pinouts.spi("0", ('A', 0), "A", 3)
-    pinouts.uartfull("1", ('A', 0), "A", 2)
-    pinouts.i2c("0", ('A', 4), "A", 2)
-    pinouts.emmc("", ('A', 0), "A", 1)
-    #pinouts.uart("0", ('A', 14), "A", 1)
-    pinouts.spi("1", ('A', 6), "A", 2)
-    pinouts.eint("", ('A', 10), "A", 1, start=0, limit=6)
-    pinouts.eint("", ('A', 4), "A", 3, start=0, limit=6)
-    pinouts.sdmmc("0", ('A', 10), "A", 2)
-    pinouts.jtag("0", ('A', 10), "A", 3)
-    pinouts.uart("0", ('A', 14), "A", 3)
-
-    # Bank B, 16-47
-    pinouts.gpio("", ('B', 0), "B", 0, 0, 28)
-    pinouts.rgbttl("0", ('B', 0), "B", 1)
-    pinouts.spi("0", ('B', 12), "B", 2)
-    pinouts.quadspi("", ('B', 4), "B", 2, limit=4)
-    pinouts.uart("1", ('B', 16), "B", 2)
-    pinouts.i2c("2", ('B', 18), "B", 2)
-    pinouts.pwm("", ('B', 9), "B", 2, start=0, limit=1)
-    pinouts.pwm("", ('B', 20), "B", 2, start=1, limit=2)
-    pinouts.sdmmc("0", ('B', 22), "B", 2)
-    pinouts.eint("", ('B', 0), "B", 3, start=6, limit=4)
-    pinouts.flexbus2("", ('B', 4), "B", 3)
-    pinouts.i2c("0", ('B', 0), "B", 2)
-    pinouts.uart("0", ('B', 2), "B", 2)
-    pinouts.uart("2", ('B', 10), "B", 2)
-
-    # Bank C, 48-71
-    pinouts.gpio("", ("C", 0), "C", 0, 0, 24)
-    pinouts.ulpi("0", ('C', 0), "C", 1)
-    pinouts.ulpi("1", ('C', 12), "C", 1)
-    pinouts.spi("1", ('C', 8), "C", 2)
-    #pinouts.spi("1", ('C', 28), "C", 2)
-    pinouts.uartfull("0", ('C', 20), "C", 3)
-    pinouts.eint("", ('C', 0), "C", 3, start=10, limit=8)
-    pinouts.jtag("1", ('C', 8), "C", 3)
-    pinouts.eint("", ('C', 12), "C", 3, start=22, limit=8)
-    pinouts.uart("0", ('C', 22), "C", 2)
-    pinouts.i2s("", ('C', 13), "C", 2)
-    pinouts.pwm("", ('C', 21), "C", 2, start=2, limit=1)
-
-    # Bank D, 72-96
-
-    # ok this is slightly complicated, basically there's extra
-    # functions that we want to be on the same pin (but a different mux)
-    # because their use is mutually-exclusive.  you can't have FB_TS
-    # at the same time as FB_ALE for example.  FB_BWE2 even has two
-    # mutually exclusive functions.  these extra functions are
-    # specified here, so that when e.g. FB_BWE2 has been positioned,
-    # FB_A0 will be placed in bank d, mux column 3, *on the same pin*.
-    # this saves messing about, because if FB_BWE2 moved to a
-    # different pin so would FB_A0 (and FB_CS2) likewise have to be
-    # moved.  and the rest.
-    flexspec = {
-        'FB_TS': ('FB_ALE', 2, "D"),
-        'FB_CS2': ('FB_BWE2', 2, "D"),
-        'FB_A0': ('FB_BWE2', 3, "D"),
-        'FB_CS3': ('FB_BWE3', 2, "D"),
-        'FB_A1': ('FB_BWE3', 3, "D"),
-        'FB_TBST': ('FB_OE', 2, "D"),
-        'FB_TSIZ0': ('FB_BWE0', 2, "D"),
-        'FB_TSIZ1': ('FB_BWE1', 2, "D"),
-    }
-    #pinouts.mcu8080("", 72, "D", 1)
-    pinouts.gpio("", ('D', 0), "D", 0, 0, 24)
-    pinouts.flexbus1("", ('D', 0), "D", 1, spec=flexspec)
-    pinouts.i2c("1", ('D', 8), "D", 3)
-    pinouts.pwm("", ('D', 21), "D", 1, start=0, limit=3)
-    pinouts.i2c("0", ('D', 10), "D", 3)
-    pinouts.i2c("2", ('D', 19), "D", 2)
-    pinouts.uartfull("0", ('D', 0), "D", 2)
-    pinouts.uart("1", ('D', 21), "D", 2)
-    pinouts.uart("2", ('D', 13), "D", 2)
-    pinouts.eint("", ('D', 19), "D", 3, start=18, limit=4)
-    pinouts.eint("", ('D', 23), "D", 3, start=9, limit=1)
-    pinouts.eint("", ('D', 13), "D", 3, start=5, limit=4)
-    pinouts.eint("", ('D', 0), "D", 3, start=30, limit=2)
-    pinouts.i2c("1", ('D', 2), "D", 3)
-    pinouts.sdmmc("1", ('D', 4), "D", 2)
-
-    # Bank E
-    pinouts.gpio("", ('E', 0), "E", 0, 0, 24)
-    pinouts.flexbus2("", ('E', 0), "E", 1)
-    pinouts.sdmmc("1", ('E', 0), "E", 2)
-    pinouts.sdmmc("2", ('E', 8), "E", 2)
-    pinouts.quadspi("", ('E', 18), "E", 2)
-    pinouts.uartfull("1", ('E', 14), "E", 2)
-    pinouts.i2c("1", ('E', 6), "E", 2)
-    pinouts.eint("", ('E', 0), "E", 3, start=10, limit=8)
-    pinouts.eint("", ('E', 8), "E", 3, start=22, limit=6)
-    pinouts.emmc("", ('E', 14), "E", 3)
-
-    # Bank F
-    pinouts.gpio("", ('F', 0), "F", 0, 0, 10)
-    pinouts.i2s("", ('F', 0), "F", 1)
-    pinouts.i2c("0", ('F', 6), "F", 2)
-    pinouts.pwm("", ('F', 8), "F", 2, start=0, limit=1)
-    pinouts.pwm("", ('F', 9), "F", 2, start=1, limit=1)
-    pinouts.uart("2", ('F', 8), "F", 1)
-    pinouts.sdmmc("2", ('F', 0), "F", 2)
-    pinouts.eint("", ('F', 0), "F", 3, start=18, limit=4)
-    pinouts.pwm("", ('F', 4), "F", 3, start=2, limit=1)
-    pinouts.eint("", ('F', 5), "F", 3, start=7, limit=1)
-    pinouts.eint("", ('F', 6), "F", 3, start=28, limit=4)
-
-    # Bank G
-    pinouts.gpio("", ('G', 0), "G", 0, 0, 32)
-    pinouts.rgmii("", ('G', 0), "G", 1)
-    pinouts.ulpi("2", ('G', 20), "G", 1)
-    pinouts.rgbttl("1", ('G', 0), "G", 2)
-    pinouts.quadspi("", ('G', 26), "G", 3)
-    pinouts.flexbus2("", ('G', 0), "G", 3)
-    pinouts.sdmmc("1", ('G', 24), "G", 3, limit=2)
-    pinouts.sdmmc("1", ('G', 28), "G", 2, start=2)
-
-    of.write ("""# Pinouts (PinMux)
-auto-generated by [[pinouts.py]]
-
-[[!toc  ]]
-
-""")
-    display(of, pinouts)
-
-    of.write ("\n# Pinouts (Fixed function)\n\n")
-
     fixedpins = {
         'DDR3': [
             'SDQ0',
@@ -334,14 +193,6 @@ auto-generated by [[pinouts.py]]
             'GND_GPIOG',
         ]}
 
-    fixedpins = display_fixed(of, fixedpins, len(pinouts))
-
-    of.write ("""# Functions (PinMux)
-
-auto-generated by [[pinouts.py]]
-
-""")
-
     function_names = {'EINT': 'External Interrupt',
                       'FB': 'MC68k FlexBus',
                       'IIS': 'I2S Audio',
@@ -370,15 +221,125 @@ auto-generated by [[pinouts.py]]
                       'ULPI2': 'ULPI (USB Low Pin-count) 3',
                       }
 
-    fns = display_fns(of, bankspec, pinouts, function_names)
-    of.write('\n')
+    ps = PinSpec(pinbanks, fixedpins, function_names)
 
-    # Scenarios below can be spec'd out as either "find first interface"
-    # by name/number e.g. SPI0, or as "find in bank/mux" which must be
-    # spec'd as "BM:Name" where B is bank (A-F), M is Mux (0-3)
-    # EINT and PWM are grouped together, specially, but may still be spec'd
-    # using "BM:Name".  Pins are removed in-order as listed from
-    # lists (interfaces, EINTs, PWMs) from available pins.
+    # Bank A, 0-15
+    ps.gpio("", ('A', 0), "A", 0, 0, 16)
+    ps.spi("0", ('A', 0), "A", 3)
+    ps.uartfull("1", ('A', 0), "A", 2)
+    ps.i2c("0", ('A', 4), "A", 2)
+    ps.emmc("", ('A', 0), "A", 1)
+    #ps.uart("0", ('A', 14), "A", 1)
+    ps.spi("1", ('A', 6), "A", 2)
+    ps.eint("", ('A', 10), "A", 1, start=0, limit=6)
+    ps.eint("", ('A', 4), "A", 3, start=0, limit=6)
+    ps.sdmmc("0", ('A', 10), "A", 2)
+    ps.jtag("0", ('A', 10), "A", 3)
+    ps.uart("0", ('A', 14), "A", 3)
+
+    # Bank B, 16-47
+    ps.gpio("", ('B', 0), "B", 0, 0, 28)
+    ps.rgbttl("0", ('B', 0), "B", 1)
+    ps.spi("0", ('B', 12), "B", 2)
+    ps.quadspi("", ('B', 4), "B", 2, limit=4)
+    ps.uart("1", ('B', 16), "B", 2)
+    ps.i2c("2", ('B', 18), "B", 2)
+    ps.pwm("", ('B', 9), "B", 2, start=0, limit=1)
+    ps.pwm("", ('B', 20), "B", 2, start=1, limit=2)
+    ps.sdmmc("0", ('B', 22), "B", 2)
+    ps.eint("", ('B', 0), "B", 3, start=6, limit=4)
+    ps.flexbus2("", ('B', 4), "B", 3)
+    ps.i2c("0", ('B', 0), "B", 2)
+    ps.uart("0", ('B', 2), "B", 2)
+    ps.uart("2", ('B', 10), "B", 2)
+
+    # Bank C, 48-71
+    ps.gpio("", ("C", 0), "C", 0, 0, 24)
+    ps.ulpi("0", ('C', 0), "C", 1)
+    ps.ulpi("1", ('C', 12), "C", 1)
+    ps.spi("1", ('C', 8), "C", 2)
+    #ps.spi("1", ('C', 28), "C", 2)
+    ps.uartfull("0", ('C', 20), "C", 3)
+    ps.eint("", ('C', 0), "C", 3, start=10, limit=8)
+    ps.jtag("1", ('C', 8), "C", 3)
+    ps.eint("", ('C', 12), "C", 3, start=22, limit=8)
+    ps.uart("0", ('C', 22), "C", 2)
+    ps.i2s("", ('C', 13), "C", 2)
+    ps.pwm("", ('C', 21), "C", 2, start=2, limit=1)
+
+    # Bank D, 72-96
+
+    # ok this is slightly complicated, basically there's extra
+    # functions that we want to be on the same pin (but a different mux)
+    # because their use is mutually-exclusive.  you can't have FB_TS
+    # at the same time as FB_ALE for example.  FB_BWE2 even has two
+    # mutually exclusive functions.  these extra functions are
+    # specified here, so that when e.g. FB_BWE2 has been positioned,
+    # FB_A0 will be placed in bank d, mux column 3, *on the same pin*.
+    # this saves messing about, because if FB_BWE2 moved to a
+    # different pin so would FB_A0 (and FB_CS2) likewise have to be
+    # moved.  and the rest.
+    flexspec = {
+        'FB_TS': ('FB_ALE', 2, "D"),
+        'FB_CS2': ('FB_BWE2', 2, "D"),
+        'FB_A0': ('FB_BWE2', 3, "D"),
+        'FB_CS3': ('FB_BWE3', 2, "D"),
+        'FB_A1': ('FB_BWE3', 3, "D"),
+        'FB_TBST': ('FB_OE', 2, "D"),
+        'FB_TSIZ0': ('FB_BWE0', 2, "D"),
+        'FB_TSIZ1': ('FB_BWE1', 2, "D"),
+    }
+    #ps.mcu8080("", 72, "D", 1)
+    ps.gpio("", ('D', 0), "D", 0, 0, 24)
+    ps.flexbus1("", ('D', 0), "D", 1, spec=flexspec)
+    ps.i2c("1", ('D', 8), "D", 3)
+    ps.pwm("", ('D', 21), "D", 1, start=0, limit=3)
+    ps.i2c("0", ('D', 10), "D", 3)
+    ps.i2c("2", ('D', 19), "D", 2)
+    ps.uartfull("0", ('D', 0), "D", 2)
+    ps.uart("1", ('D', 21), "D", 2)
+    ps.uart("2", ('D', 13), "D", 2)
+    ps.eint("", ('D', 19), "D", 3, start=18, limit=4)
+    ps.eint("", ('D', 23), "D", 3, start=9, limit=1)
+    ps.eint("", ('D', 13), "D", 3, start=5, limit=4)
+    ps.eint("", ('D', 0), "D", 3, start=30, limit=2)
+    ps.i2c("1", ('D', 2), "D", 3)
+    ps.sdmmc("1", ('D', 4), "D", 2)
+
+    # Bank E
+    ps.gpio("", ('E', 0), "E", 0, 0, 24)
+    ps.flexbus2("", ('E', 0), "E", 1)
+    ps.sdmmc("1", ('E', 0), "E", 2)
+    ps.sdmmc("2", ('E', 8), "E", 2)
+    ps.quadspi("", ('E', 18), "E", 2)
+    ps.uartfull("1", ('E', 14), "E", 2)
+    ps.i2c("1", ('E', 6), "E", 2)
+    ps.eint("", ('E', 0), "E", 3, start=10, limit=8)
+    ps.eint("", ('E', 8), "E", 3, start=22, limit=6)
+    ps.emmc("", ('E', 14), "E", 3)
+
+    # Bank F
+    ps.gpio("", ('F', 0), "F", 0, 0, 10)
+    ps.i2s("", ('F', 0), "F", 1)
+    ps.i2c("0", ('F', 6), "F", 2)
+    ps.pwm("", ('F', 8), "F", 2, start=0, limit=1)
+    ps.pwm("", ('F', 9), "F", 2, start=1, limit=1)
+    ps.uart("2", ('F', 8), "F", 1)
+    ps.sdmmc("2", ('F', 0), "F", 2)
+    ps.eint("", ('F', 0), "F", 3, start=18, limit=4)
+    ps.pwm("", ('F', 4), "F", 3, start=2, limit=1)
+    ps.eint("", ('F', 5), "F", 3, start=7, limit=1)
+    ps.eint("", ('F', 6), "F", 3, start=28, limit=4)
+
+    # Bank G
+    ps.gpio("", ('G', 0), "G", 0, 0, 32)
+    ps.rgmii("", ('G', 0), "G", 1)
+    ps.ulpi("2", ('G', 20), "G", 1)
+    ps.rgbttl("1", ('G', 0), "G", 2)
+    ps.quadspi("", ('G', 26), "G", 3)
+    ps.flexbus2("", ('G', 0), "G", 3)
+    ps.sdmmc("1", ('G', 24), "G", 3, limit=2)
+    ps.sdmmc("1", ('G', 28), "G", 2, start=2)
 
     # EOMA68 scenario.  not totally complete (some GPIO needed for PMIC)
     # One interface to be connected to the MCU to give RTC and boot/dbg
@@ -403,9 +364,7 @@ auto-generated by [[pinouts.py]]
         'ULPI1': 'EOMA68-compliance: dual USB2 Host ULPI PHY'
     }
 
-    unused_pins = check_functions(of, "EOMA68", bankspec, fns, pinouts,
-                                  eoma68, eoma68_eint, eoma68_pwm,
-                                  descriptions)
+    ps.add_scenario("EOMA68", eoma68, eoma68_eint, eoma68_pwm, descriptions)
 
     # Industrial scenario.  not totally complete (some GPIO needed for PMIC)
     # One interface to be connected to the MCU to give RTC, boot/dbg,
@@ -424,8 +383,7 @@ auto-generated by [[pinouts.py]]
     industrial_eint = ['EINT_24', 'EINT_25', 'EINT_26', 'EINT_27',
                        'EINT_20', 'EINT_21', 'EINT_22', 'EINT_23']
 
-    unused_pins = check_functions(of, "Industrial", bankspec, fns, pinouts,
-                                  industrial, industrial_eint, industrial_pwm)
+    ps.add_scenario("Industrial", industrial, industrial_eint, industrial_pwm, None)
 
     # Industrial scenario, using an SPI-based LCD instead of RGB/TTL
     # not totally complete (some GPIO needed for PMIC)
@@ -447,10 +405,10 @@ auto-generated by [[pinouts.py]]
         'B2:SPI0': 'Used for 320x240 or 640x480 etc. SPI-based LCD.\n'
         'Frees up large numbers of GPIO from RGB/TTL bank'
     }
-    unused_pins = check_functions(of, "Industrial with SPI-LCD",
-                                  bankspec, fns, pinouts,
-                                  industrial, industrial_eint, industrial_pwm,
-                                  ind_descriptions)
+
+    ps.add_scenario("Industrial with SPI-LCD",
+                     industrial, industrial_eint, industrial_pwm,
+                    ind_descriptions)
 
     # Smartphone / Tablet - basically the same thing
 
@@ -528,8 +486,8 @@ auto-generated by [[pinouts.py]]
         'EINT_30': 'OTG_ID',
         'EINT_31': 'Spare?',
     }
-    unused_pins = check_functions(of, "Smartphone / Tablet",
-                                  bankspec, fns, pinouts,
+
+    ps.add_scenario("Smartphone / Tablet",
                                   tablet, tablet_eint, tablet_pwm,
                                   descriptions)
 
@@ -584,8 +542,7 @@ auto-generated by [[pinouts.py]]
         'EINT_9': 'MCU_INT',
         'EINT_31': 'PMIC_INT',
     }
-    unused_pins = check_functions(of, "Laptop / Netbook",
-                                  bankspec, fns, pinouts,
+    ps.add_scenario("Laptop / Netbook",
                                   laptop, laptop_eint, laptop_pwm,
                                   descriptions)
 
@@ -677,24 +634,8 @@ auto-generated by [[pinouts.py]]
         'EINT_30': 'CTP_INT',
         'EINT_31': 'SD_DETN',
     }
-    unused_pins = check_functions(of, "IoT",
-                                  bankspec, fns, pinouts,
+    ps.add_scenario( "IoT",
                                   iot, iot_eint, iot_pwm,
                                   descriptions)
 
-    of.write ("""# Reference Datasheets
-
-datasheets and pinout links
-* <http://datasheets.chipdb.org/AMD/8018x/80186/amd-80186.pdf>
-* <http://hands.com/~lkcl/eoma/shenzen/frida/FRD144A2701.pdf>
-* <http://pinouts.ru/Memory/sdcard_pinout.shtml>
-* p8 <http://www.onfi.org/~/media/onfi/specs/onfi_2_0_gold.pdf?la=en>
-* <https://www.heyrick.co.uk/blog/files/datasheets/dm9000aep.pdf>
-* <http://cache.freescale.com/files/microcontrollers/doc/app_note/AN4393.pdf>
-* <https://www.nxp.com/docs/en/data-sheet/MCF54418.pdf>
-* ULPI OTG PHY, ST <http://www.st.com/en/interfaces-and-transceivers/stulpi01a.html>
-* ULPI OTG PHY, TI TUSB1210 <http://ti.com/product/TUSB1210/>
-
-""")
-
-    return pinouts, bankspec, pinbanks, fixedpins
+    return ps.write(of)
