@@ -62,7 +62,7 @@ class PinGen(object):
     def __call__(self, suffix, offs, mux,
                  start=None, limit=None, spec=None, origsuffix=None):
         bank = offs[0]
-        pingroup = self.pinfn(suffix, bank)
+        pingroup, gangedgroup = self.pinfn(suffix, bank)
         if isinstance(pingroup, tuple):
             prefix, pingroup = pingroup
         else:
@@ -72,7 +72,7 @@ class PinGen(object):
         pingroup = pingroup[start:limit]  # see comment in spec.pinfunctions
         pins = Pins(prefix, pingroup, self.bankspec,
                     suffix, offs, bank, mux,
-                    spec, origsuffix=suffix)
+                    spec, origsuffix=suffix, gangedgrp=gangedgroup)
         self.pinouts.pinmerge(pins)
 
 # pinouts class
@@ -168,7 +168,7 @@ class Pinouts(object):
 class Pins(object):
 
     def __init__(self, fname, pingroup, bankspec, suffix, offs, bank, mux,
-                 spec=None, limit=None, origsuffix=None):
+                 spec=None, limit=None, origsuffix=None, gangedgrp=None):
 
         # function type can be in, out or inout, represented by - + *
         # strip function type out of each pin name
@@ -187,6 +187,7 @@ class Pins(object):
 
         self.fname = fname
         self.pingroup = pingroup
+        self.gangedgroup = gangedgrp
         self.bankspec = bankspec
         self.suffix = suffix
         self.origsuffix = origsuffix or suffix
