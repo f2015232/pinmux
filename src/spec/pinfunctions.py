@@ -2,8 +2,10 @@
 
 """ define functions here, with their pin names and the pin type.
 
-    each function returns a list (or an object with a __getitem__ function)
-    containing pin name plus type specifications.
+    each function returns a pair of lists
+    (or objects with a __getitem__ function)
+
+    the first list (or object) contains pin name plus type specifications.
 
     the type is:
 
@@ -25,6 +27,18 @@
     generated, and that's not known immediately (or it would be if
     every single one of the functions below had a start and end parameter
     added).  see spec.interfaces.PinGen class slice on pingroup
+
+    the second list is the names of pins that are part of an inout bus.
+    this list of pins (a ganged group) will need to be changed under
+    the control of the function, as a group.  for example: sdmmc's
+    D0-D3 pins are in-out, they all change from input to output at
+    the same time under the control of the function, therefore there's
+    no point having multiple in-out switch/control wires, as the
+    sdmmc is never going to do anything other than switch this entire
+    bank all at once.  so in this particular example, sdmmc returns:
+
+        (['CMD+', 'CLK+', 'D0*', 'D1*', 'D2*', 'D3*'] # pin names
+         ['D0*', 'D1*', 'D2*', 'D3*'])                # ganged bus names
 """
 
 
