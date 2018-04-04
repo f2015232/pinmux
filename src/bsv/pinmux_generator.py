@@ -77,6 +77,12 @@ def pinmuxgen(pth=None, verify=True):
     ptp = os.path.join(bp, 'PinTop.bsv')
     bvp = os.path.join(bp, 'bus.bsv')
 
+    write_pmp(pmp, p, ifaces)
+    write_ptp(pmp, p, ifaces)
+    write_bvp(pmp, p, ifaces)
+
+
+def write_pmp(pmp, p, ifaces):
     # package and interface declaration followed by
     # the generic io_cell definition
     with open(pmp, "w") as bsv_file:
@@ -162,6 +168,8 @@ def pinmuxgen(pth=None, verify=True):
         print("BSV file successfully generated: bsv_src/pinmux.bsv")
         # ======================================================================
 
+
+def write_ptp(ptp, p, ifaces):
     with open(ptp, 'w') as bsv_file:
         bsv_file.write(copyright + '''
 package PinTop;
@@ -235,6 +243,8 @@ package PinTop;
 endpackage
 ''')
 
+
+def write_bvp(bvp, p, ifaces):
     # ######## Generate bus transactors ################
     with open(bvp, 'w') as bsv_file:
         bsv_file.write(axi4_lite.format(p.ADDR_WIDTH, p.DATA_WIDTH))
