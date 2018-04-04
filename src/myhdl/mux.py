@@ -13,7 +13,7 @@ def mux4(clk, in_a, in_b, in_c, in_d,
     sel25 = Signal(intbv(0)[4:0])
 
     #@always(clk.posedge, reset_n.negedge)
-    #def logic_reg():
+    # def logic_reg():
     #    if reset_n == 0:
     #        out.next = 0
     #    else:
@@ -23,7 +23,7 @@ def mux4(clk, in_a, in_b, in_c, in_d,
     def logic_selection():
         sel_r.next = selector
 
-    @always(clk.posedge)
+    @always(clk.posedge, sel_r)
     def logic_next():
         if selector != sel_r:
             sel25.next = intbv(0)[2:0]
@@ -41,9 +41,9 @@ def mux4(clk, in_a, in_b, in_c, in_d,
     @always(sel25, in_a, in_b, in_c, in_d)
     def make_out():
         out.next = bool(in_a if sel25[0] else False) | \
-                   bool(in_b if sel25[1] else False) | \
-                   bool(in_c if sel25[2] else False) | \
-                   bool(in_d if sel25[3] else False)
+            bool(in_b if sel25[1] else False) | \
+            bool(in_c if sel25[2] else False) | \
+            bool(in_d if sel25[3] else False)
 
     return instances()  # return all instances
 
@@ -95,9 +95,10 @@ def mux_tb():
     def print_data():
         # print on screen
         # print.format is not supported in MyHDL 1.0
-        s = str(in_a) + "," + str(in_b) + "," + str(in_c) + "," + str(in_d)
-        s = s + "," + str(selector) + "," + str(out)
-        print(s)
+        print ("%s,%s,%s,%s,%s,%s" %
+               (in_a, in_b,
+                in_c, in_d,
+                selector, out))
 
         # print in file
         # print.format is not supported in MyHDL 1.0
