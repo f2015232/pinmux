@@ -5,11 +5,27 @@ from spec.interfaces import Pinouts
 
 def specgen(of, pth, pinouts, bankspec, pinbanks, fixedpins):
     """ generates a specification of pinouts (tsv files)
-        for reading in by pinmux
+        for reading in by pinmux.
+
+        files generated:
+        * interfaces.txt - contains name and number of interfaces
+        * {interfacename}.txt - contains name of pin, type, and bus
+
+        type may be in, out or inout.
+        if type is "inout" then a THIRD optional parameter of type
+        "bus" indicates whether the bus is ganged together.  in
+        future this may be "bus1", "bus2" and so on if an interface
+        contains more than one ganged group.
+
+        basically if the function needs to control whether a group
+        of pins shall be switched from input to output (as opposed
+        to the *pinmux* via user control deciding that), bus is
+        the way to indicate it.
     """
     pth = pth or ''
     #print bankspec.keys()
     #print fixedpins.keys()
+    #print pinouts.ganged.items()
     if not os.path.exists(pth):
         os.makedirs(pth)
     with open(os.path.join(pth, 'interfaces.txt'), 'w') as f:
@@ -17,6 +33,7 @@ def specgen(of, pth, pinouts, bankspec, pinbanks, fixedpins):
             s = pinouts.fnspec[k]
             f.write("%s\t%d\n" % (k.lower(), len(s)))
             s0 = s[list(s.keys())[0]]  # hack, take first
+            gangedgroup = pinouts.ganged[k]
             with open(os.path.join(pth, '%s.txt' % k.lower()), 'w') as g:
                 if len(s0.pingroup) == 1:  # only one function, grouped higher
                     for ks in s.keys():  # grouped by interface
@@ -29,7 +46,10 @@ def specgen(of, pth, pinouts, bankspec, pinbanks, fixedpins):
                     for pinname in s0.pingroup:
                         fntype = s0.fntype.get(pinname, 'inout')
                         pn = pinname.lower()
-                        g.write("%s\t%s\n" % (pn, fntype))
+                        g.write("%s\t%s" % (pn, fntype))
+                        if fntype == 'inout' and pinname in gangedgroup:
+                            g.write("\tbus")
+                        g.write("\n")
 
     pks = sorted(pinouts.keys())
 

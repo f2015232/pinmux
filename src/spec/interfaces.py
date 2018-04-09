@@ -73,7 +73,8 @@ class PinGen(object):
         pins = Pins(prefix, pingroup, self.bankspec,
                     suffix, offs, bank, mux,
                     spec, origsuffix=suffix, gangedgrp=gangedgroup)
-        self.pinouts.pinmerge(pins)
+        fname = self.pinouts.pinmerge(pins)
+        self.pinouts.setganged(fname, gangedgroup)
 
 # pinouts class
 
@@ -83,12 +84,16 @@ class Pinouts(object):
         self.bankspec = bankspec
         self.pins = {}
         self.fnspec = {}
+        self.ganged = {}
         for fname, pinfn in pinspec:
             if isinstance(pinfn, tuple):
                 name, pinfn = pinfn
             else:
                 name = pinfn.__name__
             setattr(self, name, PinGen(self, fname, pinfn, self.bankspec))
+
+    def setganged(self, fname, grp):
+        self.ganged[fname] = map(lambda x: x[:-1], grp)
 
     def __contains__(self, k):
         return k in self.pins
@@ -163,6 +168,8 @@ class Pinouts(object):
         # merge actual pins
         for (pinidx, v) in fn.pins.items():
             self.update(pinidx, v)
+
+        return fname
 
 
 class Pins(object):
