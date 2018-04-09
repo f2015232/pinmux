@@ -73,13 +73,22 @@ def pinmuxgen(pth=None, verify=True):
     if not os.path.exists(bp):
         os.makedirs(bp)
 
+    bus = os.path.join(bp, 'busenable.bsv')
     pmp = os.path.join(bp, 'pinmux.bsv')
     ptp = os.path.join(bp, 'PinTop.bsv')
     bvp = os.path.join(bp, 'bus.bsv')
 
     write_pmp(pmp, p, ifaces)
-    write_ptp(pmp, p, ifaces)
-    write_bvp(pmp, p, ifaces)
+    write_ptp(ptp, p, ifaces)
+    write_bvp(bvp, p, ifaces)
+    write_bus(bus, p, ifaces)
+
+
+def write_bus(bus, p, ifaces):
+    # package and interface declaration followed by
+    # the generic io_cell definition
+    with open(bus, "w") as bsv_file:
+        ifaces.busfmt(bsv_file)
 
 
 def write_pmp(pmp, p, ifaces):

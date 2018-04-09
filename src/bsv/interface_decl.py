@@ -87,8 +87,9 @@ class Interface(object):
         so the name must *not* be extended numerically (see pname)
     """
 
-    def __init__(self, ifacename, pinspecs, single=False):
+    def __init__(self, ifacename, pinspecs, ganged=None, single=False):
         self.ifacename = ifacename
+        self.ganged = ganged or {}
         self.pins = []
         self.pinspecs = pinspecs
         self.single = single
@@ -128,6 +129,33 @@ class Interface(object):
             return '%s_%s' % (self.ifacename, name)
         return '%s{0}_%s' % (self.ifacename, name)
 
+    def busfmt(self, *args):
+        """ this function creates a bus "ganging" system based
+            on input from the {interfacename}.txt file.
+            only inout pins that are under the control of the
+            interface may be "ganged" together.
+        """
+        if not self.ganged:
+            return ''
+        #print self.ganged
+        res = []
+        for (k, pnames) in self.ganged.items():
+            name = self.pname('%senable' % k).format(*args)
+            decl = 'Bit#(1) %s = 0;' % name
+            res.append(decl)
+            ganged = []
+            for p in self.pinspecs:
+                if p['name'] not in pnames:
+                    continue
+                pname = self.pname(p['name']).format(*args)
+                if p.get('outen') is True:
+                    outname = self.ifacefmtoutfn(pname)
+                    ganged.append("%s_outen" % outname) # match wirefmt
+            
+            gangedfmt = '{%s} = duplicate(%s);'
+            res.append(gangedfmt % (',\n  '.join(ganged), name))
+        return '\n'.join(res) + '\n\n'
+
     def wirefmt(self, *args):
         res = '\n'.join(map(self.wirefmtpin, self.pins)).format(*args)
         res += '\n'
@@ -138,7 +166,7 @@ class Interface(object):
             if p.get('outen') is True:
                 outname = self.ifacefmtoutfn(name)
                 params.append('outputval:%s_out,' % outname)
-                params.append('output_en:%s_outen,' % outname)
+                params.append('output_en:%s_outen,' % outname) # match busfmt
                 params.append('input_en:~%s_outen,' % outname)
             elif p.get('action'):
                 outname = self.ifacefmtoutfn(name)
@@ -226,8 +254,9 @@ class Interfaces(UserDict):
                 ln = ln.split("\t")
                 name = ln[0]
                 count = int(ln[1])
-                spec = self.read_spec(pth, name)
-                self.ifaceadd(name, count, Interface(name, spec, count == 1))
+                spec, ganged = self.read_spec(pth, name)
+                iface = Interface(name, spec, ganged, count == 1)
+                self.ifaceadd(name, count, iface)
 
     def getifacetype(self, fname):
         # finds the interface type, e.g sd_d0 returns "inout"
@@ -245,6 +274,7 @@ class Interfaces(UserDict):
 
     def read_spec(self, pth, name):
         spec = []
+        ganged = {}
         fname = '%s.txt' % name
         if pth:
             ift = os.path.join(pth, fname)
@@ -252,18 +282,31 @@ class Interfaces(UserDict):
             for ln in sfile.readlines():
                 ln = ln.strip()
                 ln = ln.split("\t")
-                d = {'name': ln[0]}
+                name = ln[0]
+                d = {'name': name}
                 if ln[1] == 'out':
                     d['action'] = True
                 elif ln[1] == 'inout':
                     d['outen'] = True
+                    if len(ln) == 3:
+                        bus = ln[2] 
+                        if not ganged.has_key(bus):
+                            ganged[bus] = []
+                        ganged[bus].append(name)
                 spec.append(d)
-        return spec
+        return spec, ganged
 
     def ifacedef(self, f, *args):
         for (name, count) in self.ifacecount:
             for i in range(count):
                 f.write(self.data[name].ifacedef(i))
+
+    def busfmt(self, f, *args):
+        f.write("import BUtils::*;\n\n")
+        for (name, count) in self.ifacecount:
+            for i in range(count):
+                bf = self.data[name].busfmt(i)
+                f.write(bf)
 
     def ifacefmt(self, f, *args):
         comment = '''
