@@ -10,8 +10,10 @@ except ImportError:
 # second argument is the mux value.
 # Third argument is the signal from the pinmap file
 mux_wire = '''
-        if(wrcell{0}_mux=={1})
-            {2}<=cell{0}_mux_in;'''
+      rule assign_{2}_on_cell{0}(wrcell{0}_mux=={1});
+        {2}<=cell{0}_mux_in;
+      endrule
+'''
 dedicated_wire = '''
       rule assign_{1}_on_cell{0};
         {1}<=cell{0}_mux_in;
@@ -45,13 +47,11 @@ def init(p, ifaces):
         p.pinmux += ";\n"
         # ======================================================== #
 
-    # check each cell if "peripheral input/inout" then assign its wire
-    # Here we check the direction of each signal in the dictionary.
-    # We choose to keep the dictionary within the code and not user-input
-    # since the interfaces are always standard and cannot change from
-    # user-to-user. Plus this also reduces human-error as well :)
-    p.pinmux += "      rule assign_inputs_from_io_to_wires;"
-    for cell in p.muxed_cells:
+        # check each cell if "peripheral input/inout" then assign its wire
+        # Here we check the direction of each signal in the dictionary.
+        # We choose to keep the dictionary within the code and not user-input
+        # since the interfaces are always standard and cannot change from
+        # user-to-user. Plus this also reduces human-error as well :)
         for i in range(0, len(cell) - 1):
             cname = cell[i + 1]
             temp = transfn(cname)
@@ -68,7 +68,6 @@ def init(p, ifaces):
                 p.pinmux += \
                     mux_wire.format(cell[0], i, "wr" + cname +
                                                 "_in") + "\n"
-    p.pinmux += "      endrule\n"
     # ============================================================ #
 
     # ==================  Logic for dedicated pins ========= #
