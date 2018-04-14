@@ -141,9 +141,14 @@ def write_pmp(pmp, p, ifaces):
       // the followins wires capture the pin-mux selection
       // values for each mux assigned to a CELL
 ''')
+        max_num_cells = 0
+        for cell in p.muxed_cells:
+                max_num_cells = max(len(cell)-1, max_num_cells)
+        cell_bit_width = 'Bit#(%d)' %int(math.log(max_num_cells, 2))
+
         for cell in p.muxed_cells:
             bsv_file.write(mux_interface.wirefmt(
-                cell[0], 'Bit#(' + str(int(math.log(len(cell) - 1, 2))) + ')'))
+                cell[0], cell_bit_width))
 
         ifaces.wirefmt(bsv_file)
 
