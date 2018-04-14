@@ -91,6 +91,12 @@ def write_bus(bus, p, ifaces):
         ifaces.busfmt(bsv_file)
 
 
+def get_cell_bit_width(p):
+    max_num_cells = 0
+    for cell in p.muxed_cells:
+            max_num_cells = max(len(cell)-1, max_num_cells)
+    return int(math.log(max_num_cells, 2))
+
 def write_pmp(pmp, p, ifaces):
     # package and interface declaration followed by
     # the generic io_cell definition
@@ -141,11 +147,7 @@ def write_pmp(pmp, p, ifaces):
       // the followins wires capture the pin-mux selection
       // values for each mux assigned to a CELL
 ''')
-        max_num_cells = 0
-        for cell in p.muxed_cells:
-                max_num_cells = max(len(cell)-1, max_num_cells)
-        cell_bit_width = 'Bit#(%d)' %int(math.log(max_num_cells, 2))
-
+        cell_bit_width = 'Bit#(%d)' % get_cell_bit_width(p)
         for cell in p.muxed_cells:
             bsv_file.write(mux_interface.wirefmt(
                 cell[0], cell_bit_width))
@@ -199,10 +201,11 @@ package PinTop;
         // declare the registers which will be used to mux the IOs
 '''.format(p.ADDR_WIDTH, p.DATA_WIDTH))
 
+        cell_bit_width = str(get_cell_bit_width(p))
         for cell in p.muxed_cells:
             bsv_file.write('''
                 Reg#(Bit#({0})) rg_muxio_{1} <-mkReg(0);'''.format(
-                int(math.log(len(cell) - 1, 2)), cell[0]))
+                cell_bit_width, cell[0]))
 
         bsv_file.write('''
         // rule to connect the registers to the selection lines of the
