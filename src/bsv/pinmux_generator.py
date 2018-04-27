@@ -16,6 +16,7 @@
 # ========================================================================
 
 # default module imports
+import shutil
 import os
 import os.path
 import time
@@ -72,6 +73,19 @@ def pinmuxgen(pth=None, verify=True):
         bp = os.path.join(pth, bp)
     if not os.path.exists(bp):
         os.makedirs(bp)
+    bl = os.path.join(bp, 'bsv_lib')
+    if not os.path.exists(bl):
+        os.makedirs(bl)
+
+    cwd = os.path.split(__file__)[0]
+
+    # copy over template and library files
+    shutil.copyfile(os.path.join(cwd, 'Makefile.template'),
+                os.path.join(bp, 'Makefile'))
+    cwd = os.path.join(cwd, 'bsv_lib')
+    for fname in ['AXI4_Lite_Types.bsv', 'Semi_FIFOF.bsv']:
+        shutil.copyfile(os.path.join(cwd, fname),
+                    os.path.join(bl, fname))
 
     bus = os.path.join(bp, 'busenable.bsv')
     pmp = os.path.join(bp, 'pinmux.bsv')
