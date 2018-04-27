@@ -66,7 +66,7 @@ def pinspec(of):
     ps.spi("0", ('B', 10), 2)
     ps.quadspi("", ('B', 4), 2)
     ps.uart("0", ('B', 16), 2)
-    ps.i2c("2", ('B', 18), 2)
+    ps.i2c("1", ('B', 18), 2)
     ps.pwm("", ('B', 21), 2, 0, 3)
     ps.sdmmc("0", ('B', 22), 3)
     ps.eint("", ('B', 0), 3, 0, 4)
