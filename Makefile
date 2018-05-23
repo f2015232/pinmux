@@ -10,7 +10,7 @@ gen_pinmux:
 
 .PHONY: gen_verilog 
 gen_verilog:
-	make -C test gen_verilog
+	make -C test/bsv_src gen_verilog
 
 #############################################################################
 
