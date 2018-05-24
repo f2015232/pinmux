@@ -77,7 +77,11 @@ if __name__ == '__main__':
             printhelp()
             sys.exit(1)
         module = modules[pinspec]
+
         fname = os.path.join(output_dir or '', "%s.mdwn" % pinspec)
+        d = os.path.split(fname)[0]
+        if not os.path.exists(d):
+            os.makedirs(d)
         with open(fname, "w") as of:
             pinout, bankspec, pinspec, fixedpins = module.pinspec(of)
             specgen(of, output_dir, pinout, bankspec, pinspec, fixedpins)
