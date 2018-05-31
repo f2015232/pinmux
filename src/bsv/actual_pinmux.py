@@ -36,6 +36,10 @@ def transfn(temp):
 
 
 def init(p, ifaces):
+    """ generates the actual output pinmux for each io-cell.  blank lines
+        need to output "0" to the iopad, if there is no entry in
+        that column.
+    """
     p.pinmux = ' '
     global dedicated_wire
     for cell in p.muxed_cells:
