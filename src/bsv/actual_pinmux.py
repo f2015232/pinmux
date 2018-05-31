@@ -38,7 +38,8 @@ def transfn(temp):
 def init(p, ifaces):
     p.pinmux = ' '
     global dedicated_wire
-    for cell in p.muxed_cells:
+    for x, cell in enumerate(p.muxed_cells):
+        p.pinmux += "      // output muxer for cell idx %d\n" % x
         p.pinmux += "      %s_out=" % cn(cell[0])
         for i in range(0, len(cell) - 2):
             p.pinmux += "wr%s" % cn(cell[0]) + \
