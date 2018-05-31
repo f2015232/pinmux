@@ -81,11 +81,11 @@ def pinmuxgen(pth=None, verify=True):
 
     # copy over template and library files
     shutil.copyfile(os.path.join(cwd, 'Makefile.template'),
-                os.path.join(bp, 'Makefile'))
+                    os.path.join(bp, 'Makefile'))
     cwd = os.path.join(cwd, 'bsv_lib')
     for fname in ['AXI4_Lite_Types.bsv', 'Semi_FIFOF.bsv']:
         shutil.copyfile(os.path.join(cwd, fname),
-                    os.path.join(bl, fname))
+                        os.path.join(bl, fname))
 
     bus = os.path.join(bp, 'busenable.bsv')
     pmp = os.path.join(bp, 'pinmux.bsv')
@@ -108,8 +108,9 @@ def write_bus(bus, p, ifaces):
 def get_cell_bit_width(p):
     max_num_cells = 0
     for cell in p.muxed_cells:
-            max_num_cells = max(len(cell)-1, max_num_cells)
+        max_num_cells = max(len(cell) - 1, max_num_cells)
     return int(math.log(max_num_cells, 2))
+
 
 def write_pmp(pmp, p, ifaces):
     # package and interface declaration followed by
