@@ -28,6 +28,8 @@ def cn(idx): # idx is an integer
 
 
 def transfn(temp):
+    """ removes the number from the string of signal name.
+    """
     temp = temp.split('_')
     if len(temp) == 2:
         temp[0] = temp[0].translate(digits)
