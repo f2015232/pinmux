@@ -150,8 +150,8 @@ class Interface(object):
                 pname = self.pname(p['name']).format(*args)
                 if p.get('outen') is True:
                     outname = self.ifacefmtoutfn(pname)
-                    ganged.append("%s_outen" % outname) # match wirefmt
-            
+                    ganged.append("%s_outen" % outname)  # match wirefmt
+
             gangedfmt = '{%s} = duplicate(%s);'
             res.append(gangedfmt % (',\n  '.join(ganged), name))
         return '\n'.join(res) + '\n\n'
@@ -166,7 +166,7 @@ class Interface(object):
             if p.get('outen') is True:
                 outname = self.ifacefmtoutfn(name)
                 params.append('outputval:%s_out,' % outname)
-                params.append('output_en:%s_outen,' % outname) # match busfmt
+                params.append('output_en:%s_outen,' % outname)  # match busfmt
                 params.append('input_en:~%s_outen,' % outname)
             elif p.get('action'):
                 outname = self.ifacefmtoutfn(name)
@@ -289,8 +289,8 @@ class Interfaces(UserDict):
                 elif ln[1] == 'inout':
                     d['outen'] = True
                     if len(ln) == 3:
-                        bus = ln[2] 
-                        if not ganged.has_key(bus):
+                        bus = ln[2]
+                        if bus not in ganged:
                             ganged[bus] = []
                         ganged[bus].append(name)
                 spec.append(d)
