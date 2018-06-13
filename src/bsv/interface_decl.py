@@ -160,20 +160,23 @@ class Interface(object):
         res = '\n'.join(map(self.wirefmtpin, self.pins)).format(*args)
         res += '\n'
         for p in self.pinspecs:
-            name = self.pname(p['name']).format(*args)
+            name = self.pname(p['name'])
+            typ = self.getifacetype(name.format(""))
+            name = name.format(*args)
+            res += "      # declare %s_io, set up as type '%s'\n" % (name, typ)
             res += "      GenericIOType %s_io = GenericIOType{\n" % name
             params = []
-            if p.get('outen') is True:
+            if typ == 'inout':
                 outname = self.ifacefmtoutfn(name)
                 params.append('outputval:%s_out,' % outname)
                 params.append('output_en:%s_outen,' % outname)  # match busfmt
                 params.append('input_en:~%s_outen,' % outname)
-            elif p.get('action'):
+            elif typ == 'out':
                 outname = self.ifacefmtoutfn(name)
                 params.append('outputval:%s,' % outname)
                 params.append('output_en:1,')
                 params.append('input_en:0,')
-            else:
+            else: # input
                 params.append('outputval:0,')
                 params.append('output_en:0,')
                 params.append('input_en:1,')
