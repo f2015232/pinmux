@@ -36,6 +36,14 @@ def transfn(temp):
         temp[0] = temp[0] .replace(' ', '')
     return '_'.join(temp)
 
+def fmt(cell):
+    """ blank entries need to output a 0 to the pin (it could just as
+        well be a 1 but we choose 0).  reason: blank entries in
+        the pinmap.txt file indicate that there's nothing to choose
+        from.  however the user may still set the muxer to that value,
+        and rather than throw an exception we choose to output... zero.
+    """
+    return "%s_io" % cell if cell else '0'
 
 def init(p, ifaces):
     """ generates the actual output pinmux for each io-cell.  blank lines
@@ -49,8 +57,8 @@ def init(p, ifaces):
         p.pinmux += "      %s_out=" % cn(cell[0])
         for i in range(0, len(cell) - 2):
             p.pinmux += "wr%s" % cn(cell[0]) + \
-                "==" + str(i) + "?" + cell[i + 1] + "_io:\n\t\t\t"
-        p.pinmux += cell[i + 2] + "_io"
+                "==" + str(i) + "?" + fmt(cell[i + 1]) + ":\n\t\t\t"
+        p.pinmux += fmt(cell[i + 2])
         p.pinmux += ";\n"
         # ======================================================== #
 
