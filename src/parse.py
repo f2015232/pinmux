@@ -45,7 +45,7 @@ class Parse(object):
             fname = os.path.join(pth, fname)
         with open(fname) as pinmapfile:
             for lineno, line in enumerate(pinmapfile):
-                line1 = line.split('\t')
+                line1 = line[:-1].split('\t')
                 if len(line1) <= 1:
                     continue
                 self.pinnumbers.append(int(line1[0]))
