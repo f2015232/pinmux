@@ -61,6 +61,8 @@ def init(p, ifaces):
         # user-to-user. Plus this also reduces human-error as well :)
         for i in range(0, len(cell) - 1):
             cname = cell[i + 1]
+            if not cname: # skip blank entries, no need to test
+                continue
             temp = transfn(cname)
             x = ifaces.getifacetype(temp)
             #print (cname, temp, x)
