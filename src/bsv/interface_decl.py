@@ -29,7 +29,7 @@ class Pin(object):
         self.action = action
         self.bitspec = bitspec if bitspec else 'Bit#(1)'
 
-    def ifacefmt(self, fmtfn=None):
+    def ifacefmt(self, fmtfn):
         res = '    '
         status = []
         if self.ready:
@@ -56,7 +56,7 @@ class Pin(object):
         res += ";"
         return res
 
-    def ifacedef(self, fmtoutfn=None, fmtinfn=None, fmtdecfn=None):
+    def ifacedef(self, fmtoutfn, fmtinfn, fmtdecfn):
         res = '      method '
         if self.action:
             fmtname = fmtinfn(self.name)
@@ -70,7 +70,7 @@ class Pin(object):
             res += "%s=%s;" % (self.name, fmtname)
         return res
 
-    def wirefmt(self, fmtoutfn=None, fmtinfn=None, fmtdecfn=None):
+    def wirefmt(self, fmtoutfn, fmtinfn, fmtdecfn):
         res = '      Wire#(%s) ' % self.bitspec
         if self.action:
             res += '%s' % fmtinfn(self.name)
