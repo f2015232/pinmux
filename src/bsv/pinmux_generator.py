@@ -40,6 +40,27 @@ copyright = '''
 header = copyright + '''
 package pinmux;
 
+   // FunctionType: contains the active wires of a function.  That INCLUDES
+   // GPIO (as GPIO is also a "Function").  These are what get muxed.
+   // However, only GPIO "Functions" will end up with Register SRAMs.
+   typedef struct{
+      Bit#(1) outputval;      // output from function to pad            bit2
+      Bit#(1) inputval;       // input  from pad to function            bit1
+      Bit#(1) output_en;      // output enable from core to pad         bit0
+   } FunctionType deriving(Eq,Bits,FShow);
+
+   // PadCharacteristicsType: this is the controllable characteristics
+   // of the I/O cell.  They are NOT multiplexed.  Registers are to be
+   // created which manage these characteristics
+   typedef struct{
+      Bit#(1) pullup_en;      // pullup enable from core to io_cell     bit4
+      Bit#(1) pulldown_en;    // pulldown enable from core to io_cell   bit3
+      Bit#(1) drivestrength;  // drivestrength from core to io_cell     bit2
+      Bit#(1) pushpull_en;    // pushpull enable from core to io_cell   bit1
+      Bit#(1) opendrain_en;   // opendrain enable form core to io_cell  bit0
+   } PadCharacteristicsType deriving(Eq,Bits,FShow);
+
+   // TODO: leave this in for now, needs replacing with the above
    typedef struct{
       Bit#(1) outputval;      // output from core to pad                bit7
       Bit#(1) output_en;      // output enable from core to pad         bit6
