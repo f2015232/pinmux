@@ -3,7 +3,7 @@
 from copy import deepcopy
 
 
-def display(of, pins):
+def display(of, pins, banksel=None):
     of.write("""\
 | Pin | Mux0        | Mux1        | Mux2        | Mux3        |
 | --- | ----------- | ----------- | ----------- | ----------- |
@@ -11,6 +11,16 @@ def display(of, pins):
     pinidx = sorted(pins.keys())
     for pin in pinidx:
         pdata = pins.get(pin)
+        if banksel:
+            skip = False
+            for mux in range(4):
+                if mux not in pdata:
+                    continue
+                name, bank = pdata[mux]
+                if banksel != bank:
+                    skip = True
+            if skip:
+                continue
         res = '| %3d |' % pin
         for mux in range(4):
             if mux not in pdata:
