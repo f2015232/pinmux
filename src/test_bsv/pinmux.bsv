@@ -171,19 +171,37 @@ package pinmux;
 
 
       /*====== This where the muxing starts for each io-cell======*/
+      // TODO: this needs to stop using GenericIOType and
+      // set the output (and only the output) as a wire
        // output muxer for cell idx 0
       cell0_mux_out=wrcell0_mux==0?gpioa_a0_io:
 			wrcell0_mux==1?uart0_tx_io:
 			0;
 
+      // TODO: here is needed something which sets a new
+      // wire, cell0_mux_outen
+      cell0_mux_outen=
+            wrcell0_mux==0?gpioa_a0_io.output_en: // gpio bi-directional
+			wrcell0_mux==1?gpioa_a0_io.output_en: // i think....
+			0; // not sure.... 3rd entry is blank... might as well be 0
+
       rule assign_wrgpioa_a0_in_on_cell0(wrcell0_mux==0);
         wrgpioa_a0_in<=cell0_mux_in;
       endrule
 
+      // TODO: this needs to stop using GenericIOType and
+      // set the output (and only the output) as a wire
       // output muxer for cell idx 1
       cell1_mux_out=wrcell1_mux==0?gpioa_a1_io:
 			wrcell1_mux==1?uart0_rx_io:
 			twi0_sda_io;
+
+      // TODO: here is needed something which sets a new
+      // wire, cell1_mux_outen
+      cell1_mux_outen=
+            wrcell1_mux==0?gpioa_a1_io.output_en: // gpio bi-directional
+			wrcell1_mux==1?uart0_rx_io: // oink?? this is an input!!
+			twi0_sda_io.output_en; // this one's bi-directional
 
       rule assign_wrgpioa_a1_in_on_cell1(wrcell1_mux==0);
         wrgpioa_a1_in<=cell1_mux_in;
@@ -199,8 +217,11 @@ package pinmux;
         wrtwi0_sda_in<=cell1_mux_in;
       endrule
 
+      // TODO: this needs to stop using GenericIOType and
+      // set the output (and only the output) as a wire
       // output muxer for cell idx 2
-      cell2_mux_out=wrcell2_mux==0?gpioa_a2_io:
+      cell2_mux_out=
+            wrcell2_mux==0?gpioa_a2_io:
 			wrcell2_mux==1?0:
 			twi0_scl_io;
 
