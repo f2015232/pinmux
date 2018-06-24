@@ -193,7 +193,7 @@ package pinmux;
       // set the output (and only the output) as a wire
       // output muxer for cell idx 1
       cell1_mux_out=wrcell1_mux==0?gpioa_a1_io:
-			wrcell1_mux==1?uart0_rx_io:
+			wrcell1_mux==1?uart0_rx_io: // oink?? this is an input!!
 			twi0_sda_io;
 
       // TODO: here is needed something which sets a new
