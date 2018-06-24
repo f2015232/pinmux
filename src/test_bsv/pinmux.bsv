@@ -40,15 +40,18 @@ package pinmux;
       // Each IO cell will have 8 input field (output from pin mux
       // and on output field (input to pinmux)
           // interface declaration between IO-0 and pinmux
-    (*always_ready*) method  GenericIOType io0_cell;
+    (*always_ready,always_enabled*) method Bit#(1) io0_cell_outen;
+    (*always_ready,always_enabled*) method Bit#(1) io0_cell_out;
     (*always_ready,always_enabled,result="io"*) method 
                        Action io0_inputval (Bit#(1) in);
           // interface declaration between IO-1 and pinmux
-    (*always_ready*) method  GenericIOType io1_cell;
+    (*always_ready,always_enabled*) method Bit#(1) io1_cell_outen;
+    (*always_ready,always_enabled*) method Bit#(1) io1_cell_out;
     (*always_ready,always_enabled,result="io"*) method 
                        Action io1_inputval (Bit#(1) in);
           // interface declaration between IO-2 and pinmux
-    (*always_ready*) method  GenericIOType io2_cell;
+    (*always_ready,always_enabled*) method Bit#(1) io2_cell_outen;
+    (*always_ready,always_enabled*) method Bit#(1) io2_cell_out;
     (*always_ready,always_enabled,result="io"*) method 
                        Action io2_inputval (Bit#(1) in);
           // interface declaration between UART-0 and pinmux
@@ -265,17 +268,20 @@ package pinmux;
     endinterface;
     interface peripheral_side = interface PeripheralSide
 
-      method io0_cell=cell0_mux_out;
+      method io0_cell_out=cell0_mux_out;
+      method io0_cell_outen=cell0_mux_outen;
       method Action  io0_inputval(Bit#(1) in);
          cell0_mux_in<=in;
       endmethod
 
-      method io1_cell=cell1_mux_out;
+      method io1_cell_out=cell1_mux_out;
+      method io1_cell_outen=cell1_mux_outen;
       method Action  io1_inputval(Bit#(1) in);
          cell1_mux_in<=in;
       endmethod
 
-      method io2_cell=cell2_mux_out;
+      method io2_cell_out=cell2_mux_out;
+      method io2_cell_outen=cell2_mux_outen;
       method Action  io2_inputval(Bit#(1) in);
          cell2_mux_in<=in;
       endmethod
