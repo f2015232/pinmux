@@ -56,9 +56,9 @@ def pinspec(of):
     ps.i2c("0", ('A', 1), 2)
     ps.i2c("1", ('A', 2), 4)
 
-    minitest = ['UART0', 'TWI0', ]
-    minitest_eint = []
-    minitest_pwm = []
+    microtest = ['UART0', 'TWI0', ]
+    microtest_eint = []
+    microtest_pwm = []
     descriptions = {
         'TWI0': 'I2C',
         'E2:SD1': '',
@@ -69,7 +69,7 @@ def pinspec(of):
         'ULPI1': 'dual USB2 Host ULPI PHY'
     }
 
-    ps.add_scenario("MiniTest", minitest, minitest_eint, minitest_pwm,
+    ps.add_scenario("MiniTest", microtest, microtest_eint, microtest_pwm,
                     descriptions)
 
     return ps.write(of)
