@@ -180,11 +180,6 @@ class Interface(object):
                 params.append('outputval:0,')
                 params.append('output_en:0,')
                 params.append('input_en:1,')
-            params += ['pullup_en:0,', 'pulldown_en:0,',
-                       'pushpull_en:0,', 'drivestrength:0,',
-                       'opendrain_en:0']
-            for param in params:
-                res += '                 %s\n' % param
             res += '      };\n'
         return '\n' + res
 
