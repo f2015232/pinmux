@@ -88,17 +88,20 @@ package pinmux;
       Wire#(Bit#(1)) wrcell2_mux<-mkDWire(0);
       // following wires capture signals to IO CELL if io-0 is
       // allotted to it
-      GenericIOType cell0_mux_out=unpack(0);
+      Wire#(Bit#(1)) cell0_mux_out<-mkDWire(0);
+      Wire#(Bit#(1)) cell0_mux_outen<-mkDWire(0);
       Wire#(Bit#(1)) cell0_mux_in<-mkDWire(0);
 
       // following wires capture signals to IO CELL if io-1 is
       // allotted to it
-      GenericIOType cell1_mux_out=unpack(0);
+      Wire#(Bit#(1)) cell1_mux_out<-mkDWire(0);
+      Wire#(Bit#(1)) cell1_mux_outen<-mkDWire(0);
       Wire#(Bit#(1)) cell1_mux_in<-mkDWire(0);
 
       // following wires capture signals to IO CELL if io-2 is
       // allotted to it
-      GenericIOType cell2_mux_out=unpack(0);
+      Wire#(Bit#(1)) cell2_mux_out<-mkDWire(0);
+      Wire#(Bit#(1)) cell2_mux_outen<-mkDWire(0);
       Wire#(Bit#(1)) cell2_mux_in<-mkDWire(0);
 
       // following wires capture signals to IO CELL if uart-0 is
@@ -224,6 +227,14 @@ package pinmux;
             wrcell2_mux==0?gpioa_a2_io:
 			wrcell2_mux==1?0:
 			twi0_scl_io;
+
+      // TODO: here is needed something which sets a new
+      // wire, cell2_mux_outen
+      cell2_mux_outen=
+            wrcell2_mux==0?gpioa_a2_io.output_en:
+			wrcell2_mux==1?0:
+			twi0_scl_io.output_en;
+
 
       rule assign_wrgpioa_a2_in_on_cell2(wrcell2_mux==0);
         wrgpioa_a2_in<=cell2_mux_in;
