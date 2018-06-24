@@ -180,6 +180,8 @@ class Interface(object):
                 params.append('outputval:0,')
                 params.append('output_en:0,')
                 params.append('input_en:1,')
+            for param in params:
+                res += '                 %s\n' % param
             res += '      };\n'
         return '\n' + res
 
