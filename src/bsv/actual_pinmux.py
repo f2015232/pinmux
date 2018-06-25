@@ -45,7 +45,9 @@ def transfn(temp):
     return '_'.join(temp)
 
 
-def fmt(cell, idx):
+# XXX this needs to move into interface_decl.py
+# and made to use ifaceoutfmtfn and ifaceinfmtfn
+def fmt(ifaces, cell, idx, suffix=None):
     """ blank entries need to output a 0 to the pin (it could just as
         well be a 1 but we choose 0).  reason: blank entries in
         the pinmap.txt file indicate that there's nothing to choose
@@ -57,14 +59,55 @@ def fmt(cell, idx):
         cell = cell[idx]
     else:
         cell = ''
-    return "%s_io" % cell if cell else '0'
+    if not cell:
+        return '0'
+    temp = transfn(cell)
+    x = ifaces.getifacetype(temp)
+    if x == 'input':
+        return '0' # inputs don't get passed through to the out mux
+    if suffix == '_outen' and x == 'out':
+        return '1'
+    return "wr%s%s" % (cell, suffix or '')
 
-
-def mkcomment(p, cell, idx):
+# XXX this needs to move into interface_decl.py
+def mkcomment(ifaces, cell, idx, outenmode=False):
     """ returns a comment string for the cell when muxed
     """
+    idx += 1
+    if idx >= len(cell):
+        return ' // unused'
+    cname = cell[idx]
+    if not cname:
+        return ' // unused'
+    temp = transfn(cname)
+    x = ifaces.getifacetype(temp)
+    print (cname, x)
+    if x == 'input':
+        return ' // %s is an input' % cname
+    if outenmode and x == 'inout':
+        return ' // bi-directional'
+    if outenmode and x == 'out':
+        return ' // %s is an output' % cname
+
     return ""
 
+
+def mkmux(p, ifaces, cell, suffix, outenmode):
+    comment = 'outen' if outenmode else 'output'
+    fmtstr = "\t\t\twr%s==%d?%s:%s\n"  # mux-selector format
+    ret = ''
+    ret += "      // %s muxer for cell idx %s\n" % (comment, cell[0])
+    ret += "      %s%s=\n" % (cn(cell[0]), suffix)
+    for i in range(
+            0, (1 << p.cell_bitwidth) - 1):  # full mux range (minus 1)
+        comment = mkcomment(ifaces, cell, i, outenmode)
+        cf = fmt(ifaces, cell, i, suffix)
+        ret += fmtstr % (cn(cell[0]), i, cf, comment)
+    comment = mkcomment(ifaces, cell, i + 1, outenmode)
+    ret += "\t\t\t" + fmt(ifaces, cell, i + 1, suffix) # last line
+    ret += ";%s\n" % comment
+
+    return ret
 
 def init(p, ifaces):
     """ generates the actual output pinmux for each io-cell.  blank lines
@@ -89,17 +132,15 @@ def init(p, ifaces):
     p.cell_bitwidth = get_cell_bit_width(p)
     p.pinmux = ' '
     global dedicated_wire
-    fmtstr = "\t\t\twr%s == %d ? %s :%s\n"  # mux-selector format
     for cell in p.muxed_cells:
-        p.pinmux += "      // output muxer for cell idx %s\n" % cell[0]
-        p.pinmux += "      %s_out=\n" % cn(cell[0])
-        for i in range(
-                0, (1 << p.cell_bitwidth) - 1):  # full mux range (minus 1)
-            comment = mkcomment(p, cell, i)
-            p.pinmux += fmtstr % (cn(cell[0]), i, fmt(cell, i), comment)
-        comment = mkcomment(p, cell, i + 1)
-        p.pinmux += "\t\t\t" + fmt(cell, i + 1) + comment  # last line
-        p.pinmux += ";\n"
+
+        # first do the outputs
+        p.pinmux += mkmux(p, ifaces, cell, '_out', False)
+        p.pinmux += "\n"
+
+        # now do the output enablers (outens)
+        p.pinmux += mkmux(p, ifaces, cell, '_outen', True)
+
         # ======================================================== #
 
         # check each cell if "peripheral input/inout" then assign its wire
