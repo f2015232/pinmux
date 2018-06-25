@@ -143,7 +143,7 @@ package pinmux;
       // set the output (and only the output) as a wire
        // output muxer for cell idx 0
       cell0_mux_out=wrcell0_mux==0?wrgpioa_a0_out:
-			wrcell0_mux==1?wruart0_tx_out:
+			wrcell0_mux==1?wruart_tx_out:
 			0;
 
       // TODO: here is needed something which sets a new
@@ -161,28 +161,28 @@ package pinmux;
       // set the output (and only the output) as a wire
       // output muxer for cell idx 1
       cell1_mux_out=wrcell1_mux==0?wrgpioa_a1_out:
-			wrcell1_mux==1?0: // uart0_rx is an input
-			wrtwi0_sda_out;
+			wrcell1_mux==1?0: // uart_rx is an input
+			wrtwi_sda_out;
 
       // TODO: here is needed something which sets a new
       // wire, cell1_mux_outen
       cell1_mux_outen=
             wrcell1_mux==0?gpioa_a1_outen: // bi-directional
-			wrcell1_mux==1?0: // uart0_rx is an input
-			wrtwi0_sda_out_en; // bi-directional
+			wrcell1_mux==1?0: // uart_rx is an input
+			wrtwi_sda_out_en; // bi-directional
 
       rule assign_wrgpioa_a1_in_on_cell1(wrcell1_mux==0);
         wrgpioa_a1_in<=cell1_mux_in;
       endrule
 
 
-      rule assign_wruart0_rx_on_cell1(wrcell1_mux==1);
-        wruart0_rx<=cell1_mux_in;
+      rule assign_wruart_rx_on_cell1(wrcell1_mux==1);
+        wruart_rx<=cell1_mux_in;
       endrule
 
 
-      rule assign_wrtwi0_sda_in_on_cell1(wrcell1_mux==2);
-        wrtwi0_sda_in<=cell1_mux_in;
+      rule assign_wrtwi_sda_in_on_cell1(wrcell1_mux==2);
+        wrtwi_sda_in<=cell1_mux_in;
       endrule
 
       // TODO: this needs to stop using GenericIOType and
@@ -191,14 +191,14 @@ package pinmux;
       cell2_mux_out=
             wrcell2_mux==0?wrgpioa_a2_out:
 			wrcell2_mux==1?0:
-			wrtwi0_scl_out;
+			wrtwi_scl_out;
 
       // TODO: here is needed something which sets a new
       // wire, cell2_mux_outen
       cell2_mux_outen=
             wrcell2_mux==0?wrgpioa_a2_outen: // bi-directional
 			wrcell2_mux==1?0:
-			wrtwi0_scl_outen; // bi-directional
+			wrtwi_scl_outen; // bi-directional
 
 
       rule assign_wrgpioa_a2_in_on_cell2(wrcell2_mux==0);
@@ -206,8 +206,8 @@ package pinmux;
       endrule
 
 
-      rule assign_wrtwi0_scl_in_on_cell2(wrcell2_mux==2);
-        wrtwi0_scl_in<=cell2_mux_in;
+      rule assign_wrtwi_scl_in_on_cell2(wrcell2_mux==2);
+        wrtwi_scl_in<=cell2_mux_in;
       endrule
 
 
