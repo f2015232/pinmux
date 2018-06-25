@@ -139,8 +139,6 @@ package pinmux;
 
 
       /*====== This where the muxing starts for each io-cell======*/
-      // TODO: this needs to stop using GenericIOType and
-      // set the output (and only the output) as a wire
        // output muxer for cell idx 0
       cell0_mux_out=
 			wrcell0_mux==0?wrgpioa_a0_out:
@@ -148,8 +146,7 @@ package pinmux;
 			wrcell0_mux==2?0: // unused
 			0; // unused
 
-      // TODO: here is needed something which sets a new
-      // wire, cell0_mux_outen
+      // outen muxer for cell idx 0
       cell0_mux_outen=
 			wrcell0_mux==0?wrgpioa_a0_outen: // bi-directional
 			wrcell0_mux==1?1: // uart_tx is an output
@@ -160,21 +157,18 @@ package pinmux;
         wrgpioa_a0_in<=cell0_mux_in;
       endrule
 
-      // TODO: this needs to stop using GenericIOType and
-      // set the output (and only the output) as a wire
       // output muxer for cell idx 1
       cell1_mux_out=
 			wrcell1_mux==0?wrgpioa_a1_out:
 			wrcell1_mux==1?0: // uart_rx is an input
-			wrcell1_mux==2? wrtwi_sda_out:
+			wrcell1_mux==2?wrtwi_sda_out:
 			0; // unused
 
-      // TODO: here is needed something which sets a new
-      // wire, cell1_mux_outen
+      // outen muxer for cell idx 1
       cell1_mux_outen=
-			wrcell1_mux==0?gpioa_a1_outen: // bi-directional
+			wrcell1_mux==0?wrgpioa_a1_outen: // bi-directional
 			wrcell1_mux==1?0: // uart_rx is an input
-			wrcell1_mux==2? wrtwi_sda_outen: // bi-directional
+			wrcell1_mux==2?wrtwi_sda_outen: // bi-directional
 			0; // unused
 
       rule assign_wrgpioa_a1_in_on_cell1(wrcell1_mux==0);
@@ -191,8 +185,6 @@ package pinmux;
         wrtwi_sda_in<=cell1_mux_in;
       endrule
 
-      // TODO: this needs to stop using GenericIOType and
-      // set the output (and only the output) as a wire
       // output muxer for cell idx 2
       cell2_mux_out=
 			wrcell2_mux==0?wrgpioa_a2_out:
@@ -200,8 +192,7 @@ package pinmux;
 			wrcell2_mux==2?wrtwi_scl_out:
 			0; // unused
 
-      // TODO: here is needed something which sets a new
-      // wire, cell2_mux_outen
+      // outen muxer for cell idx 2
       cell2_mux_outen=
 			wrcell2_mux==0?wrgpioa_a2_outen: // bi-directional
 			wrcell2_mux==1?0: // unused
