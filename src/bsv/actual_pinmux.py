@@ -28,7 +28,7 @@ def get_cell_bit_width(p):
     max_num_cells = 0
     for cell in p.muxed_cells:
         max_num_cells = max(len(cell) - 1, max_num_cells)
-    return int(math.log(max_num_cells+1, 2))
+    return int(math.log(max_num_cells + 1, 2))
 
 
 def cn(idx):  # idx is an integer
@@ -43,6 +43,7 @@ def transfn(temp):
         temp[0] = temp[0].translate(digits)
         temp[0] = temp[0] .replace(' ', '')
     return '_'.join(temp)
+
 
 def fmt(cell, idx):
     """ blank entries need to output a 0 to the pin (it could just as
@@ -63,6 +64,7 @@ def mkcomment(p, cell, idx):
     """ returns a comment string for the cell when muxed
     """
     return ""
+
 
 def init(p, ifaces):
     """ generates the actual output pinmux for each io-cell.  blank lines
@@ -87,15 +89,16 @@ def init(p, ifaces):
     p.cell_bitwidth = get_cell_bit_width(p)
     p.pinmux = ' '
     global dedicated_wire
-    fmtstr = "\t\t\twr%s == %d ? %s :%s\n" # mux-selector format
+    fmtstr = "\t\t\twr%s == %d ? %s :%s\n"  # mux-selector format
     for cell in p.muxed_cells:
         p.pinmux += "      // output muxer for cell idx %s\n" % cell[0]
         p.pinmux += "      %s_out=\n" % cn(cell[0])
-        for i in range(0, (1<<p.cell_bitwidth)-1): # full mux range (minus 1)
+        for i in range(
+                0, (1 << p.cell_bitwidth) - 1):  # full mux range (minus 1)
             comment = mkcomment(p, cell, i)
             p.pinmux += fmtstr % (cn(cell[0]), i, fmt(cell, i), comment)
-        comment = mkcomment(p, cell, i+1)
-        p.pinmux += "\t\t\t" + fmt(cell, i+1) + comment # last line
+        comment = mkcomment(p, cell, i + 1)
+        p.pinmux += "\t\t\t" + fmt(cell, i + 1) + comment  # last line
         p.pinmux += ";\n"
         # ======================================================== #
 
@@ -106,7 +109,7 @@ def init(p, ifaces):
         # user-to-user. Plus this also reduces human-error as well :)
         for i in range(0, len(cell) - 1):
             cname = cell[i + 1]
-            if not cname: # skip blank entries, no need to test
+            if not cname:  # skip blank entries, no need to test
                 continue
             temp = transfn(cname)
             x = ifaces.getifacetype(temp)

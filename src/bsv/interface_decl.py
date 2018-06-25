@@ -163,7 +163,7 @@ class Interface(object):
             name = self.pname(p['name'])
             typ = self.getifacetype(name.format(""))
             name = name.format(*args)
-            res += "      // declare %s_io, set up as type '%s'\n" % (name, typ)
+            res += "      // declare %s_io set up as type '%s'\n" % (name, typ)
             res += "      GenericIOType %s_io = GenericIOType{\n" % name
             params = []
             if typ == 'inout':
@@ -176,7 +176,7 @@ class Interface(object):
                 params.append('outputval:%s,' % outname)
                 params.append('output_en:1,')
                 params.append('input_en:0,')
-            else: # input
+            else:  # input
                 params.append('outputval:0,')
                 params.append('output_en:0,')
                 params.append('input_en:1,')
