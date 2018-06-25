@@ -163,7 +163,7 @@ class Interface(object):
             name = self.pname(p['name'])
             typ = self.getifacetype(name.format(""))
             name = name.format(*args)
-            res += "      # declare %s_io, set up as type '%s'\n" % (name, typ)
+            res += "      // declare %s_io, set up as type '%s'\n" % (name, typ)
             res += "      GenericIOType %s_io = GenericIOType{\n" % name
             params = []
             if typ == 'inout':
