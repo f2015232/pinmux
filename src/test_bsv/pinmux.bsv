@@ -144,6 +144,7 @@ package pinmux;
        // output muxer for cell idx 0
       cell0_mux_out=wrcell0_mux==0?wrgpioa_a0_out:
 			wrcell0_mux==1?wruart_tx_out:
+			wrcell0_mux==2?0: // unused
 			0; // unused
 
       // TODO: here is needed something which sets a new
@@ -151,6 +152,7 @@ package pinmux;
       cell0_mux_outen=
             wrcell0_mux==0?wrgpioa_a0_outen: // bi-directional
 			wrcell0_mux==1?1: // uart_tx is an output
+			wrcell0_mux==2?0: // unused
 			0; // unused
 
       rule assign_wrgpioa_a0_in_on_cell0(wrcell0_mux==0);
@@ -162,14 +164,16 @@ package pinmux;
       // output muxer for cell idx 1
       cell1_mux_out=wrcell1_mux==0?wrgpioa_a1_out:
 			wrcell1_mux==1?0: // uart_rx is an input
-			wrtwi_sda_out;
+			wrcell1_mux==2? wrtwi_sda_out:
+			0; // unused
 
       // TODO: here is needed something which sets a new
       // wire, cell1_mux_outen
       cell1_mux_outen=
             wrcell1_mux==0?gpioa_a1_outen: // bi-directional
 			wrcell1_mux==1?0: // uart_rx is an input
-			wrtwi_sda_outen; // bi-directional
+			wrcell1_mux==2? wrtwi_sda_outen: // bi-directional
+			0; // unused
 
       rule assign_wrgpioa_a1_in_on_cell1(wrcell1_mux==0);
         wrgpioa_a1_in<=cell1_mux_in;
@@ -191,15 +195,16 @@ package pinmux;
       cell2_mux_out=
             wrcell2_mux==0?wrgpioa_a2_out:
 			wrcell2_mux==1?0: // unused
-			wrtwi_scl_out;
+			wrcell2_mux==2?wrtwi_scl_out:
+			0; // unused
 
       // TODO: here is needed something which sets a new
       // wire, cell2_mux_outen
       cell2_mux_outen=
             wrcell2_mux==0?wrgpioa_a2_outen: // bi-directional
 			wrcell2_mux==1?0: // unused
-			wrtwi_scl_outen; // bi-directional
-
+			wrcell2_mux==2?wrtwi_scl_outen: // bi-directional
+			0; // unused
 
       rule assign_wrgpioa_a2_in_on_cell2(wrcell2_mux==0);
         wrgpioa_a2_in<=cell2_mux_in;
