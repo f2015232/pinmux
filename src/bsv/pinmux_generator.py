@@ -20,7 +20,6 @@ import shutil
 import os
 import os.path
 import time
-import math
 
 # project module imports
 from bsv.interface_decl import Interfaces, mux_interface, io_interface
@@ -109,20 +108,13 @@ def write_bus(bus, p, ifaces):
         ifaces.busfmt(bsv_file)
 
 
-def get_cell_bit_width(p):
-    max_num_cells = 0
-    for cell in p.muxed_cells:
-        max_num_cells = max(len(cell) - 1, max_num_cells)
-    return int(math.log(max_num_cells+1, 2))
-
-
 def write_pmp(pmp, p, ifaces):
     # package and interface declaration followed by
     # the generic io_cell definition
     with open(pmp, "w") as bsv_file:
         bsv_file.write(header)
 
-        cell_bit_width = 'Bit#(%d)' % get_cell_bit_width(p)
+        cell_bit_width = 'Bit#(%d)' % p.cell_bitwidth
         bsv_file.write('''\
    interface MuxSelectionLines;
 
@@ -219,7 +211,7 @@ package PinTop;
         // declare the registers which will be used to mux the IOs
 '''.format(p.ADDR_WIDTH, p.DATA_WIDTH))
 
-        cell_bit_width = str(get_cell_bit_width(p))
+        cell_bit_width = str(p.cell_bitwidth)
         for cell in p.muxed_cells:
             bsv_file.write('''
                 Reg#(Bit#({0})) rg_muxio_{1} <-mkReg(0);'''.format(
