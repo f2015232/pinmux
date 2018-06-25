@@ -44,17 +44,22 @@ def transfn(temp):
         temp[0] = temp[0] .replace(' ', '')
     return '_'.join(temp)
 
-def fmt(cell):
+def fmt(cell, idx):
     """ blank entries need to output a 0 to the pin (it could just as
         well be a 1 but we choose 0).  reason: blank entries in
         the pinmap.txt file indicate that there's nothing to choose
         from.  however the user may still set the muxer to that value,
         and rather than throw an exception we choose to output... zero.
     """
+    idx += 1
+    if idx < len(cell):
+        cell = cell[idx]
+    else:
+        cell = ''
     return "%s_io" % cell if cell else '0'
 
 
-def mkcomment(p, cell):
+def mkcomment(p, cell, idx):
     """ returns a comment string for the cell when muxed
     """
     return ""
@@ -72,6 +77,12 @@ def init(p, ifaces):
                 d
 
         last line doesn't need selector-logic, obviously.
+
+        note that it's *important* that all muxer options be covered
+        (hence going up to 1<<cell_bitwidth) even if the muxer cells
+        are blank (no entries), because muxer selection could be to
+        the last one, and we do not want the "default" (last line)
+        to be the output.
     """
     p.cell_bitwidth = get_cell_bit_width(p)
     p.pinmux = ' '
@@ -80,11 +91,11 @@ def init(p, ifaces):
     for cell in p.muxed_cells:
         p.pinmux += "      // output muxer for cell idx %s\n" % cell[0]
         p.pinmux += "      %s_out=\n" % cn(cell[0])
-        for i in range(0, len(cell) - 2):
-            comment = mkcomment(p, cell[i + 1])
-            p.pinmux += fmtstr % (cn(cell[0]), i, fmt(cell[i + 1]), comment)
-        comment = mkcomment(p, cell[i + 2])
-        p.pinmux += "\t\t\t" + fmt(cell[i + 2]) + comment # last line
+        for i in range(0, (1<<p.cell_bitwidth)-1): # full mux range (minus 1)
+            comment = mkcomment(p, cell, i)
+            p.pinmux += fmtstr % (cn(cell[0]), i, fmt(cell, i), comment)
+        comment = mkcomment(p, cell, i+1)
+        p.pinmux += "\t\t\t" + fmt(cell, i+1) + comment # last line
         p.pinmux += ";\n"
         # ======================================================== #
 
