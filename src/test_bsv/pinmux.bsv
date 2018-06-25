@@ -111,13 +111,13 @@ package pinmux;
       // allotted to it
       Wire#(Bit#(1)) wruart_tx<-mkDWire(0);
       Wire#(Bit#(1)) wruart_rx<-mkDWire(0);
-      # declare uart_tx_io, set up as type 'out'
+      // declare uart_tx_io, set up as type 'out'
       GenericIOType uart_tx_io = GenericIOType{
                  outputval:wruart_tx,
                  output_en:1,
                  input_en:0,
       };
-      # declare uart_rx_io, set up as type 'input'
+      // declare uart_rx_io, set up as type 'input'
       GenericIOType uart_rx_io = GenericIOType{
                  outputval:0,
                  output_en:0,
@@ -135,19 +135,19 @@ package pinmux;
       Wire#(Bit#(1)) wrgpioa_a2_out<-mkDWire(0);
       Wire#(Bit#(1)) wrgpioa_a2_outen<-mkDWire(0);
       Wire#(Bit#(1)) wrgpioa_a2_in<-mkDWire(0);
-      # declare gpioa_a0_io, set up as type 'inout'
+      // declare gpioa_a0_io, set up as type 'inout'
       GenericIOType gpioa_a0_io = GenericIOType{
                  outputval:wrgpioa_a0_out,
                  output_en:wrgpioa_a0_outen,
                  input_en:~wrgpioa_a0_outen,
       };
-      # declare gpioa_a1_io, set up as type 'inout'
+      // declare gpioa_a1_io, set up as type 'inout'
       GenericIOType gpioa_a1_io = GenericIOType{
                  outputval:wrgpioa_a1_out,
                  output_en:wrgpioa_a1_outen,
                  input_en:~wrgpioa_a1_outen,
       };
-      # declare gpioa_a2_io, set up as type 'inout'
+      // declare gpioa_a2_io, set up as type 'inout'
       GenericIOType gpioa_a2_io = GenericIOType{
                  outputval:wrgpioa_a2_out,
                  output_en:wrgpioa_a2_outen,
@@ -162,13 +162,13 @@ package pinmux;
       Wire#(Bit#(1)) wrtwi_scl_out<-mkDWire(0);
       Wire#(Bit#(1)) wrtwi_scl_outen<-mkDWire(0);
       Wire#(Bit#(1)) wrtwi_scl_in<-mkDWire(0);
-      # declare twi_sda_io, set up as type 'inout'
+      // declare twi_sda_io, set up as type 'inout'
       GenericIOType twi_sda_io = GenericIOType{
                  outputval:wrtwi_sda_out,
                  output_en:wrtwi_sda_outen,
                  input_en:~wrtwi_sda_outen,
       };
-      # declare twi_scl_io, set up as type 'inout'
+      // declare twi_scl_io, set up as type 'inout'
       GenericIOType twi_scl_io = GenericIOType{
                  outputval:wrtwi_scl_out,
                  output_en:wrtwi_scl_outen,
