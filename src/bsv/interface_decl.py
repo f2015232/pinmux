@@ -21,13 +21,15 @@ class Pin(object):
                  enabled=True,
                  io=False,
                  action=False,
-                 bitspec=None):
+                 bitspec=None,
+                 outenmode=False):
         self.name = name
         self.ready = ready
         self.enabled = enabled
         self.io = io
         self.action = action
         self.bitspec = bitspec if bitspec else 'Bit#(1)'
+        self.outenmode = outenmode
 
     def ifacefmt(self, fmtfn):
         res = '    '
@@ -195,6 +197,10 @@ class Interface(object):
     def ifacefmtdecfn2(self, name):
         return name
 
+    def ifacefmtdecfn3(self, name):
+        """ HACK! """
+        return "%s_outenX" % name
+
     def ifacefmtoutfn(self, name):
         return "wr%s" % name
 
@@ -209,8 +215,14 @@ class Interface(object):
         return pin.ifacefmt(self.ifacefmtdecfn)
 
     def ifacefmtpin(self, pin):
-        return pin.ifacedef(self.ifacefmtoutfn, self.ifacefmtinfn,
-                            self.ifacefmtdecfn2)
+        decfn = self.ifacefmtdecfn2
+        outfn = self.ifacefmtoutfn
+        print pin, pin.outenmode
+        if pin.outenmode:
+            decfn = self.ifacefmtdecfn3
+            outfn = self.ifacefmtoutenfn
+        return pin.ifacedef(outfn, self.ifacefmtinfn,
+                            decfn)
 
     def ifacedef(self, *args):
         res = '\n'.join(map(self.ifacefmtpin, self.pins))
@@ -225,6 +237,9 @@ class MuxInterface(Interface):
 
 
 class IOInterface(Interface):
+
+    def ifacefmtoutenfn(self, name):
+        return "cell{0}_mux_outen"
 
     def ifacefmtoutfn(self, name):
         """ for now strip off io{0}_ part """
@@ -336,7 +351,8 @@ mux_interface = MuxInterface('cell', [{'name': 'mux', 'ready': False,
 
 io_interface = IOInterface(
     'io',
-    [{'name': 'cell', 'enabled': False, 'bitspec': 'GenericIOType'},
+    [{'name': 'cell_out', 'enabled': False, },
+     {'name': 'cell_outen', 'enabled': False, 'outenmode': True, },
      {'name': 'inputval', 'action': True, 'io': True}, ])
 
 # == Peripheral Interface definitions == #
