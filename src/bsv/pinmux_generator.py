@@ -113,7 +113,8 @@ def get_cell_bit_width(p):
     max_num_cells = 0
     for cell in p.muxed_cells:
         max_num_cells = max(len(cell) - 1, max_num_cells)
-    return int(math.log(max_num_cells, 2))
+        print max_num_cells, cell, int(math.ceil(math.log(max_num_cells, 2)))
+    return int(math.log(max_num_cells+1, 2))
 
 
 def write_pmp(pmp, p, ifaces):
@@ -122,6 +123,7 @@ def write_pmp(pmp, p, ifaces):
     with open(pmp, "w") as bsv_file:
         bsv_file.write(header)
 
+        cell_bit_width = 'Bit#(%d)' % get_cell_bit_width(p)
         bsv_file.write('''\
    interface MuxSelectionLines;
 
@@ -131,8 +133,7 @@ def write_pmp(pmp, p, ifaces):
       // where each IO will have the same number of muxes.''')
 
         for cell in p.muxed_cells:
-            cnum = 'Bit#(' + str(int(math.log(len(cell) - 1, 2))) + ')'
-            bsv_file.write(mux_interface.ifacefmt(cell[0], cnum))
+            bsv_file.write(mux_interface.ifacefmt(cell[0], cell_bit_width))
 
         bsv_file.write('''
       endinterface
@@ -166,7 +167,6 @@ def write_pmp(pmp, p, ifaces):
       // the followins wires capture the pin-mux selection
       // values for each mux assigned to a CELL
 ''')
-        cell_bit_width = 'Bit#(%d)' % get_cell_bit_width(p)
         for cell in p.muxed_cells:
             bsv_file.write(mux_interface.wirefmt(
                 cell[0], cell_bit_width))
