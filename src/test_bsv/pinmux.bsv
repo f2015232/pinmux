@@ -132,7 +132,7 @@ package pinmux;
       Wire#(Bit#(1)) wrtwi_sda_out<-mkDWire(0);
       Wire#(Bit#(1)) wrtwi_sda_outen<-mkDWire(0);
       Wire#(Bit#(1)) wrtwi_sda_in<-mkDWire(0);
-      // declare wrtwi_scl_io*, set up as type 'inout'
+      // declare wrtwi_scl_*, set up as type 'inout'
       Wire#(Bit#(1)) wrtwi_scl_out<-mkDWire(0);
       Wire#(Bit#(1)) wrtwi_scl_outen<-mkDWire(0);
       Wire#(Bit#(1)) wrtwi_scl_in<-mkDWire(0);
@@ -150,7 +150,7 @@ package pinmux;
       // wire, cell0_mux_outen
       cell0_mux_outen=
             wrcell0_mux==0?wrgpioa_a0_outen: // bi-directional
-			wrcell0_mux==1?wrgpioa_a0_out_en: // i think....
+			wrcell0_mux==1?1: // uart_tx is an output
 			0;
 
       rule assign_wrgpioa_a0_in_on_cell0(wrcell0_mux==0);
@@ -169,7 +169,7 @@ package pinmux;
       cell1_mux_outen=
             wrcell1_mux==0?gpioa_a1_outen: // bi-directional
 			wrcell1_mux==1?0: // uart_rx is an input
-			wrtwi_sda_out_en; // bi-directional
+			wrtwi_sda_outen; // bi-directional
 
       rule assign_wrgpioa_a1_in_on_cell1(wrcell1_mux==0);
         wrgpioa_a1_in<=cell1_mux_in;
