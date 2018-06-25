@@ -113,7 +113,6 @@ def get_cell_bit_width(p):
     max_num_cells = 0
     for cell in p.muxed_cells:
         max_num_cells = max(len(cell) - 1, max_num_cells)
-        print max_num_cells, cell, int(math.ceil(math.log(max_num_cells, 2)))
     return int(math.log(max_num_cells+1, 2))
 
 
