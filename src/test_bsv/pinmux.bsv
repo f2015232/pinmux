@@ -30,9 +30,9 @@ package pinmux;
       // selection values.The width of the input is dependent on the number
       // of muxes happening per IO. For now we have a generalized width
       // where each IO will have the same number of muxes.
-     method  Action cell0_mux (Bit#(1) in);
-     method  Action cell1_mux (Bit#(1) in);
-     method  Action cell2_mux (Bit#(1) in);
+     method  Action cell0_mux (Bit#(2) in);
+     method  Action cell1_mux (Bit#(2) in);
+     method  Action cell2_mux (Bit#(2) in);
       endinterface
 
       interface PeripheralSide;
@@ -144,14 +144,14 @@ package pinmux;
        // output muxer for cell idx 0
       cell0_mux_out=wrcell0_mux==0?wrgpioa_a0_out:
 			wrcell0_mux==1?wruart_tx_out:
-			0;
+			0; // unused
 
       // TODO: here is needed something which sets a new
       // wire, cell0_mux_outen
       cell0_mux_outen=
             wrcell0_mux==0?wrgpioa_a0_outen: // bi-directional
 			wrcell0_mux==1?1: // uart_tx is an output
-			0;
+			0; // unused
 
       rule assign_wrgpioa_a0_in_on_cell0(wrcell0_mux==0);
         wrgpioa_a0_in<=cell0_mux_in;
@@ -190,14 +190,14 @@ package pinmux;
       // output muxer for cell idx 2
       cell2_mux_out=
             wrcell2_mux==0?wrgpioa_a2_out:
-			wrcell2_mux==1?0:
+			wrcell2_mux==1?0: // unused
 			wrtwi_scl_out;
 
       // TODO: here is needed something which sets a new
       // wire, cell2_mux_outen
       cell2_mux_outen=
             wrcell2_mux==0?wrgpioa_a2_outen: // bi-directional
-			wrcell2_mux==1?0:
+			wrcell2_mux==1?0: // unused
 			wrtwi_scl_outen; // bi-directional
 
 
