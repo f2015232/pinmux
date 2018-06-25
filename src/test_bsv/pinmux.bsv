@@ -222,15 +222,15 @@ package pinmux;
 
     interface mux_lines = interface MuxSelectionLines
 
-      method Action  cell0_mux(Bit#(1) in);
+      method Action  cell0_mux(Bit#(2) in);
          wrcell0_mux<=in;
       endmethod
 
-      method Action  cell1_mux(Bit#(1) in);
+      method Action  cell1_mux(Bit#(2) in);
          wrcell1_mux<=in;
       endmethod
 
-      method Action  cell2_mux(Bit#(1) in);
+      method Action  cell2_mux(Bit#(2) in);
          wrcell2_mux<=in;
       endmethod
 
