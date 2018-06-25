@@ -45,6 +45,12 @@ def fmt(cell):
     """
     return "%s_io" % cell if cell else '0'
 
+
+def mkcomment(p, cell):
+    """ returns a comment string for the cell when muxed
+    """
+    return ""
+
 def init(p, ifaces):
     """ generates the actual output pinmux for each io-cell.  blank lines
         need to output "0" to the iopad, if there is no entry in
@@ -61,13 +67,15 @@ def init(p, ifaces):
     """
     p.pinmux = ' '
     global dedicated_wire
-    fmtstr = "wr%s == %d ? %s :\n\t\t\t" # mux-selector format
+    fmtstr = "\t\t\twr%s == %d ? %s :%s\n" # mux-selector format
     for cell in p.muxed_cells:
         p.pinmux += "      // output muxer for cell idx %s\n" % cell[0]
         p.pinmux += "      %s_out=\n" % cn(cell[0])
         for i in range(0, len(cell) - 2):
-            p.pinmux += fmtstr % (cn(cell[0]), i, fmt(cell[i + 1]))
-        p.pinmux += fmt(cell[i + 2]) # last line
+            comment = mkcomment(p, cell[i + 1])
+            p.pinmux += fmtstr % (cn(cell[0]), i, fmt(cell[i + 1]), comment)
+        comment = mkcomment(p, cell[i + 2])
+        p.pinmux += "\t\t\t" + fmt(cell[i + 2]) + comment # last line
         p.pinmux += ";\n"
         # ======================================================== #
 
