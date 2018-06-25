@@ -86,9 +86,9 @@ package pinmux;
       // the followins wires capture the pin-mux selection
       // values for each mux assigned to a CELL
 
-      Wire#(Bit#(1)) wrcell0_mux<-mkDWire(0);
-      Wire#(Bit#(1)) wrcell1_mux<-mkDWire(0);
-      Wire#(Bit#(1)) wrcell2_mux<-mkDWire(0);
+      Wire#(Bit#(2)) wrcell0_mux<-mkDWire(0);
+      Wire#(Bit#(2)) wrcell1_mux<-mkDWire(0);
+      Wire#(Bit#(2)) wrcell2_mux<-mkDWire(0);
       // following wires capture signals to IO CELL if io-0 is
       // allotted to it
       Wire#(Bit#(1)) cell0_mux_out<-mkDWire(0);
