@@ -49,16 +49,25 @@ def init(p, ifaces):
     """ generates the actual output pinmux for each io-cell.  blank lines
         need to output "0" to the iopad, if there is no entry in
         that column.
+
+        text is outputted in the format:
+            x_out =
+                muxer_sel==0 ? a :
+                muxer_sel==1 ? b :
+                muxer_sel==2 ? 0 :
+                d
+
+        last line doesn't need selector-logic, obviously.
     """
     p.pinmux = ' '
     global dedicated_wire
+    fmtstr = "wr%s == %d ? %s :\n\t\t\t" # mux-selector format
     for cell in p.muxed_cells:
         p.pinmux += "      // output muxer for cell idx %s\n" % cell[0]
-        p.pinmux += "      %s_out=" % cn(cell[0])
+        p.pinmux += "      %s_out=\n" % cn(cell[0])
         for i in range(0, len(cell) - 2):
-            p.pinmux += "wr%s" % cn(cell[0]) + \
-                "==" + str(i) + "?" + fmt(cell[i + 1]) + ":\n\t\t\t"
-        p.pinmux += fmt(cell[i + 2])
+            p.pinmux += fmtstr % (cn(cell[0]), i, fmt(cell[i + 1]))
+        p.pinmux += fmt(cell[i + 2]) # last line
         p.pinmux += ";\n"
         # ======================================================== #
 
