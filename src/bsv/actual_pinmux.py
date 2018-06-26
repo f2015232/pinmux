@@ -73,7 +73,7 @@ def fmt(ifaces, cell, idx, suffix=None):
 def mkcomment(ifaces, cell, idx, outenmode=False):
     """ returns a comment string for the cell when muxed
     """
-    idx += 1
+    idx += 1 #here idx ranges from 0 to (1 << p.cell_bitwidth) - 1)
     if idx >= len(cell):
         return ' // unused'
     cname = cell[idx]
