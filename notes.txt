@@ -17,7 +17,13 @@ value in method Action inside Peripheral Side  interface)
 # digits = maketrans('0123456789', ' ' * 10)  # delete space later
 This is a tranlation table .. each number is mapped to 1space .
 
+# (acutal_pinmux.py)idx is increased by 1, to account for pin number column in pinmap.txt
+
+#in actual_pinmux.py .. p.pinmux or p.cell_bitwidth is just a variable declaration.  
+
+# remember that function getifacetype in interface_decl.py gets a 
+parameter like spi_sclk or spi_mosi or spi_miso or uart_tx or uart_rx
 
 
 
-
+ 
