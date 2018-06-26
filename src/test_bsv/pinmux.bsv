@@ -33,7 +33,7 @@ package pinmux;
      method  Action cell0_mux (Bit#(2) in);
      method  Action cell1_mux (Bit#(2) in);
      method  Action cell2_mux (Bit#(2) in);
-      endinterface
+   endinterface 
 
       interface PeripheralSide;
       // declare the interface to the IO cells.
