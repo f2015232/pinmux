@@ -1,0 +1,23 @@
+# Consider GPIO to be peripheral.
+
+# IOcell needs to be separate interface as they connect to IOpad.
+
+# input_en is to be negation of output_en.
+
+# In, pinmux.bsv : The input of Peripheral (like wruart_rx, wrgpioa_a1_in ...) 
+gets value via a *rule*..
+having a condition based of MuxSelectLine.
+I guess ... this represents the decoding mux in mygpiomux.png
+In this style.. we assign all the inputs from cell*_mux_in. (which gets its
+value in method Action inside Peripheral Side  interface)
+
+    Luke : not keen on this approach, as it will result in a MASSIVE
+    amount of memory and time to do the compilation... but it works.
+
+# digits = maketrans('0123456789', ' ' * 10)  # delete space later
+This is a tranlation table .. each number is mapped to 1space .
+
+
+
+
+
