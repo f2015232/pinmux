@@ -155,14 +155,14 @@ def init(p, ifaces):
             temp = transfn(cname)
             x = ifaces.getifacetype(temp)
             #print (cname, temp, x)
-            assert x is not None, "ERROR: The signal : " + \
-            #executalbe check for a property that must be true
+            # executalbe check for a property that must be true
             # rules:
             # 1. assertions are not for error handling.
             # 2. it had no SIDE EFFECTS
             # 3. no silly assertions like assert 1+1 ==2,
             # check for a non trivial property.
-                str(cname) + \
+            assert x is not None, "ERROR: The signal : " + \
+            str(cname) + \
                 " of pinmap.txt isn't present \nin the current" + \
                 " dictionary. Update dictionary or fix-typo."
             if x == "input":
