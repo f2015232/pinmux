@@ -177,12 +177,12 @@ def init(p, ifaces):
     # ==================  Logic for dedicated pins ========= #
     for cell in p.dedicated_cells:
         p.pinmux += "      %s_out=%s_io;\n" % (cn(cell[0]), cell[1])
-        temp = cell[1].translate(digits)
+        temp = transfn(cell[1])
         x = ifaces.getifacetype(temp)
         if x == "input":
-            pinmux = pinmux + \
+            p.pinmux = p.pinmux + \
                 dedicated_wire.format(cell[0], "wr" + cell[1]) + "\n"
         elif x == "inout":
-            pinmux = pinmux + \
+            p.pinmux = p.pinmux + \
                 dedicated_wire.format(cell[0], "wr" + cell[1] + "_in") + "\n"
     # =======================================================#
